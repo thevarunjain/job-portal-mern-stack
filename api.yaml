@@ -1,0 +1,376 @@
+---
+openapi: 3.0.0
+info:
+  title: LinkedIn API
+  description: LinkedIn API Design Document For CMPE-273
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: "1.0"
+servers:
+- url: https://virtserver.swaggerhub.com/bargemb/linkedin/1.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: recruiter
+  description: Operations available to recruiters
+- name: applicant
+  description: Operations available to applicants
+- name: users
+  description: Everything about users
+- name: jobs
+  description: Everything about jobs
+- name: search
+  description: Everything about search
+paths:
+  /signup:
+    post:
+      tags:
+      - recruiter
+      - applicant
+      summary: User signup
+      description: Signup operation for applicant and recruiter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: successful signup
+        400:
+          description: bad input parameter
+  /login:
+    post:
+      tags:
+      - recruiter
+      - applicant
+      summary: User login
+      description: Login operation for applicant and recruiter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        200:
+          description: successful login
+        400:
+          description: bad input parameter
+  /jobs:
+    get:
+      tags:
+      - jobs
+      - recruiter
+      - applicant
+      summary: Get all jobs
+      description: Get all jobs
+      responses:
+        200:
+          description: Jobs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+    post:
+      tags:
+      - jobs
+      - recruiter
+      summary: Create new job
+      description: Recruiter can post new job
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+        required: true
+      responses:
+        201:
+          description: Job created successfully
+  /jobs/{id}:
+    get:
+      tags:
+      - jobs
+      - recruiter
+      - applicant
+      summary: Get individual jobs
+      description: Single job details
+      parameters:
+      - name: id
+        in: path
+        description: ID of the job
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Job retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+    put:
+      tags:
+      - jobs
+      - recruiter
+      summary: Edit existing job
+      description: Recruiter can edit already existing job
+      parameters:
+      - name: id
+        in: path
+        description: ID of the job
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Job created successfully
+  /jobs/{id}/save:
+    post:
+      tags:
+      - jobs
+      - applicant
+      summary: Save job
+      description: Save job and apply later
+      parameters:
+      - name: id
+        in: path
+        description: ID of the job
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Job saved successfully
+  /jobs/{id}/apply:
+    post:
+      tags:
+      - jobs
+      - applicant
+      summary: Apply for the job
+      description: Apply for the job
+      parameters:
+      - name: id
+        in: path
+        description: ID of the job
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Applied for job successfully
+  /search:
+    get:
+      tags:
+      - search
+      - recruiter
+      - applicant
+      summary: Search for other linkedin users and jobs
+      description: Search for other linkedin users and jobs
+      parameters:
+      - name: string
+        in: query
+        description: Search text
+        required: true
+        style: FORM
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+  /search/jobs:
+    get:
+      tags:
+      - search
+      - recruiter
+      - applicant
+      summary: Search for jobs
+      description: Search for jobs
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+  /search/users:
+    get:
+      tags:
+      - search
+      - recruiter
+      - applicant
+      summary: Search for other linkedin users
+      description: Search for other linkedin users
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      required:
+      - email
+      - name
+      - password
+      - role
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          $ref: '#/components/schemas/Name'
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+        company:
+          type: string
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        owner:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        company:
+          type: string
+        location:
+          type: string
+        employment_type:
+          type: string
+        job_function:
+          type: string
+        company_logo:
+          type: string
+        applicant_count:
+          type: integer
+          format: int64
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        view_count:
+          type: integer
+          format: int64
+        skills:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+        bookmark_count:
+          type: integer
+          format: int64
+        easy_apply:
+          type: boolean
+    Name:
+      required:
+      - first
+      - last
+      type: object
+      properties:
+        first:
+          type: string
+        middle:
+          type: string
+        last:
+          type: string
+    Address:
+      required:
+      - city
+      - state
+      - street
+      - zipcode
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipcode:
+          type: integer
+          format: int64
+    Application:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          $ref: '#/components/schemas/Name'
+        address:
+          $ref: '#/components/schemas/Address'
+        resume:
+          type: string
+        cover_letter:
+          type: string
+    body:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+          description: Email address
+        password:
+          type: string
+          description: Password
+    inline_response_200:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+  parameters:
+    jobId:
+      name: id
+      in: path
+      description: ID of the job
+      required: true
+      style: SIMPLE
+      explode: false
+      schema:
+        type: integer
+        format: int64
+  extensions: {}
