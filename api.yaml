@@ -1,75 +1,85 @@
----
 openapi: 3.0.0
 info:
-  title: LinkedIn API
-  description: LinkedIn API Design Document For CMPE-273
+  version: '1.0'
+  title: 'LinkedIn API'
+  description: 'LinkedIn API Design Document For CMPE-273'
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: "1.0"
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-- url: https://virtserver.swaggerhub.com/bargemb/linkedin/1.0
-  description: SwaggerHub API Auto Mocking
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/bargemb/linkedin/1.0
 - url: http://localhost/linkedin/1.0
   description: SwaggerHub API Auto Mocking
-tags:
-- name: recruiter
-  description: Operations available to recruiters
-- name: applicant
-  description: Operations available to applicants
-- name: users
-  description: Everything about users
-- name: jobs
-  description: Everything about jobs
-- name: search
-  description: Everything about search
-paths:
+tags: 
+  - name: recruiter
+    description: Operations available to recruiters
+  - name: applicant
+    description: Operations available to applicants
+  - name: users
+    description: Everything about users
+  - name: jobs
+    description: Everything about jobs
+  - name: search
+    description: Everything about search
+paths: 
   /signup:
     post:
       tags:
-      - recruiter
-      - applicant
+        - recruiter
+        - applicant
       summary: User signup
       description: Signup operation for applicant and recruiter
+      responses:
+        '200':
+          description: successful signup
+        '400':
+          description: bad input parameter
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        200:
-          description: successful signup
-        400:
-          description: bad input parameter
   /login:
     post:
       tags:
-      - recruiter
-      - applicant
+        - recruiter
+        - applicant
       summary: User login
       description: Login operation for applicant and recruiter
+      responses:
+        '200':
+          description: successful login
+        '400':
+          description: bad input parameter
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/body'
-        required: true
-      responses:
-        200:
-          description: successful login
-        400:
-          description: bad input parameter
+              type: object
+              properties:
+                username:
+                  description: Email address
+                  type: string
+                password:
+                  description: Password
+                  type: string
+              required:
+                - username
+                - password
   /jobs:
     get:
       tags:
-      - jobs
-      - recruiter
-      - applicant
+        - jobs
+        - recruiter
+        - applicant
       summary: Get all jobs
       description: Get all jobs
       responses:
-        200:
+        '200':
           description: Jobs retrieved successfully
           content:
             application/json:
@@ -79,39 +89,31 @@ paths:
                   $ref: '#/components/schemas/Job'
     post:
       tags:
-      - jobs
-      - recruiter
+        - jobs
+        - recruiter
       summary: Create new job
       description: Recruiter can post new job
+      responses:
+        '201':
+          description: Job created successfully
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Job'
-        required: true
-      responses:
-        201:
-          description: Job created successfully
-  /jobs/{id}:
+  '/jobs/{id}':
     get:
       tags:
-      - jobs
-      - recruiter
-      - applicant
+        - jobs
+        - recruiter
+        - applicant
       summary: Get individual jobs
       description: Single job details
       parameters:
-      - name: id
-        in: path
-        description: ID of the job
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/jobId'
       responses:
-        200:
+        '200':
           description: Job retrieved successfully
           content:
             application/json:
@@ -119,112 +121,95 @@ paths:
                 $ref: '#/components/schemas/Job'
     put:
       tags:
-      - jobs
-      - recruiter
+        - jobs
+        - recruiter
       summary: Edit existing job
       description: Recruiter can edit already existing job
       parameters:
-      - name: id
-        in: path
-        description: ID of the job
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/jobId'
       responses:
-        200:
+        '200':
           description: Operation successful
-  /jobs/{id}/save:
+  '/jobs/{id}/save':
     post:
       tags:
-      - jobs
-      - applicant
+        - jobs
+        - applicant
       summary: Save job
       description: Save job and apply later
       parameters:
-      - name: id
-        in: path
-        description: ID of the job
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/jobId'
       responses:
-        200:
+        '200':
           description: Job saved successfully
-  /jobs/{id}/apply:
+  '/jobs/{id}/apply':
     post:
       tags:
-      - jobs
-      - applicant
+        - jobs
+        - applicant
       summary: Apply for the job
       description: Apply for the job
       parameters:
-      - name: id
-        in: path
-        description: ID of the job
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/jobId'
       responses:
-        200:
+        '200':
           description: Applied for job successfully
   /search:
     get:
       tags:
-      - search
-      - recruiter
-      - applicant
+        - search
+        - recruiter
+        - applicant
       summary: Search for other linkedin users and jobs
       description: Search for other linkedin users and jobs
       parameters:
-      - name: string
-        in: query
-        description: Search text
-        required: true
-        style: FORM
-        explode: true
-        schema:
-          type: string
+        - name: string
+          in: query
+          description: Search text
+          required: true
+          schema:
+            type: string
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  jobs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job' 
   /search/jobs:
     get:
       tags:
-      - search
-      - recruiter
-      - applicant
+        - search
+        - recruiter
+        - applicant
       summary: Search for jobs
       description: Search for jobs
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Job'
+                 $ref: '#/components/schemas/Job'
   /search/users:
     get:
       tags:
-      - search
-      - recruiter
-      - applicant
+        - search
+        - recruiter
+        - applicant
       summary: Search for other linkedin users
       description: Search for other linkedin users
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
@@ -232,39 +217,40 @@ paths:
                 $ref: '#/components/schemas/User'
   /users:
     get:
-      tags:
-      - users
-      - recruiter
-      - applicant
+      tags: 
+        - users
+        - recruiter
+        - applicant
       summary: Get all users of the system
       description: Get all users of the system
       responses:
-        200:
+        '200':
           description: Users retrieved successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
-  /users/{id}:
+                type: object
+                properties:
+                  applicants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  recruiters:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+  '/users/{id}':
     get:
       tags:
-      - users
-      - recruiter
-      - applicant
+        - users
+        - recruiter
+        - applicant
       summary: Get individual user
       description: Individual user details
       parameters:
-      - name: id
-        in: path
-        description: ID of the user
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/userId'
       responses:
-        200:
+        '200':
           description: User retrieved successfully
           content:
             application/json:
@@ -272,94 +258,91 @@ paths:
                 $ref: '#/components/schemas/User'
     put:
       tags:
-      - users
-      - recruiter
-      - applicant
+        - users
+        - recruiter
+        - applicant
       summary: Edit existing user
       description: Edit existing user
       parameters:
-      - name: id
-        in: path
-        description: ID of the user
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/userId'
       responses:
-        200:
+        '200':
           description: Operation successful
     delete:
       tags:
-      - users
-      - recruiter
-      - applicant
+        - users
+        - recruiter
+        - applicant
       summary: Delete existing user
       description: Delete existing user
       parameters:
-      - name: id
-        in: path
-        description: ID of the user
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/userId'
       responses:
-        200:
+        '200':
           description: User deleted successfully
-  /users/{id}/connections:
+  '/users/{id}/connections':
     get:
       tags:
-      - users
-      - recruiter
-      - applicant
+        - users
+        - recruiter
+        - applicant
       summary: Get all connections of user
       description: Get all connections of user
       parameters:
-      - name: id
-        in: path
-        description: ID of the user
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/userId'
       responses:
-        200:
+        '200':
           description: Successfully retrived all connections
-  /users/{id}/connect:
+      
+  '/users/{id}/connect':
     post:
       tags:
-      - users
-      - recruiter
-      - applicant
+        - users
+        - recruiter
+        - applicant
       summary: Connect to other linkedin user
       description: Connect to other linkedin user
       parameters:
-      - name: id
-        in: path
-        description: ID of the user
-        required: true
-        style: SIMPLE
-        explode: false
-        schema:
-          type: integer
-          format: int64
+        - $ref: '#/components/parameters/userId'
       responses:
-        200:
+        '200':
           description: Connection successful
+  '/users/recruiter/{id}/dashboard':
+    get:
+      tags:
+        - users
+        - recruiter
+      summary: Get data to populate dashboard of recruiter
+      description: Get data to populate info graphics on the dashboard of recruiter
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecruiterDasboard'
+  '/users/applicant/{id}/dashboard':
+    get:
+      tags:
+        - users
+        - applicant
+      summary: Get data to populate dashboard of applicant
+      description: Get data to populate info graphics on the dashboard of applicant
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantDasboard'
+
 components:
   schemas:
     User:
-      required:
-      - email
-      - name
-      - password
-      - role
       type: object
       properties:
         id:
@@ -384,8 +367,13 @@ components:
             $ref: '#/components/schemas/User'
         profile:
           oneOf:
-          - $ref: '#/components/schemas/Recruiter'
-          - $ref: '#/components/schemas/Applicant'
+            - $ref: '#/components/schemas/Recruiter'
+            - $ref: '#/components/schemas/Applicant'
+      required:
+        - name
+        - email
+        - password
+        - role
     Recruiter:
       type: object
       properties:
@@ -492,7 +480,7 @@ components:
           format: int64
         applications:
           type: array
-          items:
+          items: 
             $ref: '#/components/schemas/Application'
         view_count:
           type: integer
@@ -510,9 +498,6 @@ components:
         easy_apply:
           type: boolean
     Name:
-      required:
-      - first
-      - last
       type: object
       properties:
         first:
@@ -521,12 +506,10 @@ components:
           type: string
         last:
           type: string
-    Address:
       required:
-      - city
-      - state
-      - street
-      - zipcode
+        - first
+        - last
+    Address:
       type: object
       properties:
         street:
@@ -538,6 +521,11 @@ components:
         zipcode:
           type: integer
           format: int64
+      required:
+        - street
+        - city
+        - state
+        - zipcode
     Application:
       type: object
       properties:
@@ -552,48 +540,79 @@ components:
           type: string
         cover_letter:
           type: string
-    body:
+    RecruiterDasboard:
+      type: object
+      properties:
+        hot_job:
+          type: array
+          items:
+            $ref: '#/components/schemas/Graph'
+        city_hot_job:
+          type: array
+          items:
+            $ref: '#/components/schemas/Graph'
+        cold_job:
+          type: array
+          items:
+            $ref: '#/components/schemas/Graph'
+        click_count_job:
+          type: array
+          items:
+            $ref: '#/components/schemas/Graph'
+        total_count:
+          type: integer
+          format: int64
+        incomplete_count:
+          type: integer
+          format: int64
+        saved_count:
+          type: integer
+          format: int64
       required:
-      - password
-      - username
+        - hot_job
+        - city_hot_job
+        - cold_job
+        - click_count_job
+    ApplicantDasboard:
       type: object
       properties:
-        username:
+        profile_view:
+          type: array
+          items:
+            $ref: '#/components/schemas/Graph'
+        profile_view_count:
+          type: integer
+          format: int64
+        connection_count:
+          type: integer
+          format: int64
+        applied_count:
+          type: integer
+          format: int64
+        saved_count:
+          type: integer
+          format: int64
+      required:
+        - hot_job
+        - city_hot_job
+        - cold_job
+        - click_count_job
+    Graph:
+      type: object
+      properties:
+        key:
           type: string
-          description: Email address
-        password:
-          type: string
-          description: Password
-    inline_response_200:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Job'
-    inline_response_200_1:
-      type: object
-      properties:
-        applicants:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        recruiters:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
+          format: date
+        value:
+          type: integer
+          format: int64
+
   parameters:
     jobId:
       name: id
       in: path
       description: ID of the job
       required: true
-      style: SIMPLE
-      explode: false
       schema:
         type: integer
         format: int64
@@ -602,9 +621,6 @@ components:
       in: path
       description: ID of the user
       required: true
-      style: SIMPLE
-      explode: false
       schema:
         type: integer
         format: int64
-  extensions: {}
