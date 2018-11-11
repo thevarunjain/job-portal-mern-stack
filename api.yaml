@@ -10,6 +10,8 @@ info:
 servers:
 - url: https://virtserver.swaggerhub.com/bargemb/linkedin/1.0
   description: SwaggerHub API Auto Mocking
+- url: http://localhost/linkedin/1.0
+  description: SwaggerHub API Auto Mocking
 tags:
 - name: recruiter
   description: Operations available to recruiters
@@ -133,7 +135,7 @@ paths:
           format: int64
       responses:
         200:
-          description: Job created successfully
+          description: Operation successful
   /jobs/{id}/save:
     post:
       tags:
@@ -228,6 +230,128 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  /users:
+    get:
+      tags:
+      - users
+      - recruiter
+      - applicant
+      summary: Get all users of the system
+      description: Get all users of the system
+      responses:
+        200:
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+  /users/{id}:
+    get:
+      tags:
+      - users
+      - recruiter
+      - applicant
+      summary: Get individual user
+      description: Individual user details
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+      - users
+      - recruiter
+      - applicant
+      summary: Edit existing user
+      description: Edit existing user
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Operation successful
+    delete:
+      tags:
+      - users
+      - recruiter
+      - applicant
+      summary: Delete existing user
+      description: Delete existing user
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: User deleted successfully
+  /users/{id}/connections:
+    get:
+      tags:
+      - users
+      - recruiter
+      - applicant
+      summary: Get all connections of user
+      description: Get all connections of user
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successfully retrived all connections
+  /users/{id}/connect:
+    post:
+      tags:
+      - users
+      - recruiter
+      - applicant
+      summary: Connect to other linkedin user
+      description: Connect to other linkedin user
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user
+        required: true
+        style: SIMPLE
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Connection successful
 components:
   schemas:
     User:
@@ -245,12 +369,101 @@ components:
           $ref: '#/components/schemas/Name'
         email:
           type: string
+          format: email
         password:
           type: string
+          format: password
         role:
+          type: string
+        mobile:
+          type: integer
+          format: int32
+        connections:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        profile:
+          oneOf:
+          - $ref: '#/components/schemas/Recruiter'
+          - $ref: '#/components/schemas/Applicant'
+    Recruiter:
+      type: object
+      properties:
+        company:
+          type: string
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+    Applicant:
+      type: object
+      properties:
+        experience:
+          type: array
+          items:
+            $ref: '#/components/schemas/Experience'
+        education:
+          type: array
+          items:
+            $ref: '#/components/schemas/Education'
+        skills:
+          type: array
+          items:
+            type: string
+        summary:
+          type: string
+        resume:
+          type: string
+        image:
+          type: string
+          format: binary
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        saved_jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+    Experience:
+      type: object
+      properties:
+        title:
           type: string
         company:
           type: string
+        location:
+          type: string
+        headline:
+          type: string
+        description:
+          type: string
+        date:
+          $ref: '#/components/schemas/Date'
+    Education:
+      type: object
+      properties:
+        school:
+          type: string
+        degree:
+          type: string
+        field:
+          type: string
+        grade:
+          type: string
+        description:
+          type: string
+        date:
+          $ref: '#/components/schemas/Date'
+    Date:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
     Job:
       type: object
       properties:
@@ -362,11 +575,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Job'
+    inline_response_200_1:
+      type: object
+      properties:
+        applicants:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        recruiters:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
   parameters:
     jobId:
       name: id
       in: path
       description: ID of the job
+      required: true
+      style: SIMPLE
+      explode: false
+      schema:
+        type: integer
+        format: int64
+    userId:
+      name: id
+      in: path
+      description: ID of the user
       required: true
       style: SIMPLE
       explode: false
