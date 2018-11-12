@@ -23,6 +23,8 @@ tags:
     description: Everything about jobs
   - name: search
     description: Everything about search
+  - name: message
+    description: Everything about message
 paths: 
   /signup:
     post:
@@ -339,9 +341,117 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicantDasboard'
+  /messages:
+    post:
+      tags:
+      - message
+      summary: Create a new thread
+      description: Create a new thread for new set of sender and reciever
+      responses:
+        200:
+          description: Thread Created Successfully 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        400:
+          description: Cannot create a thread
+  /messages/findByUser:
+    get:
+      tags:
+        - message
+      summary: Get all the messages for user
+      description: Get all the message for any user
+      parameters:
+        - name: findByUser
+          in: query
+          description: Inbox of the person logged in
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: All Conversations Retrieved Successfully 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Conversation'
+        400:
+          description: No message found
+  '/messages/{id}': 
+    get:
+      tags:
+      - message
+      summary: Get all the messages for particular thred
+      description: Get all the messages for thread
+      parameters:
+      - name: id
+        in: path
+        description: thread id to fetch all the message with a person
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Single conversation retrieved Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        400:
+          description: No message found
+    put:
+      tags:
+      - message
+      summary: Insert a message into a thred
+      description: Insert a message into a thread
+      parameters:
+      - name: id
+        in: path
+        description: thread id to post the message
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Message Posted Successfully 
+        400:
+          description: No message found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
 
 components:
   schemas:
+    Conversation :
+      required:
+      - message
+      - sender
+      - reciever
+      - id
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        sender:
+          type: string
+        reciever:
+          type: string
+        id:
+          type: integer
+          format: int64
+    Message :
+      type: object
+      properties:
+        sender:
+          type: string
+        body:
+          type: string  
     User:
       type: object
       properties:
