@@ -9,9 +9,7 @@ info:
 servers:
 # Added by API Auto Mocking Plugin
 - description: SwaggerHub API Auto Mocking
-  url: https://virtserver.swaggerhub.com/bargemb/linkedin/1.0
-- url: http://localhost/linkedin/1.0
-  description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/cmpe273-linkedin/linkedin/1.0
 tags: 
   - name: recruiter
     description: Operations available to recruiters
@@ -309,38 +307,23 @@ paths:
       responses:
         '200':
           description: Connection successful
-  '/users/recruiter/{id}/dashboard':
-    get:
-      tags:
-        - users
-        - recruiter
-      summary: Get data to populate dashboard of recruiter
-      description: Get data to populate info graphics on the dashboard of recruiter
-      parameters:
-        - $ref: '#/components/parameters/userId'
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RecruiterDasboard'
-  '/users/applicant/{id}/dashboard':
+  '/users/{id}/dashboard':
     get:
       tags:
         - users
         - applicant
-      summary: Get data to populate dashboard of applicant
-      description: Get data to populate info graphics on the dashboard of applicant
+        - recruiter
+      summary: Get data to populate dashboard of user
+      description: Get data to populate info graphics on the dashboard of user
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
         '200':
-          description: successful operation
+          description: User retrieved successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApplicantDasboard'
+                $ref: '#/components/schemas/Dashboard'
   /messages:
     post:
       tags:
@@ -650,7 +633,16 @@ components:
           type: string
         cover_letter:
           type: string
-    RecruiterDasboard:
+    Dashboard:
+      type: object
+      properties:
+        view:
+          oneOf:
+            - $ref: '#/components/schemas/RecruiterDashboard'
+            - $ref: '#/components/schemas/ApplicantDashboard'
+      required:
+        - view
+    RecruiterDashboard:
       type: object
       properties:
         hot_job:
@@ -683,7 +675,7 @@ components:
         - city_hot_job
         - cold_job
         - click_count_job
-    ApplicantDasboard:
+    ApplicantDashboard:
       type: object
       properties:
         profile_view:
