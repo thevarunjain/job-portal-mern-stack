@@ -1,6 +1,29 @@
 import React, { Component } from 'react'
 
 class JobSearchBar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state ={
+      searchJobName : "",
+      searchLocation : ""
+    }
+
+    this.onChangeSearchJob = this.onChangeSearchJob.bind(this)
+}
+
+  onChangeSearchJob(event){
+      this.setState({
+          searchJobName : event.target.value 
+      })
+  }
+
+  onChangeSearchLocation(event){
+      this.setState({
+          searchLocation : event.target.value 
+      })
+  }
+  
   render() {
     return (
       <div>

@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { IMAGE_PATHS} from '../../constants/routes';
+import { Link } from 'react-router-dom'
+
+
 class Header extends Component {
   render() {
     return (
@@ -38,12 +41,12 @@ class Header extends Component {
 									</a>
 								</li>
 							<li>
-									<a href="index.html" title="">
+									<Link to= "/jobs">
 										<div>
 											<i className="fa fa-briefcase header-icons"></i>
 										</div>
 										Jobs
-									</a>
+									</Link>
 							</li>
 							<li>
 									<a href="index.html" title="">

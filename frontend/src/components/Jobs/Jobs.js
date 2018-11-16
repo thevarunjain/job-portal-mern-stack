@@ -1,37 +1,17 @@
 import React, { Component } from 'react'
 import JobSearchBar from "./SearchBar";
+import Header from "../Common/Header"
+
 
 //import Navabar
 
 class Jobs extends Component {
-  constructor(props) {
-      super(props);
-
-      this.state ={
-        searchJobName : "",
-        searchLocation : ""
-      }
-
-      this.onChangeSearchJob = this.onChangeSearchJob.bind(this)
-  }
-
-    onChangeSearchJob(event){
-        this.setState({
-            searchJobName : event.target.value 
-        })
-    }
-
-    onChangeSearchLocation(event){
-        this.setState({
-            searchLocation : event.target.value 
-        })
-    }
-
+ 
     render() {
 
     return (
       <div>
-
+    <Header />
    <JobSearchBar />
 
     <div className="container-fluid">
