@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import JobSearchBar from "./SearchBar";
+
 //import Navabar
 
 class Jobs extends Component {
@@ -30,26 +32,18 @@ class Jobs extends Component {
     return (
       <div>
 
-    <div className="jobSearchBar">
-      <div>
-      <input type="text" placeholder="Search Jobs" value={this.state.searchJobName} onChange={this.onChangeSearchJob} required />      
-      </div>
-
-        <div>
-      <input type="text" placeholder="Search Location" value={this.state.searchJobName} onChange={this.onChangeLocation} required />
-      </div>
-    </div>
+   <JobSearchBar />
 
     <div className="container-fluid">
     <div  className="col-md-4">
         SavedJobs
     </div>
+
     <div  className="col-md-4">
         Applied Jobs
     </div>    
     </div>
 
-    
 
 
 

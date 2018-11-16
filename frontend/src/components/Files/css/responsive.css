@@ -1,0 +1,188 @@
+
+
+@media (max-width: 1200px) {
+	header nav {position: fixed;top: 0;left: 0;width: 200px;height: 100%;background-color: #e44d3a;padding: 25px 20px;opacity: 0;visibility: hidden;z-index: 0}
+	header nav.active {opacity: 1;visibility: visible;z-index: 9999;}
+	header nav ul li {float: left;width: 100%;text-align: left;padding: 0 0 0 0;margin-bottom: 20px;}
+	.menu-btn {display: block;}
+	header nav ul li span {display: inline-block;margin-right: 10px;}
+	.widget-about h3 {font-size: 16px;}
+	.widget-about span {font-size: 13px;}
+	.suggestion-usd {padding: 15px 5px;}
+	.cp-sec p {margin-top: 10px;float: none;}
+	.comment_box input {width: 281px;}
+	.job-details {width: 112px;}
+	.job-details h3 {line-height: 18px;}
+	.sd-title h3 {font-size: 15px;}
+	.cp-sec > img {text-align: center;float: none;}
+	.cp-sec {text-align: center;}
+	.flw-status li {margin-right: 10px;}
+	.flw-status li span {font-size: 16px;}
+	.social_links li a {font-size: 10px;}
+	.footy-sec ul {width: 100%;text-align: center;}
+	.fl-rgt {float: none;margin-top: 0;padding-bottom: 20px;width: auto;padding-right: 0;}
+	.footy-sec.mn p {margin-top: 0;padding-bottom: 20px;}
+	.footy-sec.mn ul {padding: 30px 0 25px 0;}
+	.hr-rate {margin-top: 10px;}
+	.filter-secs {margin-bottom: 40px;}
+	.tab-feed ul li {margin-bottom: 30px;}
+	.star-descp > a {float: left;width: 100%;margin-left: 0;margin-top: 10px;}
+	.tab-feed {margin-bottom: 30px;}
+	.footy-sec p {width: 100%;text-align: center;margin-top: 15px;}
+	.footy-sec p img {float: none;top: 2px;}
+	.footy-sec {text-align: center;}
+	.search-bar.st2 {display: none;}
+	.usr_quest {width: 85%;}
+	.full-pagi {display: block !important;}
+	.post_comment_sec {width: 85%;}
+	.acc-leftbar .nav-tabs > a i {width: 30px;}
+	.acc-leftbar .nav-tabs > a {font-size: 14px;}
+	.notification-box {left: 100%;top: 0;}
+	nav ul ul {left: 50%;top: 0;border: 1px solid #e4e4e4;padding-left: 20px;padding-right: 20px;}
+	.sgt-text span {font-size: 12px;}
+}
+
+
+@media (max-width: 991px) {
+	.sgt-text span {font-size: 14px;}
+	main {padding: 20px 0 60px 0;}
+	.user-specs span {font-size: 13px;}
+	.comment_box input {width: 275px;}
+	.job-details {width: auto;}
+	.hr-rate {margin-top: 15px;}
+	.suggestion-usd {padding: 15px 20px;}
+	.right-sidebar {margin-top: 50px;}
+	.companies-info {padding: 30px 0 60px 0;}
+	.pf-gallery ul li {width: auto;}
+	.social_links li a {font-size: 13px;}
+	.footy-sec.mn ul li {margin-bottom: 10px;}
+	.user-pro-img > a {left: 56%;}
+	.no-pd {padding: 0;}
+	.footy-sec ul li {margin-bottom: 10px;}
+	.cm-logo {padding-left: 0;}
+	.signin-pop::before {display: none;}
+	.cmp-info > img {display: none;}
+	.cm-logo {margin-bottom: 0px;}
+	.sign-control {text-align: left;}
+	.sign_in_sec {padding: 0 20px;}
+	.sign-control {padding-left: 20px;padding-right: 0;margin-bottom: 30px;}
+	.login-resources ul li {float: none;width: auto;display: inline-block;margin-right: 10px;}
+	.login-resources ul li a {padding: 13px 15px;}
+	.signin-popup {width: 100%;padding: 0 20px;}
+	.cmp-info {padding: 40px 20px 0 20px;}
+	.signup-tab {margin-top: 0;}
+	.full-pagi {margin-bottom: 20px;}
+	.widget-adver img {width: auto;}
+	.widget-adver {text-align: center;}
+	.widget-adver img {float: none;}
+	.next-prev {margin-bottom: 20px;}
+	.msgs-list {margin-bottom: 30px;}
+	.acc-leftbar .nav-tabs > a i {width: 40px;}
+	.acc-leftbar .nav-tabs > a {font-size: 16px;}
+	.acc-leftbar {margin-bottom: 30px;}
+	.profile-account-setting {margin-bottom: 50px;}
+	.profile-bx-info {margin-bottom: 25px;}
+	.profile-bx-details {margin-bottom: -25px;}
+}
+
+
+@media (max-width: 768px) {
+	.login_register {display: none;}
+	.forum-bar ul {float: right;}
+	.comment_box input {width: 84%;}
+	.comment_box {width: 88%;}
+	.no-pd {padding: 0;}
+	.sign-in-page {padding: 60px 0;}
+	.overview-box {width: 100%;}
+	.close-box {top: -23px;right: 2px;}
+	.forum-links ul li {margin-right: 20px;}
+	.forum-links ul li a {font-size: 13px;}
+	.forum-links-btn {display: block;}
+	.forum-links {position: fixed;top: 0;left: 0;width: 240px;background-color: #e44d3a;height: 100%;padding: 0 20px;opacity: 0;visibility: hidden;}
+	.forum-links ul li {float: left;width: 100%;padding: 0;margin-bottom: 20px;}
+	.forum-links ul li a {color: #fff;font-size: 16px;}
+	.forum-questions .usr_quest {width: 100%;padding: 0;}
+	.forum-questions .usr_img {margin-bottom: 15px;}
+	.page-link {padding: 10px;}
+	.pvr {padding: 10px;}
+	.forum-post-view .usr_quest {width: 100%;padding: 0;margin-top: 20px;}
+	.mf-field input {width: 100%;margin-bottom: 20px;}
+	.mf-field button {margin-left: 0;margin-bottom: 10px;}
+	.message-inner-dt > img {margin-bottom: 10px;}
+}
+
+
+@media (max-width: 576px) {
+	.signin-pop {margin-bottom: 40px;}
+	.login-resources ul li {margin-bottom: 7px;}
+	.logo {width: 100%;text-align: center;}
+	.logo img {float: none;}
+	.search-bar {width: 100%;}
+	.user-account {float: left;}
+	.cm_img {width: 100%;text-align: center;margin-bottom: 10px;}
+	.cm_img img {float: none;}
+	.comment_box {width: 100%;}
+	.comment_box input {width: 100%;margin-bottom: 10px;}
+	.comment_box form button {float: none;}
+	.post-comment {text-align: center;}
+	.comment_box form button {padding: 0 15px;}
+	.job-details {width: 80%;}
+	.cover-sec {height: 200px;}
+	.cover-sec img {height: 100%;object-fit: cover;}
+	.star-descp > ul {width: 100%;margin-top: 10px;}
+	.like-com li {margin-right: 5px;}
+	.bk-links {width: 100%;margin-top: 15px;}
+	main {padding: 20px 0 40px 0}
+	.bk-links {margin-bottom: 10px;}
+	.star-descp {margin-bottom: 25px;}
+	.like-com li {float: left;width: 100%;margin-bottom: 15px;}
+	.job-status-bar > a {float: left;width: 100%;margin-top: -5px;}
+	.lt-sec h4 {font-size: 14px;}
+	.cc-head ul {float: left;width: 100%;margin-top: 10px;}
+	.add-billing-method span {width: 85%;line-height: 18px;}
+	.add-billing-method h4 img {margin-top: 10px;}
+	.star-descp span {font-size: 14px;}
+	.footy-sec {margin-top: 30px;}
+	.post-popup {width: 100%;overflow: scroll;}
+	.price-br {float: left;width: 100% !important;}
+	.price-sec span {padding: 0;margin-bottom: 20px;}
+	.post-project > a {top: 21px;right: 20px;}
+	.forum-bar h2 {float: left;width: 100%;text-align: center;}
+	.forum-bar {margin-top: 0;width: 100%;}
+	.forum-bar ul {width: 100%;text-align: center;margin-top: 30px;padding-bottom: 20px;}
+	.forum-bar ul li {float: left;width: 100%;text-align: center;margin-bottom: 25px;}
+	.usr_quest > h3 {line-height: 22px;}
+	.quest-posted-time {position: static;float: left;width: 100%;margin-top: 20px;}
+	.react-links li {float: left;width: 100%;margin-bottom: 15px;}
+	.react-links li:last-child {margin-bottom: 0;}
+	.pagination {display: block;}
+	.pagination li {margin-bottom: 15px;}
+	.post_comment_sec {width: 100%;margin-top: 20px;}
+	.widget-adver img {width: 100%;}
+	.message-inner-dt > p {width: 80%;}
+	.mf-field button {width: auto;padding: 0 20px;}
+	.save-stngs ul li {float: left;width: 100%;margin-bottom: 15px;}
+	.save-stngs ul li:last-child {margin-bottom: 0;}
+	.notification-info {width: 100%;padding: 0;margin-top: 15px;}
+	.notification-info h3 {line-height: 18px;}
+	.conversation-box {width: 100%;right: 0;}
+	.user-account-settingss {right: auto;left: 0;}
+	.login-resources {text-align: left;}
+	.forum-bar ul li:last-child {margin-bottom: 0;}
+	.conversation-box {left: -20px;width: 280px;}
+}
+
+@media (max-width: 410px) {
+	.post-st ul li a {font-size: 12px;padding: 0 6px;}
+	.like-com li a {font-size: 12px;}
+	.job_descp h3 {font-size: 16px;}
+	.pf-gallery ul li {padding: 3px;}
+	.checky-sec > a {float: left;width: 100%;margin-top: 10px;padding-left: 20px;}
+	.checky-sec.st2 small {width: 85%;}
+	.quest-tags li {float: left;width: 100%;margin-bottom: 15px;}
+	.quest-tags li:last-child {margin-bottom: 0;}
+	.message-inner-dt > p {padding: 10px;}
+	.request-info {width: 100%;padding: 0;margin: 15px 0;}
+	.accept-feat {width: 100%;}
+	.requests-list {padding-bottom: 50px;}
+}

@@ -10,6 +10,8 @@ APP COMPONENT IMPORTS
 import HomePage from '../Home/Home';
 import RecruiterDashboard from '../recruiter/Dashboard/Dashboard';
 import Jobs from "../Jobs/Jobs";
+import JobSingle from "../Jobs/JobSingle";
+import SearchedJobs from "../Jobs/SearchedJobs";
 
 
 class Main extends Component {
@@ -21,6 +23,8 @@ class Main extends Component {
                 <Route path="/" component={HomePage} exact/>
                 <Route path="/recruiter" component={RecruiterDashboard} exact/>
                 <Route path="/jobs" component={Jobs} exact />
+                <Route path="/jobsingle" component={JobSingle} exact />
+                <Route path="/searchedjobs" component={SearchedJobs} exact />
             </div>
         </BrowserRouter>
     );
