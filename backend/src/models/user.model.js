@@ -6,7 +6,7 @@ const APIError = require('../utils/APIError')
 const Schema = mongoose.Schema
 
 const roles = [
-  'recuiter', 'applicant'
+  'recruiter', 'applicant'
 ]
 
 const userSchema = new Schema({

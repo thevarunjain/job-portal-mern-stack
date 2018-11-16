@@ -3,43 +3,36 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-export const experienceSchema = new Schema({
+const experienceSchema = new Schema({
   title: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   company: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   location: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   headline: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   description: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   start_date: {
     type: Number,
     maxlength: 50,
-    required: true,
-    index: true
+    required: true
   },
   end_date: {
     type: Number,
     maxlength: 50,
-    required: true,
-    index: true
+    required: true
   }
 }, {
   timestamps: true
