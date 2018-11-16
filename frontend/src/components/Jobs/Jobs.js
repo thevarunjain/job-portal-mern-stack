@@ -1,37 +1,17 @@
 import React, { Component } from 'react'
 import JobSearchBar from "./SearchBar";
+import Header from "../Common/Header"
+
 
 //import Navabar
 
 class Jobs extends Component {
-  constructor(props) {
-      super(props);
-
-      this.state ={
-        searchJobName : "",
-        searchLocation : ""
-      }
-
-      this.onChangeSearchJob = this.onChangeSearchJob.bind(this)
-  }
-
-    onChangeSearchJob(event){
-        this.setState({
-            searchJobName : event.target.value 
-        })
-    }
-
-    onChangeSearchLocation(event){
-        this.setState({
-            searchLocation : event.target.value 
-        })
-    }
-
+ 
     render() {
 
     return (
       <div>
-
+    <Header />
    <JobSearchBar />
 
     <div className="container-fluid">
@@ -52,4 +32,31 @@ class Jobs extends Component {
   }
 }
 
-export default Jobs;
+
+function mapStateToProps(state) {
+    console.log("in map state details view",state);
+    return { property_detail: state.fetch_details_view.property_detail,
+       
+        
+      
+    
+    
+    
+    };
+  }
+  
+  const mapDispachToProps = dispatch => {
+    return {
+        fetch_detailsview: (id) => dispatch(fetch_detailsview(id)),
+     
+
+    };
+  };
+  
+  export default connect(
+    mapStateToProps,
+    mapDispachToProps
+  )(Jobs);
+  
+
+
