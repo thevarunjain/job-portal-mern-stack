@@ -7,75 +7,44 @@ const name = require('./name.model')
 const recruiterSchema = new Schema({
   id: {
     type: Schema.Types.ObjectId,
-    ref: 'users'
+    ref: 'users',
+    required: true
   },
   name: {
-    type: [name.nameSchema],
+    type: name.schema,
     required: true
   },
   address: {
     type: String,
-    maxlength: 50,
-    required: true,
-    index: true
+    maxlength: 100
   },
-  headline: {
+  city: {
     type: String,
-    maxlength: 50,
-    required: true
+    maxlength: 100
   },
-  description: {
+  state: {
+    type: Number,
+    maxlength: 100
+  },
+  zipcode: {
+    type: Number,
+    maxlength: 100
+  },
+  phone_number: {
+    type: Number,
+    maxlength: 100
+  },
+  company: {
     type: String,
-    required: true
+    maxlength: 100
   },
-  accomodate: {
-    type: Number,
-    maxlength: 50,
-    required: true
-  },
-  bathroom: {
-    type: Number,
-    maxlength: 50,
-    required: true
-  },
-  amenities: {
+  profile_image: {
     type: String,
-    maxlength: 50,
-    required: true
+    maxlength: 100
   },
-  area: {
-    type: Number,
-    maxlength: 50,
-    required: true
-  },
-  startDate: {
-    type: Number,
-    maxlength: 50,
-    required: true
-  },
-  endDate: {
-    type: Number,
-    maxlength: 50,
-    required: true
-  },
-  currency: {
+  banner_image: {
     type: String,
-    maxlength: 50,
-    required: true
-  },
-  minimumStayingNight: {
-    type: Number,
-    maxlength: 50,
-    required: true
-  },
-  nightlyBaseRate: {
-    type: Number,
-    maxlength: 50,
-    required: true
-  },
-  imageList: {
-    type: String,
-    required: true
+    maxlength: 100
   }
 }, {
   timestamps: true
@@ -84,7 +53,7 @@ const recruiterSchema = new Schema({
 recruiterSchema.method({
   transform () {
     const transformed = {}
-    const fields = ['ownerId', 'address', 'headline', 'description', 'type', 'bedroom', 'accomodate', 'bathroom', 'amenities', 'area', 'startDate', 'endDate', 'currency', 'minimumStayingSight', 'nightlyBaseRate', 'imageList']
+    const fields = ['id', 'name', 'address', 'city', 'state', 'zipcode', 'phone_number', 'company', 'profile_image', 'banner_image']
     fields.forEach((field) => {
       transformed[field] = this[field]
     })
