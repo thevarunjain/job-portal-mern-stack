@@ -22,7 +22,7 @@ function get_job_detail(id){
   return function(dispatch) {
   
   
-    axios.get(rootURL+"/jobs/:"+id,).then(res=>{
+    axios.get("/jobs/:"+id,).then(res=>{
         console.log("Get t Action",res);
         
     dispatch(
