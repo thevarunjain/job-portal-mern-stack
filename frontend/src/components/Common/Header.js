@@ -187,7 +187,7 @@ class Header extends Component {
 					<div className="user-account">
 						<div className="user-info">
 							<img src="http://via.placeholder.com/30x30" alt="" />
-							<a href="#" title="">John</a>
+							<Link to="/profile">John</Link>
 							<i className="la la-sort-down"></i>
 						</div>
 						<div className="user-account-settingss">

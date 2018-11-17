@@ -12,6 +12,7 @@ import RecruiterDashboard from '../recruiter/Dashboard/Dashboard';
 import Jobs from "../Jobs/Jobs";
 import JobSingle from "../Jobs/JobSingle";
 import SearchedJobs from "../Jobs/SearchedJobs";
+import Profile from "../profile/profile";
 
 
 class Main extends Component {
@@ -25,6 +26,8 @@ class Main extends Component {
                 <Route path="/jobs" component={Jobs} exact />
                 <Route path="/jobsingle" component={JobSingle} exact />
                 <Route path="/searchedjobs" component={SearchedJobs} exact />
+                <Route path="/profile" component={Profile} exact />
+
             </div>
         </BrowserRouter>
     );

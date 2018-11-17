@@ -1,0 +1,93 @@
+#cover-image{
+    padding-top:0px;
+    width: 100%;
+    height: 100%;
+    
+}
+
+#target {
+    width: 130px;
+    height: 120px;
+    border-radius: 50%;
+    
+    background-size: 50% 100%;
+    object-fit: cover;
+    margin-top: -10%;
+    margin-left:20px;
+    object-position: center right;
+  }
+  #target1 {
+    width: 150px;
+    height: 130px;
+    border-radius: 50%;
+    
+    background-size: 50% 100%;
+    object-fit: cover;
+    margin-top: -8%;
+    margin-left:20px;
+    object-position: center right;
+  }
+#fname{
+    font-size: 24px;
+    padding-right:2%;
+    font-family:'Lato','Roboto','Arial','Helvetica Neue',Helvetica,sans-serif;
+    padding-left: 0px;
+  }
+
+  #lname{
+    font-size: 24px;
+    
+    font-family:'Lato','Roboto','Arial','Helvetica Neue',Helvetica,sans-serif;
+    padding-left: 0px;
+  }
+
+  #headline{
+    font-size: 20px;
+    padding-top: 2%;
+    font-family:'Lato','Roboto','Arial','Helvetica Neue',Helvetica,sans-serif;
+    padding-left: 0px;
+  }
+  #location{
+    font-size: 16px;
+    font-family:'Lato','Roboto','Arial','Helvetica Neue',Helvetica,sans-serif;
+    padding-left: 0px;
+    color: rgba(0,0,0,.6);
+    padding-bottom: 2%;
+  }
+
+  #profile-section{
+      background-color: #0073b1;
+      text-align: left;
+      font-weight: bold;
+      width:60%;
+      color:white;
+      font-family:'Lato','Roboto','Arial','Helvetica Neue',Helvetica,sans-serif;
+  }
+
+  #exampleModal{
+    width:80%;
+    padding-left: 30%;
+    padding-top:3%;
+  }
+
+  #educationmodal{
+    width:80%;
+    padding-left: 30%;
+    padding-top:3%;
+  }
+
+  #editProfileModal{
+    width: auto;
+    padding-top:3%;
+  }
+  #work-exp-form{
+    padding-bottom: 1%;
+  }
+
+  .profileModal{
+    max-width: 80%;
+  }
+
+  .Names input{
+    float:left;
+  }
