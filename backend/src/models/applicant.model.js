@@ -9,7 +9,7 @@ const education = require('./education.model')
 const applicantSchema = new Schema({
   id: {
     type: Schema.Types.ObjectId,
-    ref: 'users',
+    ref: 'User',
     required: true
   },
   name: {
@@ -17,48 +17,37 @@ const applicantSchema = new Schema({
     required: true
   },
   address: {
-    type: String,
-    maxlength: 100
+    type: String
   },
   city: {
-    type: String,
-    maxlength: 100
+    type: String
   },
   state: {
-    type: Number,
-    maxlength: 100
+    type: Number
   },
   zipcode: {
-    type: Number,
-    maxlength: 100
+    type: Number
   },
   experience: {
-    type: experience.schema,
-    maxlength: 100
+    type: experience.schema
   },
   education: {
-    type: education.schema,
-    maxlength: 100
+    type: education.schema
   },
   skills: {
-    type: String,
-    maxlength: 100
+    type: String
   },
   summary: {
-    type: String,
-    maxlength: 5000
+    type: String
   },
   resume: {
-    type: String,
-    maxlength: 100
+    type: String
   },
   profile_image: {
-    type: String,
-    maxlength: 100
+    type: String
   },
   banner_image: {
-    type: String,
-    maxlength: 100
+    type: String
   }
 }, {
   timestamps: true
