@@ -75,12 +75,52 @@ padding : 10px
 }
 
 .left-job-detail{
-    border-right: 2px;
-    border-style: solid;
-    margin-left: 10%;
+    
     height: auto;
 }
 
 .job-view{
-    
+    padding-right: 0px;
+    border-right: 0px;
+    background: white;
+    height: 650px;
+    min-height: 650px;
+    max-height: 650px;
+    overflow-y: scroll;
 }
+
+
+
+/****************JOB CARD CSS*****************/
+
+.job-card-image
+{
+    width : 60px;
+    max-width: 60px;
+    min-width: 60px;
+    height: 60px;
+    min-height: 60px;
+    max-height: 60px;
+    border : 1px solid grey;
+}
+
+
+.left-job-detail 
+{
+    /* margin-left: 10%; */
+    /* height: auto; */
+    position: relative;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+
+.left-job-detail-image 
+{
+    position: relative;
+    height: 100%;
+    padding: 0px;
+    text-align: center;
+}
+/********************************************/
