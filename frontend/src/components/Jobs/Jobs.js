@@ -11,27 +11,41 @@ class Jobs extends Component {
     render() {
 
     return (
-      <div>
-    <Header />
-    <div className="jobSearchBar">
-    <div className="container">
-    <JobSearchBar />        
-    </div>
-    </div>
+    <div>
+        <Header />
+            <div className="jobSearchBar">
+                <div className="container">
+                <JobSearchBar />        
+                </div>
+            </div>
 
-        <section class="companies-info">
+            <section className="appliedjobs container col-md-8">
+            <div className="row">
 
-			<div class="container">
 
-				<div class="company-title">
+                <div className="col-md-3">
+                    <span className="bluetext"> 21 </span>
+                    <span className ="lightgreytext"> Applied Jobs </span>
+                </div>
+
+                <div className="col-md-3">
+                    <span className="bluetext"> 10 </span>
+                    <span className ="lightgreytext"> Saved Jobs </span>               
+                </div> 
+        </div>
+        </section>
+
+        <section class="companies-info companies-info-background col-md-8" >
+        
+        <div className="smallheading">
 					<h3>Jobs you may be interested in</h3>
-				</div>
-
-
+		</div>
+		
+        	<div class="container">
 				<div class="companies-list">
 					<div class="row">
 						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="company_profile_info">
+							<div class="company_profile_info greybackground">
 								<div class="company-up-info">
 									<img src="http://via.placeholder.com/90x90" alt="" />
 									<h3>Facebook Inc.</h3>
@@ -43,15 +57,18 @@ class Jobs extends Component {
 								</div>
 								<a href="#" title="" class="view-more-pro">View Profile</a>
 							</div>
-                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+							<div class="company_profile_info greybackground">
+								<div class="company-up-info">
+									<img src="http://via.placeholder.com/90x90" alt="" />
+									<h3>Facebook Inc.</h3>
+									<h4>Establish Feb, 2004</h4>
+								</div>
+							</div>
+                        </div>
 				   </div>
-				{/* <div class="process-comm">
-					<div class="spinner">
-						<div class="bounce1"></div>
-						<div class="bounce2"></div>
-						<div class="bounce3"></div>
-					</div>
-				</div> */}
 			</div>
 			</div>
 		</section>

@@ -10,6 +10,7 @@ class JobSearchBar extends Component {
     }
 
     this.onChangeSearchJob = this.onChangeSearchJob.bind(this)
+    this.onChangeLocation = this.onChangeLocation.bind(this)
 }
 
   onChangeSearchJob(event){
@@ -18,7 +19,7 @@ class JobSearchBar extends Component {
       })
   }
 
-  onChangeSearchLocation(event){
+  onChangeLocation(event){
       this.setState({
           searchLocation : event.target.value 
       })
@@ -30,11 +31,11 @@ class JobSearchBar extends Component {
       <form>
       <div className="row">
       <div className="col-sm-3">
-      <input type="text" placeholder="Search Jobs" value={this.state.searchJobName} onChange={this.onChangeSearchJob} required />              
+            <input type="text" placeholder="Search Jobs" className = "inputtext" value={this.state.searchJobName} onChange={this.onChangeSearchJob} required />              
       </div>
 
-      <div className="col-sm-3">
-      <input  type="text" placeholder="Search Location" value={this.state.searchJobName} onChange={this.onChangeLocation} required />
+      <div className="col-sm-3 inputtext">
+      <input  type="text" placeholder="Search Location" className = "inputtext" value={this.state.searchLocation} onChange={this.onChangeLocation} required />
       </div>
       <div className="col-sm-3 searchButton">    
       <button type="submit">Search</button>
