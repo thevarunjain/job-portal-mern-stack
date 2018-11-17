@@ -1,11 +1,14 @@
-'use strict';
+'use strict'
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const address = require('./address.model')
+// const recruiter = require('./recruiter.model')
 
 const jobSchema = new Schema({
   recruiter: {
-    type: recruiter.schema,
+    type: Schema.Types.ObjectId,
+    ref: 'Recruiter',
     required: true
   },
   title: {
@@ -24,8 +27,8 @@ const jobSchema = new Schema({
     type: String,
     required: true
   },
-  location: {
-    type: String,
+  address: {
+    type: address.schema,
     required: true
   },
   function: {
@@ -42,25 +45,26 @@ const jobSchema = new Schema({
   },
   easy_apply: {
     type: Boolean,
-    required: true
-  },
+    default: false
+  }
 }, {
   timestamps: true
-});
+})
 
 jobSchema.method({
   transform () {
-    const transformed = {};
+    const transformed = {}
     const fields = ['title', 'description', 'industry', 'type', 'location', 'function', 'company_logo', 'skills',
-      'easy_apply'];
+      'easy_apply']
     fields.forEach((field) => {
       transformed[field] = this[field]
-    });
+    })
     return transformed
   }
-});
+})
 
-module.exports = {
-  'Job': mongoose.model('Job', jobSchema),
-  'jobSchema': jobSchema
-};
+// module.exports = {
+//   'Job': mongoose.model('Job', jobSchema),
+//   'jobSchema': jobSchema
+// }
+module.exports = mongoose.model('Job', jobSchema)

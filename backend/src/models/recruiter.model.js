@@ -3,11 +3,12 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const name = require('./name.model')
+const address = require('./address.model')
 
 const recruiterSchema = new Schema({
   id: {
     type: Schema.Types.ObjectId,
-    ref: 'users',
+    ref: 'User',
     required: true
   },
   name: {
@@ -15,36 +16,19 @@ const recruiterSchema = new Schema({
     required: true
   },
   address: {
-    type: String,
-    maxlength: 100
-  },
-  city: {
-    type: String,
-    maxlength: 100
-  },
-  state: {
-    type: Number,
-    maxlength: 100
-  },
-  zipcode: {
-    type: Number,
-    maxlength: 100
+    type: address.schema
   },
   phone_number: {
-    type: Number,
-    maxlength: 100
+    type: Number
   },
   company: {
-    type: String,
-    maxlength: 100
+    type: String
   },
   profile_image: {
-    type: String,
-    maxlength: 100
+    type: String
   },
   banner_image: {
-    type: String,
-    maxlength: 100
+    type: String
   }
 }, {
   timestamps: true

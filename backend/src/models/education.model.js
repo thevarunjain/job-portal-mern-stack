@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const date = require('./date.model')
 
 const educationSchema = new Schema({
   school: {
@@ -24,14 +25,8 @@ const educationSchema = new Schema({
     type: String,
     required: true
   },
-  start_date: {
-    type: Number,
-    maxlength: 50,
-    required: true
-  },
-  end_date: {
-    type: Number,
-    maxlength: 50,
+  date: {
+    type: date.schema,
     required: true
   }
 })

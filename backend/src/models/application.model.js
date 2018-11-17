@@ -1,8 +1,9 @@
-'use strict';
+'use strict'
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const name = require('./name.model');
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const name = require('./name.model')
+const address = require('./address.model')
 
 const applicationSchema = new Schema({
   name: {
@@ -10,7 +11,7 @@ const applicationSchema = new Schema({
     required: true
   },
   address: {
-    type: String,
+    type: address.schema,
     required: true
   },
   resume: {
@@ -18,41 +19,41 @@ const applicationSchema = new Schema({
     required: true
   },
   cover_letter: {
-    type: String,
-    required: true
+    type: String
   },
   source: {
     type: String,
     required: true
   },
   diversity: {
-    type: Boolean,
+    type: String,
     required: true
   },
   sponsorship: {
-    type: Boolean,
+    type: String,
     required: true
   },
   disability: {
-    type: Boolean,
+    type: String,
     required: true
   }
 }, {
   timestamps: true
-});
+})
 
 applicationSchema.method({
   transform () {
-    const transformed = {};
-    const fields = ['name', 'address', 'resume', 'cover_letter', 'source', 'diversity', 'sponsorship', 'disability'];
+    const transformed = {}
+    const fields = ['name', 'address', 'resume', 'cover_letter', 'source', 'diversity', 'sponsorship', 'disability']
     fields.forEach((field) => {
       transformed[field] = this[field]
-    });
+    })
     return transformed
   }
-});
+})
 
-module.exports = {
-  'Application': mongoose.model('Application', applicationSchema),
-  'applicationSchema': applicationSchema
-};
+// module.exports = {
+//   'Application': mongoose.model('Application', applicationSchema),
+//   'applicationSchema': applicationSchema
+// }
+module.exports = mongoose.model('Application', applicationSchema)
