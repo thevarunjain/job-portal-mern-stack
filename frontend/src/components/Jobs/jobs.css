@@ -1,0 +1,86 @@
+.jobstats{
+    float: left;
+    width: 97.5%;
+    margin-bottom: 20px;
+    padding: 0 15px;
+    background-color: white;
+    margin-left: 15px;
+}
+
+.jobSearchBar{
+    background-color: #5c6f7c;
+    padding : 5%;
+}
+
+#padding{
+padding : 10px
+}
+
+.companies-info-background{
+    background-color: white;
+    margin-left: 15%;
+    padding-top: 0px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+}
+.searchButton{
+
+}
+
+.appliedjobs{
+    padding: 1.5%;
+    background-color: white;
+    margin-left: 15%;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+    transition: box-shadow 83ms;
+    background-color: #fff;
+    background-clip: padding-box;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.bluetext{
+    text-decoration: none;
+    font-weight: 600;
+    border: 0;
+    color: #0073b1;
+}
+
+.lightgreytext{
+    line-height: 1.5;
+    font-weight: 400;
+    color: rgba(0,0,0,.6);
+}
+.smallheading{
+    color: rgba(0,0,0,.9);
+    font-size : 20px;
+    line-height: 1.4;
+    padding: 24px;   
+}
+
+.greybackground{
+    border-top: 1px solid #e4e4e4;
+}
+
+.inputtext{
+    color: black !important;
+    font-size : 13px;
+}
+
+
+#heading{
+    padding-bottom: 2%;
+}
+#jobcard{
+    height:"30%";
+}
+
+.left-job-detail{
+    border-right: 2px;
+    border-style: solid;
+    margin-left: 10%;
+    height: auto;
+}
+
+.job-view{
+    
+}

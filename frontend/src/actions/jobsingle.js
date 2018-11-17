@@ -1,20 +1,20 @@
 import axios from 'axios';
-export const GET_JOBS = "get_jobs";
-export const  GET_JOBS_ERROR = "get_jobs_error";
+export const JOB_DETAIL = "job_detail";
+export const  JOB_DETAIL_ERROR = "job_detail_error";
 function getSuccess(response) {
     return {
-      type: GET_JOBS,
+      type: JOB_DETAIL,
       payload: response
     }
   }
   function getError(response) {
     return {
-      type: GET_JOBS_ERROR,
+      type: JOB_DETAIL_ERROR,
       payload: response
     }
   }
 
-function get_jobs(data){
+function get_job_detail(id){
   
 
     //middleware call
@@ -22,8 +22,7 @@ function get_jobs(data){
   return function(dispatch) {
   
   
-    axios.get(rootURL+"/jobs",{params:{skills:data
-    }}).then(res=>{
+    axios.get(rootURL+"/jobs/:"+id,).then(res=>{
         console.log("Get t Action",res);
         
     dispatch(
@@ -35,4 +34,4 @@ function get_jobs(data){
 
 
 }
-export default get_jobs;
+export default get_job_detail;
