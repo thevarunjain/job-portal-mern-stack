@@ -1,0 +1,21 @@
+.jobstats{
+    float: left;
+    width: 97.5%;
+    margin-bottom: 20px;
+    padding: 0 15px;
+    background-color: white;
+    margin-left: 15px;
+}
+
+.jobSearchBar{
+    background-color: #5c6f7c;
+    padding : 5%;
+}
+
+#padding{
+padding : 10px
+}
+
+.searchButton{
+    
+}

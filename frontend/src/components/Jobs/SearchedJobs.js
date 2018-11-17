@@ -9,6 +9,9 @@ class SearchedJobs extends Component {
       <div>
         <Header />
         <JobSearchBar />
+
+
+        
       </div>
     )
   }
