@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 
 class JobSearchBar extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class JobSearchBar extends Component {
       <input  type="text" placeholder="Search Location" value={this.state.searchJobName} onChange={this.onChangeLocation} required />
       </div>
       <div className="col-sm-3 searchButton">    
-      <button type="submit">Search</button>
+      <Link to="/searchedjobs"><button type="submit">Search</button></Link>
       </div>
       </div>
       

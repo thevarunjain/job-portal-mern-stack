@@ -19,3 +19,21 @@ padding : 10px
 .searchButton{
     
 }
+
+#heading{
+    padding-bottom: 2%;
+}
+#jobcard{
+    height:"30%";
+}
+
+.left-job-detail{
+    border-right: 2px;
+    border-style: solid;
+    margin-left: 10%;
+    height: auto;
+}
+
+.job-view{
+    
+}
