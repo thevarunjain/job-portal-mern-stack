@@ -3,19 +3,15 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-export const nameSchema = new Schema({
+const nameSchema = new Schema({
   first: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   last: {
     type: String,
-    required: true,
-    index: true
+    required: true
   }
-}, {
-  timestamps: true
 })
 
 module.exports = mongoose.model('Name', nameSchema)

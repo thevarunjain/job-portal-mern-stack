@@ -2,47 +2,33 @@
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const date = require('./date.model')
 
-export const educationSchema = new Schema({
+const educationSchema = new Schema({
   school: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   degree: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   field: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   grade: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   description: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
-  start_date: {
-    type: Number,
-    maxlength: 50,
-    required: true,
-    index: true
-  },
-  end_date: {
-    type: Number,
-    maxlength: 50,
-    required: true,
-    index: true
+  date: {
+    type: date.schema,
+    required: true
   }
-}, {
-  timestamps: true
 })
 
 module.exports = mongoose.model('Education', educationSchema)
