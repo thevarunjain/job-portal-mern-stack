@@ -220,4 +220,105 @@
   {
     cursor: pointer;
   }
+
+  .detail-boxes
+  {
+    position: relative;
+  }
+
+  .suggestions-list:hover .detail-boxes i
+  {
+    visibility: visible;
+  }
+
+  .detail-boxes i 
+  {
+    float: right;
+    text-align: right;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    font-size: 20px;
+    transform: translate(-50%,-50%);
+    color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #0073b1;
+    visibility: hidden;
+  }
+
+  .detail-boxes i::after {
+    position: absolute;
+    content: '';
+    right: 0px;
+    height: 200%;
+    background: #0374b3;
+    width: 1px;
+    right: -10px;
+    z-index: 11111;
+    top: -50%;
+
+}
+
+.exts
+{
+  width : 220px;
+}
+
+.exts button 
+{
+    display: block;
+    cursor: pointer;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background: 0 0;
+    border: 0;
+    padding: 10px;
+    padding-left: 15px;
+    font-family: linkedin-regular-font;
+}
+
+.exts button:hover
+{
+    font-weight: 600;
+}
+
+
+#personalModal .modal-dialog,#skillsModal .modal-dialog,#expModal .modal-dialog,#educationModal .modal-dialog
+{
+  width: 50% !important;
+  max-width: none !important;
+}
+
+#personalModal label,#skillsModal label,#expModal label,#educationModal label
+{
+  padding-bottom: 5px;
+  font-size: 16px;
+  font-family: linkedin-regular-font;
+}
+
+.autocomplete-dropdown-container
+{
+  background: white;
+  box-shadow: 0px 3px 10px 0px #d9d7d7;
+}
+
+
+.suggestion-item
+{
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+  
+   /* height: 30px;
+ margin-top: 5px !important;
+  margin-bottom: 5px !important; */
+}
+
+.pac-container, .pac-item {
+  width: inherit !important;
+}
   /*****************************************/
