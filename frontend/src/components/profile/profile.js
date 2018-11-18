@@ -1,139 +1,277 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
-import Cover from '../Files/Images/LinkedInCover.svg';
-import Pencil from '../Files/Images/Pencil.svg';
+import React, { Component } from 'react';
+import Header from '../Common/Header';
+import { IMAGE_PATHS } from '../../constants/routes';
+import bannerlogo from '../Files/Images/profile-banner.svg';
+import profileplaceholder from '../Files/Images/profile-placeholder.png'
+import './profile.css';
+import $ from 'jquery'; 
 
-import "./profile.css";
 
-class Profile extends Component {
-    constructor(props) {
+class profile extends Component {
+
+    constructor(props)
+    {
         super(props);
-
         this.state = {
-            firstname: "Shubham",
-            lastname: "Sand",
-            headline: "Recent College Graduate Seeking Entry Level Programming Position",
-            location: "San Francisco Bay Area"
+            'banner' : bannerlogo,
+            'userimage' : profileplaceholder
         }
 
-
+        this.openModal.bind = this.openModal.bind(this);
     }
 
 
+    openModal(d)
+    {  
+        console.log($("body").text());
+        if(d=='EXPERIENCE')
+        {   
+            $("#educationModal").modal('hide');
+            $("#skillsModal").modal('hide');
+            $("#expModal").modal('show');
+            
+        }
+        else if(d=='SKILLS')
+        {
+            $("#educationModal").modal('hide');
+            $("#expModal").modal('hide');
+            $("#skillsModal").modal('show');
+        }
+        else if(d=='EDUCATION')
+        {
+            $("#skillsModal").modal('hide');
+            $("#expModal").modal('hide');
+            $("#educationModal").modal('show');
+        }
+
+    }
+
     render() {
+        
         return (
-            <div className="profile">
-                <label>ddd</label>
+            <div>
+                <Header />
+                <div className="container">
+                    <div className="row block-row">
+                        <div className="wrapper col-lg-9">
+                            
+
+
+                            <main>
+                                <div className="main-section">
+                                    <div>
+                                        <div className="main-section-data">
+                                            <div className="row ">
+                                                <div className="col-lg-12 no-padding">
+                                                    <div className="main-left-sidebar">
+                                                        <div className="user_profile custom-wrapper">
+                                                            <section className="cover-sec">
+                                                                <img src={this.state.banner} alt="LinkedIn" />
+                                                            </section>
+                                                            <div className="user-pro-img">
+                                                                <img src={this.state.userimage} alt="LinkedIn" className="user-image profile-user-image" />
+                                                            </div>{ /* <!--user-pro-img end--> */}
+                                                            <div className="user_pro_status">
+                                                                <h3 className="profile-user-name">John Doe</h3>
+                                                                <h5 className="profile-user-subname">M.S Software Engineering | Actively seeking Summer Internships - 2019</h5>
+                                                                <p className="location-text">
+                                                                    San Francisco Bay Area
+                                                                </p>
+
+                                                                <div className="dropdown">
+                                                                    <button id="profile-section" type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Profile Section</button>
+                                                                    <div className="dropdown-menu" aria-labelledby="profile-section">
+                                                                        <button className="dropdown-item" data-toggle="modal" data-target="#expModal">Work Experience</button>
+                                                                        <button className="dropdown-item" data-toggle="modal" data-target="#educationModal">Education</button>
+                                                                        <button className="dropdown-item" data-toggle="modal" data-target="#skillsModal">Skills</button>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr/>
+
+                                                                <div className="user-description">
+                                                                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+
+
+                                                                </div>
+
+                                                            </div> 
+                                                        
+                                                        </div> 
+
+
+
+                                                        <div className=" custom-wrapper suggestions full-width">
+                                                            <div className="sd-title">
+                                                            <h5 className="profile-user-heading">
+                                                                Experience                                     
+                                                                
+                                                              {/*  <i className="fa fa-pen custom-edit-buttons" aria-hidden="true"></i>*/}
+                                                                <i className="fa fa-plus custom-edit-buttons" aria-hidden="true" onClick={()=>this.openModal('EXPERIENCE')}></i>
+
+                                                            </h5>
+                                                                <i className="la la-ellipsis-v"></i>
+                                                            </div> 
+                                                            <div className="suggestions-list">
+                                                                <div className="suggestion-usd">
+                                                                    <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                    <div className="sgt-text">
+                                                                        <h4>Jessica William</h4>
+                                                                        <span>Graphic Designer</span>
+                                                                    </div>
+                                                                    <span><i className="la la-plus"></i></span>
+                                                                </div>
+                                                                
+                                                            </div> 
+                                                        </div> 
+
+
+                                                        <div className=" custom-wrapper suggestions full-width">
+                                                            <div className="sd-title">
+                                                            <h5 className="profile-user-heading">
+                                                                Education                                     
+                                                                
+                                                              {/*  <i className="fa fa-pen custom-edit-buttons" aria-hidden="true"></i>*/}
+                                                                <i className="fa fa-plus custom-edit-buttons" aria-hidden="true" onClick={()=>this.openModal('EDUCATION')}></i>
+
+                                                            </h5>
+                                                                <i className="la la-ellipsis-v"></i>
+                                                            </div> 
+                                                            <div className="suggestions-list">
+                                                                <div className="suggestion-usd">
+                                                                    <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                    <div className="sgt-text">
+                                                                        <h4>Jessica William</h4>
+                                                                        <span>Graphic Designer</span>
+                                                                    </div>
+                                                                    <span><i className="la la-plus"></i></span>
+                                                                </div>
+                                                                
+                                                            </div> 
+                                                        </div> 
+
+
+                                                        <div className=" custom-wrapper suggestions full-width">
+                                                            <div className="sd-title">
+                                                            <h5 className="profile-user-heading">
+                                                                Skills                                     
+                                                                
+                                                              {/*  <i className="fa fa-pen custom-edit-buttons" aria-hidden="true"></i>*/}
+                                                                <i className="fa fa-plus custom-edit-buttons" aria-hidden="true" onClick={()=>this.openModal('SKILLS')}></i>
+
+                                                            </h5>
+                                                                <i className="la la-ellipsis-v"></i>
+                                                            </div> 
+                                                            <div className="suggestions-list">
+                                                                <div className="suggestion-usd">
+                                                                    <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                    <div className="sgt-text">
+                                                                        <h4>Jessica William</h4>
+                                                                        <span>Graphic Designer</span>
+                                                                    </div>
+                                                                    <span><i className="la la-plus"></i></span>
+                                                                </div>
+                                                                
+                                                            </div> 
+                                                        </div> 
 
 
 
 
 
-                <div className="row">
-                    <div className="col-md-0 ">
-
-                    </div>
-                    <div className="col-md-8" style={{ paddingLeft: "10%", paddingTop: "4%" }}>
-
-
-                        <div className="card">
-                            <img id="cover-image" src={Cover} alt=""></img>
-                            <img id="target" src={""} className="avatar img-circle img-thumbnail" alt="" />
-
-
-                            {/*  Edit Profile Modal Dialog*/}
-                            <div className="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-                                <div className="modal-dialog profileModal" role="document">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h5 className="modal-title" id="editProfileModalLabel">Edit Intro</h5>
-                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div className="modal-body">
-                                            <div>
-
-                                                <img src={Cover} style={{ width: "100%" }} />
-                                                <img id="target1" src={""} className="avatar img-circle img-thumbnail" alt="" />
-
-                                                <form>
-
-
-                                                    <table align="center" width="100%" cellpadding="2" cellspacing="2" border="0" >
-                                                        <tr>
-
-                                                            <td><input name="first_name" className="form-control" type="text" placeholder="Enter firstname" /></td>
-                                                            &nbsp;
-                                                            <td>
-                                                                <input name="last_name" className="form-control" type="text" placeholder="Enter lastname" /></td>
-                                                        </tr>
-
-                                                    </table><br/>
-
-
-                                                    <table align="center" width="100%" cellpadding="2" cellspacing="2" border="0" >
-                                                        <tr>
-
-                                                            <td><input name="address" className="form-control" type="text" placeholder="Enter address" /></td>
-                                                            &nbsp;
-                                                            <td>
-                                                                <input name="city" className="form-control" type="text" placeholder="Enter city" /></td>
-                                                        </tr>
-
-                                                    </table><br/>
-
-                                                    <table align="center" width="100%" cellpadding="2" cellspacing="2" border="0" >
-                                                        <tr>
-
-                                                            <td><input name="state" className="form-control" type="text" placeholder="Enter State" /></td>
-                                                            &nbsp;
-                                                            <td>
-                                                                <input name="zipcode" className="form-control" type="text" placeholder="Enter zipcode "/></td>
-                                                        </tr>
-
-                                                    </table><br/>
-
-
-
-                                                    <label id="work-exp-form"> HeadLine *</label><input type="textarea" cols="6" className="form-control" placeholder="Enter Headline"></input><br />
-
-                                                    <label id="work-exp-form"> Summary</label><input type="textarea" cols="6" className="form-control" placeholder="Enter Summary"></input><br />
-
-                                                    
-
-                                                </form>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="col-lg-3">
+                                                    <div className="right-sidebar">
+                                                        <div className="message-btn">
+                                                            <a href="#" title=""><i className="fa fa-envelope"></i> Message</a>
+                                                        </div>
+                                                        <div className="widget widget-portfolio">
+                                                            <div className="wd-heady">
+                                                                <h3>Portfolio</h3>
+                                                                <img src="images/photo-icon.png" alt="" />
+                                                            </div>
+                                                            <div className="pf-gallery">
+                                                                <ul>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                </ul>
+                                                            </div>{ /* <!--pf-gallery end--> */}
+                                                        </div>{ /* <!--widget-portfolio end--> */}
+                                                    </div>{ /* <!--right-sidebar end--> */}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" className="btn btn-primary">Save</button>
-                                        </div>
+                                        </div>{ /* <!-- main-section-data end--> */}
                                     </div>
+                                </div>
+                            </main>
+
+
+                            
+                            <div className="overview-box" id="create-portfolio">
+                                <div className="overview-edit">
+                                    <h3>Create Portfolio</h3>
+                                    <form>
+                                        <input type="text" name="pf-name" placeholder="Portfolio Name" />
+                                        <div className="file-submit">
+                                            <input type="file" name="file" />
+                                        </div>
+                                        <div className="pf-img">
+                                            <img src="http://via.placeholder.com/60x60" alt="" />
+                                        </div>
+                                        <input type="text" name="website-url" placeholder="htp://www.example.com" />
+                                        <button type="submit" className="save">Save</button>
+                                        <button type="submit" className="cancel">Cancel</button>
+                                    </form>
+                                    <a href="#" title="" className="close-box"><i className="la la-close"></i></a>
                                 </div>
                             </div>
 
+                        </div>
+                        
+                    </div>{ /* <!--theme-layout end--> */}
+                    <footer>
+                                <div className="footy-sec mn no-margin">
+                                    <div className="container">
+                                        <ul>
+                                            <li><a href="#" title="">Help Center</a></li>
+                                            <li><a href="#" title="">Privacy Policy</a></li>
+                                            <li><a href="#" title="">Community Guidelines</a></li>
+                                            <li><a href="#" title="">Cookies Policy</a></li>
+                                            <li><a href="#" title="">Career</a></li>
+                                            <li><a href="#" title="">Forum</a></li>
+                                            <li><a href="#" title="">Language</a></li>
+                                            <li><a href="#" title="">Copyright Policy</a></li>
+                                        </ul>
+                                        <p><img src="images/copy-icon2.png" alt="" />Copyright 2018</p>
+                                        <img className="fl-rgt" src="images/logo2.png" alt="" />
+                                    </div>
+                                </div>
+                            </footer>
+                </div>
 
 
 
-                            <div className="card-body">
 
-                                <div className="row">
-                                    <div className="col-md-6">
-
-                                        <div className="row">
-                                            <div className="col-md-18">
-                                                <label id="fname" >{this.state.firstname}</label>
-                                                <label id="lname" >{this.state.lastname}</label><br />
-                                                <label id="headline" >{this.state.headline}</label><br /><br />
-                                                <label id="location" >{this.state.location}</label><br />
-
-
-                                                <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                {
+                    /*******ALL MODALS INSERTED HERE FOR THE EDIT OPTIONS ***********/
+                }       
+                                                <div className="modal fade" id="expModal" tabindex="-1" role="dialog" aria-labelledby="expModalLabel" aria-hidden="true">
                                                     <div className="modal-dialog" role="document">
                                                         <div className="modal-content">
                                                             <div className="modal-header">
-                                                                <h5 className="modal-title" id="exampleModalLabel">Work Experience</h5>
+                                                                <h5 className="modal-title" id="expModalLabel">Work Experience</h5>
                                                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -169,12 +307,9 @@ class Profile extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-
-
-                                                {/*  Education Modal Dialog*/}
-                                                <div className="modal fade" id="educationModal" tabindex="-1" role="dialog" aria-labelledby="educationModalLabel" aria-hidden="true">
+                
+                                                 {/*  Education Modal Dialog*/}
+                                                 <div className="modal fade" id="educationModal" tabindex="-1" role="dialog" aria-labelledby="educationModalLabel" aria-hidden="true">
                                                     <div className="modal-dialog" role="document">
                                                         <div className="modal-content">
                                                             <div className="modal-header">
@@ -246,78 +381,9 @@ class Profile extends Component {
 
 
 
-
-
-
-                                                <div className="dropdown">
-                                                    <button id="profile-section" type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Profile Section</button>
-                                                    <div className="dropdown-menu" aria-labelledby="profile-section">
-                                                        <button className="dropdown-item" data-toggle="modal" data-target="#exampleModal">Work Experience</button>
-                                                        <button className="dropdown-item" data-toggle="modal" data-target="#educationModal">Education</button>
-                                                        <button className="dropdown-item" data-toggle="modal" data-target="#skillsModal">Skills</button>
-                                                    </div>
-                                                </div>
-                                                <button><img src={Pencil} style={{ width: "40px" }} alt="" data-toggle="modal" data-target="#editProfileModal"></img></button>
-
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-2">
-                                        <form encType="multipart/form-data">
-
-
-
-
-                                            {/*  Edit Profile Modal Dialog*/}
-
-                                        </form>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-3">
-
-                        <div className="card">
-                            <div className="card-body">
-
-                                <div className="panel panel-default">
-                                    <div id="verifications" className="panel-heading"><h3>Verifications</h3></div>
-                                    <div className="panel-body">
-
-
-                                        <br />
-                                        <hr />
-
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-
-
-
-
-
-
-
-
-
-
             </div>
-
-        )
+        );
     }
 }
-export default Profile;
+
+export default profile;
