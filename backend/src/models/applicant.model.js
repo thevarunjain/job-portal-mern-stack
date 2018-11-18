@@ -11,7 +11,8 @@ const applicantSchema = new Schema({
   id: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
+    index: true
   },
   name: {
     type: name.schema,
