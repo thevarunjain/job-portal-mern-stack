@@ -58,7 +58,7 @@ class JobPage extends Component {
                                         <div className="company-save-apply">
                                         <div class='child inline-block-child' style={{paddingRight:"20px"}}><button type="button" class="btn btn-outline-primary btn-save" style={{fontWeight:"bold"}}>Save</button></div>
                                         <div class='child inline-block-child'><button type="button" className="btn easy-apply">Easy Apply</button></div>
-                                    </div> 
+                                        </div> 
                                     </div>
                                     </div>
                                     </div>

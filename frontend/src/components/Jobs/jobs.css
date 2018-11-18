@@ -284,3 +284,13 @@ padding : 10px
     font-size: 1.4rem;
     line-height: 1.42857;
   }
+/**************CSS for Jobsaved************/
+
+  .job-save-card{
+
+    margin-top: 2%;
+    text-decoration: none;
+    font-weight: 600;
+    color: #0073b1;
+    margin-left: 146px;
+  }
