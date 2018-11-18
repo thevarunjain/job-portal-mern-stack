@@ -124,3 +124,116 @@ padding : 10px
     text-align: center;
 }
 /********************************************/
+
+.job-detail{
+    
+        padding-right: 0px;
+        border-right: 0px;
+        background: white;
+        height: 650px;
+        
+        min-height: 650px;
+       
+        max-width: 100%;
+        overflow-y:auto;
+        border-left: 1px solid rgb(206, 200, 200);
+       
+}
+
+.job-detail-image
+{
+    width : 120px;
+    max-width: 120px;
+    min-width: 120px;
+    height: 120px;
+    min-height: 120px;
+    max-height: 120px;
+    border : 1px solid grey;
+}
+
+.heading-company{
+    font-family:'Lato','Roboto','Arial','Helvetica Neue',Helvetica,sans-serif;
+    font-size: 20px;
+    padding-bottom: 2%;
+
+}
+
+.heading-location{
+    font-family:'Lato','Roboto','Arial','Helvetica Neue',Helvetica,sans-serif;
+    font-size: 16px;
+    padding-bottom: 2%;
+    color: rgba(0, 0, 0, 0.6);
+    ;
+
+}
+.heading-location-button{
+    font-family:'Lato','Roboto','Arial','Helvetica Neue',Helvetica,sans-serif;
+    font-size: 16px;
+  
+    padding-bottom: 4%;
+    color: rgba(0, 0, 0, 0.6);
+    ;
+
+}
+.inline-block-child {
+    display: inline-block;
+  }
+
+.easy-apply{
+    background-color: rgb(0, 98, 154);
+    color:white;
+    font-weight: bold;
+    
+}
+
+
+.job-description-partition{
+    white-space: normal;
+    word-break: break-word;
+    text-align: justify;
+}
+.skill-name{
+    color: black;
+    font-size: 12px;
+    padding-bottom: 4%;
+}
+
+.image-tick{
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+
+}
+
+#target2{
+    width: 160px;
+    height: 80px;
+    border-radius: 50%;
+    
+    
+    object-fit: cover;
+    
+    object-position: center right;
+  }
+
+  #recuiter-name{
+    color: black;
+    font-size: 16px;
+    padding-bottom: 4%;
+  }
+  #recruiter-title{
+    color: rgb(56, 52, 52);
+    font-size: 1px;
+    
+  }
+
+  .job-location1{
+      font-size:12px;
+      font-weight: bold;
+
+  }
+
+  .job-location2{
+      padding-top: 4%;
+      padding-bottom: 10%;
+  }
