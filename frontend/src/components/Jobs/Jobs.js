@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import JobSearchBar from "./SearchBar";
+
 import Header from "../Common/Header"
 import {connect} from "react-redux";
 import "./jobs.css";
@@ -71,7 +72,9 @@ class Jobs extends Component {
 				   </div>
 			</div>
 			</div>
-		</section>
+        </section>
+        
+        
 
 
     </div>

@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import Header from "../Common/Header"
 import JobSearchBar from "./SearchBar";
+import JobSingle from "./JobSingle";
 import JobCard from "./JobCard.js";
+import JobSkills from "./JobSkills";
 import "./jobs.css";
+
 
 class SearchedJobs extends Component {
   render() {
@@ -43,8 +46,8 @@ class SearchedJobs extends Component {
                 <JobCard/>
              </div>
 
-            <div className="col-md-7">
-
+            <div className="col-md-7 job-detail" style={{paddingTop:"2%"}}>
+            <JobSingle/>
 
             </div>
           </div>
