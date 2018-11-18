@@ -9,7 +9,6 @@ class JobSearchBar extends Component {
       searchJobName : "",
       searchLocation : ""
     }
-
     this.onChangeSearchJob = this.onChangeSearchJob.bind(this)
     this.onChangeLocation = this.onChangeLocation.bind(this)
 }

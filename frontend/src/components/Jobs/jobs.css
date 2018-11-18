@@ -44,6 +44,18 @@ padding : 10px
     border: 0;
     color: #0073b1;
 }
+.btn-save{
+    border-color: #0073b1;
+    color: #0073b1;
+}
+
+.company-save-apply{
+    margin-right: 60%;
+    margin-top: 2%;
+    text-decoration: none;
+    font-weight: 600;
+    color: #0073b1;
+}
 
 .lightgreytext{
     line-height: 1.5;
@@ -236,4 +248,39 @@ padding : 10px
   .job-location2{
       padding-top: 4%;
       padding-bottom: 10%;
+  }
+
+
+
+
+  /* ******************  CSS for Job Page  ***************** */
+
+  .mrg-top14{
+    margin-top: -14%;
+  }
+  .p10{
+      padding: 10px
+  }
+  .comp-profile-logo{
+    border-radius: 0px;
+    padding: 26px;
+    margin-left: -9%;
+    margin-top: auto;
+  }
+  .comp-profile-details{
+    padding-top: 10px;
+    margin-left: -10%;
+    margin-top: 1.6%;
+  }
+  .no-border{
+      border: none;
+  }
+  .btm-border{
+    border: 1px solid #e5e5e5
+  }
+  .job-text{
+    color : rgba(0,0,0,.6);
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.42857;
   }

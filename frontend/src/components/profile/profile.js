@@ -28,8 +28,7 @@ class profile extends Component {
         {   
             $("#educationModal").modal('hide');
             $("#skillsModal").modal('hide');
-            $("#expModal").modal('show');
-            
+            $("#expModal").modal('show');  
         }
         else if(d=='SKILLS')
         {
