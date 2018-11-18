@@ -37,7 +37,7 @@ const recruiterSchema = new Schema({
 recruiterSchema.method({
   transform () {
     const transformed = {}
-    const fields = ['id', 'name', 'address', 'city', 'state', 'zipcode', 'phone_number', 'company', 'profile_image', 'banner_image']
+    const fields = ['id', 'name', 'address', 'phone_number', 'company', 'profile_image', 'banner_image']
     fields.forEach((field) => {
       transformed[field] = this[field]
     })
