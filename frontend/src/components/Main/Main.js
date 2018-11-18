@@ -13,6 +13,7 @@ import Jobs from "../Jobs/Jobs";
 import JobSingle from "../Jobs/JobSingle";
 import SearchedJobs from "../Jobs/SearchedJobs";
 import Profile from "../profile/profile";
+import Message from "../Message/Message";
 
 
 class Main extends Component {
@@ -27,6 +28,8 @@ class Main extends Component {
                 <Route path="/jobsingle" component={JobSingle} exact />
                 <Route path="/searchedjobs" component={SearchedJobs} exact />
                 <Route path="/profile" component={Profile} exact />
+                <Route path="/message" component={Message} exact />
+
 
             </div>
         </BrowserRouter>
