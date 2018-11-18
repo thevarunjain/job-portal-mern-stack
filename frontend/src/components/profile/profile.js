@@ -16,24 +16,27 @@ class profile extends Component {
         this.state = {
             'banner' : bannerlogo,
             'userimage' : profileplaceholder,
-            'personaldetails' : {
-                'firstname' : '',
-                'lastname' : '',
-
-            }
+            'firstname' : '',
+            'lastname' : '',
+            'street' : '',
+            'city' : '',
+            'state' : '',
+            'country' : '',
+            'zipcode' : '',
+            'latitude' : '',
+            'longitude' : ''
         }
 
         this.openModal.bind = this.openModal.bind(this);
         this.detailModal.bind = this.detailModal.bind(this);
         this.handleChange.bind = this.handleChange.bind(this);
         this.handleSelect.bind = this.handleSelect.bind(this);
-
+        this.handleText = this.handleText.bind(this);
     }
 
 
     openModal(d)
     {  
-        console.log($("body").text());
         if(d=='EXPERIENCE')
         {   
             $("#educationModal").modal('hide');
@@ -68,16 +71,22 @@ class profile extends Component {
 
     detailModal(i,s)
     {
-        alert("Index "+i);
-
+        //alert("Index "+i);
         //Set state from here for all the fields
         this.openModal(s);
     }
 
-    handleChange = address => 
+    handleChange = street => 
     {
-        this.setState({ address });
+        this.setState({ street  });
     };
+
+    handleText(e)
+    {
+            this.setState({
+                [e.target.id] : e.target.value
+            });
+    }
     
     handleSelect = address => 
     {
@@ -85,12 +94,42 @@ class profile extends Component {
           .then(results => {
               console.log(results);///formatted_address
               this.setState({
-                  address : results[0]['formatted_address']
-              })
+                country : '',
+                state : '',
+                city : '',
+                zipcode : ''
+            });
+              let tempdata = {}
+              let _t = results[0]['address_components'];
+              for(var t = 0; t < _t.length; t++)
+              {
+                    if(_t[t]['types'].indexOf('country')!=-1)
+                    {
+                        tempdata['country'] = _t[t]['long_name'];
+                    }
+                    if(_t[t]['types'].indexOf('administrative_area_level_1')!=-1)
+                    {
+                        tempdata['state'] = _t[t]['long_name'];
+                    }
+                    if(_t[t]['types'].indexOf('locality')!=-1)
+                    {
+                        tempdata['city'] = _t[t]['short_name'];
+                    }
+                    if(_t[t]['types'].indexOf('postal_code')!=-1)
+                    {
+                        tempdata['zipcode'] = _t[t]['long_name'];
+                    }
+              }
+              //tempdata['latitude'] = coord
+              console.log(tempdata);
+              this.setState({
+                  country : tempdata.country,
+                  state : tempdata.state,
+                  city : tempdata.city,
+                  zipcode : tempdata.zipcode,
+                  street : results[0]['formatted_address']
+              });
               //return getLatLng(results[0])
-          })
-          .then(latLng => {
-              console.log('Success', latLng)
           })
           .catch(error => {
               console.error('Error', error)
@@ -494,7 +533,7 @@ class profile extends Component {
                                                                         <label for="inputAddress">Address</label>
                                                                         
                                                                         <PlacesAutocomplete
-        value={this.state.address}
+        value={this.state.street}
         onChange={this.handleChange}
         onSelect={this.handleSelect}
       >
@@ -535,15 +574,16 @@ class profile extends Component {
                                                                     <div class="form-row">
                                                                         <div class="form-group col-md-4">
                                                                             <label for="inputEmail4">City</label>
-                                                                            <input type="text" class="form-control" id="inputEmail4" placeholder="Email" />
+                                                                            <input type="text" class="form-control" id="city"  placeholder="" value={this.state.city} onChange={this.handleText} />
                                                                         </div>
                                                                         <div class="form-group col-md-4">
                                                                             <label for="inputPassword4">State</label>
-                                                                            <input type="text" class="form-control" id="inputPassword4" placeholder="Password" />
+                                                                            <input type="text" class="form-control" id="state" placeholder="" value={this.state.state} 
+                                                                            onChange={this.handleText} />
                                                                         </div>
                                                                         <div class="form-group col-md-4">
                                                                             <label for="inputPassword4">Zip Code</label>
-                                                                            <input type="text" class="form-control" id="inputPassword4" placeholder="Password" />
+                                                                            <input type="text" class="form-control" id="zipcode" placeholder="" value={this.state.zipcode} onChange={this.handleText} />
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
