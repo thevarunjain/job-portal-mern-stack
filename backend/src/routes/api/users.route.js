@@ -9,5 +9,6 @@ const usersController = require('../../controllers/users.controller')
 // const auth = require('../../middlewares/authorization')
 
 router.get('/', auth(), usersController.getAll)
+router.get('/:userId', auth(), usersController.getOne)
 
 module.exports = router
