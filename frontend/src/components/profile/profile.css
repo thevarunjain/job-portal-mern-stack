@@ -1,4 +1,4 @@
-#cover-image{
+/* #cover-image{
     padding-top:0px;
     width: 100%;
     height: 100%;
@@ -90,4 +90,134 @@
 
   .Names input{
     float:left;
+  } */
+
+
+  /**************Profile page css************/
+
+  .user-pro-img
+  {
+    padding-left : 30px;
   }
+
+
+  .block-row
+  {
+    display: block !important;
+  }
+
+
+  .custom-wrapper
+  {
+    margin-top : 5px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+    padding: 0px;
+    margin-bottom: 10px !important;
+  }
+
+  .cover-sec
+  {
+    float: left;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover-sec img 
+  {
+    position: relative;
+    width : auto !important;
+    max-height: 250px;
+    min-height: 250px;
+  }
+
+  .profile-user-image
+  {
+      width: 160px;
+      height : 160px;
+
+  }
+
+  .profile-user-name
+  {
+    font-size: 25px;
+    text-align: left;
+    padding-left: 30px;
+    font-family: linkedin-regular-font;
+  }
+
+  .profile-user-subname
+  {
+    width : 60%;
+    font-size: 20px;
+    text-align: left;
+    padding-left: 30px;
+    padding-top : 8px;
+    font-family: linkedin-regular-font;
+
+  }
+
+
+  .location-text
+  {
+    color: rgba(0,0,0,.6);
+    font-size: 17px;
+    text-align: left;
+    padding-left: 30px;
+    padding-top: 15px;
+    font-family: linkedin-regular-font;
+  }
+
+
+  #profile-section
+  {
+    color: #fff;
+    background-color: #0073b1;
+    border-color: #0073b1;
+    font-weight: bold;
+    font-family: linkedin-regular-font;
+    letter-spacing: 1px;
+    padding-left: 30px;
+    padding-right : 30px;
+    border-radius: 2px !important;
+  }
+
+  .dropdown
+  {
+    text-align: left;
+    padding-left: 30px;
+    margin-top: 10px;
+  }
+
+  .user-description
+  {
+    font-weight: 400;
+    color: rgba(0,0,0,.9);
+    font-size: 16px;
+    text-align: left;
+    padding-left: 30px;
+    line-height: 24px;
+    font-family: linkedin-regular-font;
+    padding-bottom: 30px;
+  }
+  
+
+  .profile-user-heading
+  {
+    font-size: 25px;
+    text-align: left;
+    padding-left: 10px;
+    font-family: linkedin-regular-font;
+  }
+
+
+  .extra-right
+  {
+    right:55px !important;
+  }
+
+  .custom-edit-buttons
+  {
+    cursor: pointer;
+  }
+  /*****************************************/

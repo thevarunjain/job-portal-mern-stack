@@ -18,3 +18,14 @@ CUSTOM CSS INCLUDES
 /*@import url('components/Files/css/jquery.mCustomScrollbar.min.css');*/
 @import url('components/Files/css/style.css');
 @import url('components/Files/css/responsive.css');
+
+
+/********GLOBAL STYLES***********/
+
+.no-padding
+{
+    padding  : 0px;
+}
+
+
+/*******************************/
