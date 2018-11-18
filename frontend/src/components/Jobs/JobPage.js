@@ -4,7 +4,7 @@ import { IMAGE_PATHS } from '../../constants/routes';
 import bannerlogo from '../Files/Images/profile-banner.svg';
 import profileplaceholder from '../Files/Images/profile-placeholder.png'
 import '../profile/profile.css';
-import $ from 'jquery'; 
+//import $ from 'jquery'; 
 import JobSingle from "./JobSingle";
 
 
