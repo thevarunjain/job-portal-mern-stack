@@ -10,5 +10,6 @@ const usersController = require('../../controllers/users.controller')
 
 router.get('/', auth(), usersController.getAll)
 router.get('/:userId', auth(), usersController.getOne)
+router.delete('/:userId', auth(), usersController.deleteOne)
 
 module.exports = router
