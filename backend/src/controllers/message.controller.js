@@ -60,8 +60,10 @@ exports.getInbox = async (req, res, next) => {
 // router.get('/:threadId', auth(), messagesController.getOne)
 exports.getOne = async (req, res, next) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.userId)) throw new APIError(`Invalid userId`, httpStatus.BAD_REQUEST)
+    if (!mongoose.Types.ObjectId.isValid(req.params.threadId)) throw new APIError(`Invalid threadId`, httpStatus.BAD_REQUEST)
     const response = { payLoad: {} }
+    const thread = await Thread.findById(req.params.threadId).exec()
+    response.payLoad = thread
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
