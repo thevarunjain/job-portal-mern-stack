@@ -10,7 +10,6 @@ const Application = require('../models/application.model')
 
 exports.apply = async (req, res, next) => {
   try {
-    // console.log('\n\n\n', req.user.role, '\n\n\n')
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
     const response = { payLoad: {} }
     const applicationData = req.body
@@ -39,12 +38,17 @@ exports.apply = async (req, res, next) => {
 
 exports.save = async (req, res, next) => {
   try {
-    // console.log('\n\n\n', req.user.role, '\n\n\n')
-    const response = { payLoad: {} }
-    // const job = new Job(req.body)
-    // const createdJob = await job.save()
-    // if (!createdJob) throw new APIError(`Job not created`, httpStatus.INTERNAL_SERVER_ERROR)
-    // response.payLoad = createdJob
+    if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
+    const response = {payLoad: {}, message: ''}
+    const saveJobPointers = {
+      'job_id': req.params.jobId,
+      'applicant_id': req.user._id
+    }
+    const currentValues = await sql.query(`SELECT * FROM saved_job WHERE job_id = '${saveJobPointers.job_id}' AND applicant_id = '${saveJobPointers.applicant_id}'`)
+    if (currentValues.length > 0) throw new APIError(`Job already saved`, httpStatus.INTERNAL_SERVER_ERROR)
+    const queryOutput = await sql.query('INSERT INTO saved_job SET ?', saveJobPointers)
+    if (!queryOutput) throw new APIError(`Job not saved`, httpStatus.INTERNAL_SERVER_ERROR)
+    response.message = 'SUCCESS'
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
