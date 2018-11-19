@@ -9,6 +9,5 @@ router.post('/', auth(), messagesController.newThread)
 router.get('/findByUser', auth(), messagesController.getInbox)
 router.get('/:threadId', auth(), messagesController.getOne)
 router.put('/:threadId', auth(), messagesController.putOne)
-router.delete('/:threadId', auth(), messagesController.deleteOne)
 
 module.exports = router

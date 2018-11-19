@@ -74,34 +74,18 @@ exports.getOne = async (req, res, next) => {
 // router.put('/:threadId', auth(), messagesController.putOne)
 exports.putOne = async (req, res, next) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.userId)) throw new APIError(`Invalid userId`, httpStatus.BAD_REQUEST)
-    const response = { payLoad: {}, message: '' }
+    if (!mongoose.Types.ObjectId.isValid(req.params.threadId)) throw new APIError(`Invalid threadId`, httpStatus.BAD_REQUEST)
+    const response = { payLoad: {} }
+    const thread = await Thread.findById(req.params.threadId).exec()
+    const message = {
+      sender: req.user._id,
+      body: req.body.message
+    }
+    thread.history.push(message)
+    const newThread = await thread.save()
+    response.payLoad = newThread
     res.status(httpStatus.OK)
     res.send(response)
-  } catch (error) {
-    next(error)
-  }
-}
-
-// router.delete('/:threadId', auth(), messagesController.deleteOne)
-exports.deleteOne = async (req, res, next) => {
-  try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.userId)) throw new APIError(`Invalid userId`, httpStatus.BAD_REQUEST)
-    // const userId = req.params.userId
-    const response = { payLoad: {}, message: '' }
-    // const userAccount = await User.findById(userId).exec()
-    // if (!userAccount) throw new APIError(`No user associated with id: ${userId}`, httpStatus.NOT_FOUND)
-    // const role = userAccount.role
-    // const user = role === 'applicant' ? Applicant : Recruiter
-    // const deleteAccount = await User.findByIdAndDelete(userId).exec()
-    // const deleteResult = await user.findOneAndDelete({ id: userId }).exec()
-    // if (deleteAccount && deleteResult) {
-    //   response.message = 'SUCCESS'
-    res.status(httpStatus.OK)
-    res.send(response)
-    // } else {
-    //   throw new APIError(`User with id: ${userId} not deleted`, httpStatus.NOT_FOUND)
-    // }
   } catch (error) {
     next(error)
   }
