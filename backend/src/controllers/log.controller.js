@@ -5,6 +5,24 @@ const sql = require('./../services/sql')
 const mongoose = require('mongoose')
 const APIError = require('../utils/APIError')
 
+exports.click = async (req, res, next) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
+    const response = {payLoad: {}, message: ''}
+    const saveJobClickPointers = {
+      'job_id': req.params.jobId,
+      'applicant_id': req.user._id,
+      'time': new Date()
+    }
+    await sql.query('INSERT INTO job_click SET ?', saveJobClickPointers)
+    response.message = 'SUCCESS'
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 exports.startApplication = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
