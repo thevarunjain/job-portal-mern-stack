@@ -10,8 +10,8 @@ exports.click = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
     const response = {payLoad: {}, message: ''}
     const saveJobClickPointers = {
-      'job_id': req.params.jobId,
-      'applicant_id': req.user._id,
+      'jobId': req.params.jobId,
+      'userId': req.user._id,
       'time': new Date()
     }
     await sql.query('INSERT INTO job_click SET ?', saveJobClickPointers)
@@ -28,8 +28,8 @@ exports.startApplication = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
     const response = {payLoad: {}, message: ''}
     const saveIncompleteJobPointers = {
-      'job_id': req.params.jobId,
-      'applicant_id': req.user._id,
+      'jobId': req.params.jobId,
+      'userId': req.user._id,
       'time': new Date()
     }
     await sql.query('INSERT INTO incomplete_application SET ?', saveIncompleteJobPointers)
