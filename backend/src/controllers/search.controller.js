@@ -3,7 +3,7 @@
 
 const httpStatus = require('http-status')
 // const mongoose = require('mongoose')
-// const APIError = require('../utils/APIError')
+const APIError = require('../utils/APIError')
 const Recruiter = require('../models/recruiter.model')
 const Applicant = require('../models/applicant.model')
 const Job = require('../models/job.model')
@@ -70,13 +70,13 @@ exports.getFilteredJobs = async (req, res, next) => {
       if (lat && long) {
         passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
       }
-      if(title && element.title) {
+      if (title && element.title) {
         passesCriteria = element.title.toLowerCase().includes(title.toLowerCase())
       }
-      if(company && element.company){
+      if (company && element.company) {
         passesCriteria = element.company.toLowerCase().includes(company.toLowerCase())
       }
-      if(passesCriteria){
+      if (passesCriteria) {
         response.payLoad.push(element)
       }
     }
@@ -96,14 +96,14 @@ exports.getFilteredUsers = async (req, res, next) => {
     const applicant = await Applicant.find().exec()
     const name = req.body.name.toLowerCase()
     for (let index = 0; index < recruiter.length; index++) {
-      const element = recruiter[index];
+      const element = recruiter[index]
       const fullName = element.name.first + ' ' + element.name.last
       if (fullName.toLowerCase().includes(name)) {
         response.payLoad.push(element)
       }
     }
     for (let index = 0; index < applicant.length; index++) {
-      const element = applicant[index];
+      const element = applicant[index]
       const fullName = element.name.first + ' ' + element.name.last
       if (fullName.toLowerCase().includes(name)) {
         response.payLoad.push(element)
@@ -121,12 +121,12 @@ const distance = (lat1, lon1, lat2, lon2) => {
   var radlat2 = Math.PI * lat2 / 180
   var theta = lon1 - lon2
   var radtheta = Math.PI * theta / 180
-  var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
   if (dist > 1) {
-    dist = 1;
+    dist = 1
   }
   dist = Math.acos(dist)
   dist = dist * 180 / Math.PI
   dist = dist * 60 * 1.1515
-  return dist.toPrecision(2);
+  return dist.toPrecision(2)
 }
