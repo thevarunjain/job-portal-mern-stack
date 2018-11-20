@@ -294,3 +294,40 @@ padding : 10px
     color: #0073b1;
     margin-left: 146px;
   }
+
+  .job-card-image-easy-apply
+{
+    width : 100px;
+    max-width: 100px;
+    min-width: 100px;
+    height: 100px;
+    min-height: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+    border : 1px solid grey;
+}
+
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
+  .btn1 {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
