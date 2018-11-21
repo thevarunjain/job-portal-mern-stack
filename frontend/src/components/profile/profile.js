@@ -43,7 +43,6 @@ class profile extends Component {
             $("#skillsModal").modal('hide');
             $('#personalModal').modal('hide');
             $("#expModal").modal('show');
-            
         }
         else if(d=='SKILLS')
         {
