@@ -6,6 +6,21 @@ const name = require('./name.model')
 const address = require('./address.model')
 
 const applicationSchema = new Schema({
+  jobId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Job',
+    required: true
+  },
+  applicantId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  recruiterId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   name: {
     type: name.schema,
     required: true
