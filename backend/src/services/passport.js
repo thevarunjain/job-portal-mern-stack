@@ -2,7 +2,7 @@
 
 const config = require('../config')
 const User = require('../models/user.model')
-const passportJWT = require('passport-jwt')
+const passportJWT = require('co-jwt')
 
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
