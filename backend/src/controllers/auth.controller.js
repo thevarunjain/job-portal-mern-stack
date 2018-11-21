@@ -10,7 +10,7 @@ const httpStatus = require('http-status')
 exports.register = async (req, res, next) => {
   try {
     const userData = req.body
-    const user = new User(userData) 
+    const user = new User(userData)
     const savedUser = await user.save()
     userData.id = savedUser.id
     const userDetails = savedUser.role === 'applicant' ? new Applicant(userData) : new Recruiter(userData)
