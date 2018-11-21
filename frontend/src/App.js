@@ -16,6 +16,7 @@ class App extends Component {
           <BrowserRouter>
             <div>
               <Main />
+              <div className="err_box err_box_hidden"></div>
             </div>
           </BrowserRouter>
         </div>

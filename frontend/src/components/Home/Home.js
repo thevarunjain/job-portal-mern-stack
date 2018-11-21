@@ -4,7 +4,10 @@ import axios from "axios";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import fulllogo from "../Files/Images/full-logo.png";
+//import { api } from "../../services/Axios";
+import {api,showErros} from '../../services/';
 import "./Home.css";
+
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -22,6 +25,7 @@ class HomePage extends React.Component {
     };
 
     this.onChange = this.onChange.bind(this);
+    this.usersignup = this.usersignup.bind(this);
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -33,7 +37,8 @@ class HomePage extends React.Component {
   }
 
   handleLogin = e => {
-    e.preventDefault();
+    alert("ads");
+    //e.preventDefault();
     const data = {
       email: this.state.email,
       password: this.state.password
@@ -53,29 +58,29 @@ class HomePage extends React.Component {
         });
       }
     });
-  };
+  }
 
-  handleSignup = e => {
-    e.preventDefault();
-    const data = {
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
-      email: this.state.newemail,
-      password: this.state.newpassword
+  async usersignup()
+  { 
+      let data = {
+        "email": "varun1@gmail.com",
+        "password": "varun420",
+        "role": "recruiter",
+        "name": {
+            "first": "varun",
+            "last": "jain-shrivastav"
+        }
     };
 
-    axios.post("http://localhost:3001/API", data).then(response => {
-      if (response.status == 200) {
-        this.setState({
-          signedUp: true
-        });
-      } else {
-        this.setState({
-          signedUp: false
-        });
-      }
-    });
-  };
+    try {
+      let ret = await api('POST','/auth/signup',data);
+      console.log(ret);
+    } catch (error) {
+      console.log(Object.keys(error), error.response);
+      showErros(error);
+    }
+      
+  }
 
   render() {
     return (
@@ -204,11 +209,10 @@ class HomePage extends React.Component {
                     .
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={this.handleSignUp}
-                    class="btn signup-button"
-                  >
+                  <button 
+                    className="btn signup-button" 
+                    type="button" 
+                    onClick={this.usersignup} >
                     Join Now
                   </button>
                 </div>
