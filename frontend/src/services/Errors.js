@@ -1,5 +1,10 @@
-import $ from 'jquery'
-export function showErros(err)
+import $ from 'jquery';
+
+const fixUnexpected = () => $(".err_box").removeClass("err_box_hidden").html('An unexpected error occurred!').addClass("err_box_visible");
+
+const timeoutErrorBox = () => setTimeout(() => {$(".err_box").removeClass("err_box_visible").addClass("err_box_hidden") },5000);
+
+export function printError(err)
 {
     try
     {
@@ -13,8 +18,10 @@ export function showErros(err)
             timeoutErrorBox();
         }
         else
+        {
             fixUnexpected();
             timeoutErrorBox();
+        }
     }
     catch(e)
     {
@@ -23,6 +30,3 @@ export function showErros(err)
     }
 }
 
-const fixUnexpected = () => $(".err_box").removeClass("err_box_hidden").html('An unexpected error occurred!').addClass("err_box_visible");
-
-const timeoutErrorBox = () => setTimeout(() => {$(".err_box").removeClass("err_box_visible").addClass("err_box_hidden") },6000);

@@ -5,14 +5,14 @@ import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import fulllogo from "../Files/Images/full-logo.png";
 //import { api } from "../../services/Axios";
-import {api,showErros} from '../../services/';
+import { api , printError} from '../../services/';
 import "./Home.css";
 
 
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(printError);
     this.state = {
       email: "",
       password: "",
@@ -36,48 +36,40 @@ class HomePage extends React.Component {
     });
   }
 
-  handleLogin = e => {
-    alert("ads");
-    //e.preventDefault();
-    const data = {
-      email: this.state.email,
-      password: this.state.password
-    };
-
-    axios.defaults.withCredentials = true;
-
-    axios.post("http://localhost:3001/API", data).then(response => {
-      console.log("Status Code : ", response.status);
-      if (response.status === 200) {
-        this.setState({
-          authFlag: true
-        });
-      } else {
-        this.setState({
-          authFlag: false
-        });
+  handleLogin = async e => {
+      
+      let data = {
+        "email": "saketthakare@gmail.com",
+        "password": "saket123"
+      };
+      console.log(data);
+      try {
+        let ret = await api('POST','/auth/login',data);
+        console.log(ret);
+      } catch (error) {
+        console.log(Object.keys(error), error.response);
+        printError(error);
       }
-    });
   }
 
   async usersignup()
   { 
       let data = {
-        "email": "varun1@gmail.com",
-        "password": "varun420",
-        "role": "recruiter",
+        "email": this.state.email,
+        "password": this.state.password,
+        "role": "applicant",
         "name": {
-            "first": "varun",
-            "last": "jain-shrivastav"
+            "first": this.state.firstname,
+            "last": this.state.lastname
         }
-    };
-
+    }; 
+    console.log(data);
     try {
       let ret = await api('POST','/auth/signup',data);
       console.log(ret);
     } catch (error) {
       console.log(Object.keys(error), error.response);
-      showErros(error);
+      printError(error);
     }
       
   }
@@ -110,8 +102,8 @@ class HomePage extends React.Component {
                     <input
                       class="form-control mr-sm-2"
                       type="text"
-                      id="email"
-                      name="email"
+                      id="loginemail"
+                      name="loginemail"
                       placeholder="Email"
                       aria-label="Email"
                     />
@@ -175,8 +167,8 @@ class HomePage extends React.Component {
                       type="email"
                       class="form-control"
                       onChange={this.onChange}
-                      name="newemail"
-                      id="newemail"
+                      name="email"
+                      id="email"
                       autocomplete="off"
                     />
                   </div>
@@ -188,8 +180,8 @@ class HomePage extends React.Component {
                       type="password"
                       class="form-control"
                       onChange={this.onChange}
-                      id="newpassword"
-                      name="newpassword"
+                      id="password"
+                      name="password"
                       autocomplete="off"
                     />
                   </div>
