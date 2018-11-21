@@ -5,7 +5,7 @@ import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import fulllogo from "../Files/Images/full-logo.png";
 //import { api } from "../../services/Axios";
-import { api , printError} from '../../services/';
+import { api , printError, printMessage} from '../../services/';
 import "./Home.css";
 
 
@@ -54,6 +54,7 @@ class HomePage extends React.Component {
 
   async usersignup()
   { 
+      let _t = this;
       let data = {
         "email": this.state.email,
         "password": this.state.password,
@@ -67,6 +68,20 @@ class HomePage extends React.Component {
     try {
       let ret = await api('POST','/auth/signup',data);
       console.log(ret);
+      if(ret.status>=200 && ret.status<=300)
+      {
+          printMessage("Success! You have registered successfully! Please login to continue");
+          _t.setState({
+            email : '',
+            password : '',
+            firstname : '',
+            lastname : ''
+          });
+      }
+      else 
+      {
+          throw "error";
+      }
     } catch (error) {
       console.log(Object.keys(error), error.response);
       printError(error);
