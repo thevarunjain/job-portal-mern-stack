@@ -3,7 +3,8 @@ import "./jobs.css";
 import { Link } from 'react-router-dom';
 import Watch from '../Files/Images/Watch.svg';
 import Tick from '../Files/Images/tick.svg';
-class JobDetails extends Component {
+
+class JobFunctions extends Component {
 constructor(props){
     super(props)
 
@@ -50,4 +51,5 @@ constructor(props){
     )
   }
 }
-export default JobDetails;
+export default JobFunctions
+;

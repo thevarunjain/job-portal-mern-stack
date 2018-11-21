@@ -5,11 +5,12 @@ import bannerlogo from '../Files/Images/profile-banner.svg';
 import profileplaceholder from '../Files/Images/profile-placeholder.png'
 import '../profile/profile.css';
 //import $ from 'jquery'; 
-import JobSingle from "./JobSingle";
+import JobDetailedView from "./JobDetailedView";
 
 
 
-class JobPage extends Component {
+
+class CompanyPage extends Component {
     constructor(props)
     {
         super(props);
@@ -72,7 +73,7 @@ class JobPage extends Component {
                                 <div className=" custom-wrapper suggestions full-width">
                                     <div className="sd-title">
                                     <h5 className="profile-user-heading">  
-                                        <JobSingle />                                  
+                                        <JobDetailedView />                                  
                                         
 
                                     </h5>
@@ -238,4 +239,4 @@ class JobPage extends Component {
   }
 }
 
-export default JobPage;
+export default CompanyPage;

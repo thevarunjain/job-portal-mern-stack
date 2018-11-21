@@ -9,8 +9,8 @@ APP COMPONENT IMPORTS
 */
 import HomePage from '../Home/Home';
 import RecruiterDashboard from '../recruiter/Dashboard/Dashboard';
-import Jobs from "../Jobs/Jobs";
-import JobSingle from "../Jobs/JobSingle";
+import JobsHome from "../Jobs/JobsHome";
+import JobDetailedView from "../Jobs/JobDetailedView";
 import SearchedJobs from "../Jobs/SearchedJobs";
 import Profile from "../profile/profile";
 import Message from "../Message/Message";
@@ -26,12 +26,12 @@ class Main extends Component {
             <div>
                 <Route path="/" component={HomePage} exact/>
                 <Route path="/recruiter" component={RecruiterDashboard} exact/>
-                <Route path="/jobs" component={Jobs} exact />
-                <Route path="/jobsingle" component={JobSingle} exact />
+                <Route path="/jobshome" component={JobsHome} exact />
+                <Route path="/jobdetailedview" component={JobDetailedView} exact />
                 <Route path="/searchedjobs" component={SearchedJobs} exact />
                 <Route path="/profile" component={Profile} exact />
                 <Route path="/message" component={Message} exact />
-                <Route path="/jobpage" component={CompanyPage} exact />
+                <Route path="/companypage" component={CompanyPage} exact />
                 <Route path="/jobsaved" component={JobSaved} exact />
 
 

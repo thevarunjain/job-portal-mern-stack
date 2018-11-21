@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import JobSearchBar from "./SearchBar";
-
+import JobSearchBar from "./JobSearchBar";
 import Header from "../Common/Header"
 import {connect} from "react-redux";
 import "./jobs.css";
 
 //import Navabar
 
-class Jobs extends Component {
+class JobsHome extends Component {
  
     render() {
 
@@ -100,7 +99,7 @@ function mapStateToProps(state) {
   export default connect(
     mapStateToProps,
     mapDispachToProps
-  )(Jobs);
+  )(JobsHome);
   
 
 

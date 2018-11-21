@@ -3,6 +3,7 @@ import "./jobs.css";
 import { Link } from 'react-router-dom';
 import Watch from '../Files/Images/Watch.svg';
 import Tick from '../Files/Images/tick.svg';
+
 class JobRecruiter extends Component {
 constructor(props){
     super(props)
