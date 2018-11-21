@@ -1,0 +1,549 @@
+.login-logo {
+  margin-bottom: 10px !important;
+}
+
+.linkedin-signup-nav {
+  background: #283e4a !important;
+  width: 100%;
+  padding: 0px 165px !important;
+}
+
+.linkedin-signup-nav ul.mr-auto {
+  margin-left: auto !important;
+  margin-right: 0px !important;
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
+}
+
+.signup-login-button {
+  color: #ffffff;
+  background-color: transparent;
+  background-image: none;
+  border-color: #ffffff;
+  cursor: pointer;
+  border-radius: 0px !important;
+}
+
+.signup-login-button:hover {
+  color: #000;
+  background-color: #fff;
+  background-image: none;
+  border-color: #ffffff;
+  cursor: pointer;
+}
+
+.signup-forgot-password {
+  font-weight: 600;
+}
+
+.no-padding {
+  padding-right: 0px !important;
+}
+
+.signup-form input,
+.signup-form button {
+  height: 35px;
+}
+
+.signup-form button {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  height: 35px;
+  font-weight: 300;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.signup-forgot-password {
+  padding-left: 12px !important;
+  /*padding-top: 12px !important;*/
+}
+
+.signup-forgot-password a.nav-link {
+  padding-top: 10px;
+}
+
+.signup-body {
+  height: 600px;
+  min-height: 600px;
+}
+
+.header-wrapper {
+  height: 52px;
+}
+
+.signup-body {
+  position: relative;
+}
+
+.signup-body-background {
+  position: absolute;
+  background: transparent;
+  background: #333 url("../Files/Images/signup-cover.jpeg") repeat top center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.signup-form-lower {
+  position: absolute;
+  width: 400px;
+  min-height: 500px;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 400px;
+  padding: 0 0 24px;
+  margin: 0 auto;
+  border-radius: 2px;
+  background: #edf0f3;
+  overflow: hidden;
+}
+
+.signup-title {
+  text-align: center;
+  width: 100%;
+  padding-top: 18px;
+  font-size: 25px;
+  padding-bottom: 12px;
+  font-size: 24px;
+  background: #f6f8fa;
+  font-family: linkedin-regular-font;
+}
+
+.signup-title-small {
+  text-align: center;
+  width: 100%;
+  padding-top: 18px;
+  font-size: 25px;
+  font-weight: 200;
+  font-family: linkedin-regular-font;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.9);
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 8px 16px;
+  background: #f6f8fa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.form-fields {
+  padding: 15px;
+}
+
+.form-fields input {
+  height: 32px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 1.1rem;
+  line-height: 1.12857;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  -webkit-box-flex: 100%;
+  -ms-flex: 100%;
+  flex: 100%;
+}
+
+.form-fields label {
+  font-size: 14px;
+  line-height: 1.12857;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  -webkit-box-flex: 100%;
+  -ms-flex: 100%;
+  flex: 100%;
+  min-width: 0;
+  font-family: linkedin-regular-font;
+  padding-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-fields input {
+  padding: 0 8px;
+  height: 32px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  -webkit-box-flex: 100%;
+  -ms-flex: 100%;
+  flex: 100%;
+  min-width: 0;
+  border-radius: 0px;
+}
+
+div.agreement {
+  font-size: 12px;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+div.agreement a {
+  font-size: 12px;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+div.agreement a:hover {
+  font-size: 12px;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: #0077b5;
+}
+
+.signup-button {
+  width: 100%;
+  background-color: #0073b1;
+  border: 0;
+  border-radius: 2px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-family: inherit;
+  /* height: 32px; */
+  line-height: 32px;
+  overflow: hidden;
+  outline-width: 2px;
+  padding: 3px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  -webkit-transition-duration: 167ms;
+  transition-duration: 167ms;
+  -webkit-transition-property: background-color, color, -webkit-box-shadow;
+  transition-property: background-color, color, -webkit-box-shadow;
+  transition-property: background-color, box-shadow, color;
+  transition-property: background-color, box-shadow, color, -webkit-box-shadow;
+  -webkit-transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  vertical-align: middle;
+  z-index: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  color: white;
+  font-weight: 500;
+  font-family: linkedin-regular-font;
+}
+
+.form-fields input:focus {
+  padding: 0 8px;
+  height: 32px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+  -webkit-box-flex: 100%;
+  -ms-flex: 100%;
+  flex: 100%;
+  min-width: 0;
+  border-radius: 0px;
+}
+
+/*************footer cloned css****************/
+
+.meter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #434649;
+  padding: 25px 0 0;
+  pointer-events: none;
+  cursor: cell;
+}
+
+.same-name-search {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.directory {
+  font-size: 13px;
+  line-height: 1.42857;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 48px;
+  background-color: #434649;
+  padding: 0 12px;
+}
+
+.directory .title,
+.directory ol,
+.directory li {
+  font-size: 13px;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 300;
+  display: inline-block;
+}
+
+.directory li {
+  padding-left: 8px;
+}
+
+.same-name-search .title {
+  font-size: 13px;
+  line-height: 1.42857;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  line-height: 17px;
+  margin-right: 8px;
+}
+
+.same-name-search input[type="text"] {
+  background: #fff;
+  padding-left: 10px;
+  width: 232px;
+  margin-right: 8px;
+}
+
+.same-name-search input[type="text"] {
+  font-size: 1.4rem;
+  line-height: 1.42857;
+  font-weight: 400;
+  -webkit-transition-duration: 334ms;
+  transition-duration: 334ms;
+  -webkit-transition-property: border-color, -webkit-box-shadow;
+  transition-property: border-color, -webkit-box-shadow;
+  transition-property: border-color, box-shadow;
+  transition-property: border-color, box-shadow, -webkit-box-shadow;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  padding: 0 10px;
+  width: 100%;
+  outline: 0;
+  height: 32px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: #f3f6f8;
+  background-position: 8px -261px;
+  background-repeat: no-repeat;
+}
+
+.same-name-search .submit-btn:disabled,
+.same-name-search .submit-btn.disabled {
+  color: rgba(255, 255, 255, 0.35);
+  -webkit-box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  cursor: not-allowed;
+}
+
+.same-name-search .submit-btn {
+  background-color: transparent;
+  border: 0;
+  border-radius: 2px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.2frem;
+  font-weight: 600;
+  font-family: inherit;
+  height: 32px;
+  line-height: 32px;
+  overflow: hidden;
+  outline-width: 2px;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  -webkit-transition-duration: 167ms;
+  transition-duration: 167ms;
+  -webkit-transition-property: background-color, color, -webkit-box-shadow;
+  transition-property: background-color, color, -webkit-box-shadow;
+  transition-property: background-color, box-shadow, color;
+  transition-property: background-color, box-shadow, color, -webkit-box-shadow;
+  -webkit-transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  vertical-align: middle;
+  z-index: 0;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7),
+    inset 0 0 0 2px transparent, inset 0 0 0 1px transparent;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7),
+    inset 0 0 0 2px transparent, inset 0 0 0 1px transparent;
+  color: #fff;
+  font-weight: 400;
+  width: 300px;
+}
+
+.links-container {
+  font-size: 1.2rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  width: 1128px;
+  margin: 0 auto;
+  padding: 0 0 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.links-container .links {
+  width: 48%;
+  margin-right: 2%;
+  margin-top: 30px;
+}
+
+.links-container h3 {
+  font-size: 1.2rem;
+  line-height: 1.33333;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 8px 4px;
+  padding-left: 0px;
+  margin-left: 0px;
+  font-size: 15px;
+  margin-bottom: 0px;
+  font-family: linkedin-regular-font;
+}
+
+.links-container ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.links-container li {
+  padding-right: 5px;
+  margin: 0px 5px 0 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.legal-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 1128px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 8px 0;
+  font-size: 1.2rem;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  background-color: #434649;
+}
+
+.legal-nav .copyright {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 20px 0 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.legal-nav > ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.same-name-search .title {
+  font-size: 13px;
+  line-height: 1.42857;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  line-height: 17px;
+  margin-right: 8px;
+}
+
+.legal-nav ul > li > a {
+  color: #fff;
+  padding: 0px 15px;
+  font-size: 13px;
+  font-family: linkedin-regular-font;
+}
+
+.ghp-footer__link-item a {
+  color: #fff;
+  font-family: linkedin-regular-font;
+  font-size: 14px;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+.ghp-footer__link {
+}
+
+.directory * {
+  font-size: 13px;
+}
+
+.directory ol li a {
+  font-size: 12px;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: #fff;
+}
+
+.directory ol li a:hover {
+  font-size: 12px;
+  line-height: 1.33333;
+  font-weight: 400;
+  color: #0077b5;
+}
