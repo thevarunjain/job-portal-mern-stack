@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import "./jobs.css";
 import JobSkills from "./JobSkills";
-import JobDetails from "./JobDetails"
+import JobDetails from "./JobFunctions"
 import JobRecruiter from "./JobRecruiter";
 
 import Watch from '../Files/Images/Watch.svg';

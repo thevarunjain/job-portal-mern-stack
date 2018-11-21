@@ -14,7 +14,7 @@ import JobSingle from "../Jobs/JobSingle";
 import SearchedJobs from "../Jobs/SearchedJobs";
 import Profile from "../profile/profile";
 import Message from "../Message/Message";
-import JobPage from "../Jobs/JobPage";
+import CompanyPage from "../Jobs/CompanyPage";
 import JobSaved from "../Jobs/JobSaved";
 
 
@@ -31,7 +31,7 @@ class Main extends Component {
                 <Route path="/searchedjobs" component={SearchedJobs} exact />
                 <Route path="/profile" component={Profile} exact />
                 <Route path="/message" component={Message} exact />
-                <Route path="/jobpage" component={JobPage} exact />
+                <Route path="/jobpage" component={CompanyPage} exact />
                 <Route path="/jobsaved" component={JobSaved} exact />
 
 
