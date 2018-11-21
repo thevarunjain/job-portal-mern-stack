@@ -20,6 +20,8 @@ class HomePage extends React.Component {
       lastname: "",
       newemail: "",
       newpassword: "",
+      loginemail : "",
+      loginpassword : "",
       authFlag: false,
       signedUp: false
     };
@@ -38,14 +40,24 @@ class HomePage extends React.Component {
 
   handleLogin = async e => {
       
+      let _t = this;
       let data = {
-        "email": "saketthakare@gmail.com",
-        "password": "saket123"
+        "email": this.state.loginemail,//"saketthakare@gmail.com",
+        "password": this.state.loginpassword
       };
       console.log(data);
       try {
         let ret = await api('POST','/auth/login',data);
         console.log(ret);
+        if(ret.status>=200 && ret.status<300)
+        {
+            sessionStorage.setItem("user_token",ret['data']['token']);
+            printMessage("Login successful.");
+            _t.setState({
+              loginemail : '',
+              loginpassword : ''
+            });
+        }
       } catch (error) {
         console.log(Object.keys(error), error.response);
         printError(error);
@@ -68,7 +80,8 @@ class HomePage extends React.Component {
     try {
       let ret = await api('POST','/auth/signup',data);
       console.log(ret);
-      if(ret.status>=200 && ret.status<=300)
+      console.log()
+      if(ret.status>=200 && ret.status<300)
       {
           printMessage("Success! You have registered successfully! Please login to continue");
           _t.setState({
@@ -82,7 +95,9 @@ class HomePage extends React.Component {
       {
           throw "error";
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.log(Object.keys(error), error.response);
       printError(error);
     }
@@ -119,14 +134,18 @@ class HomePage extends React.Component {
                       type="text"
                       id="loginemail"
                       name="loginemail"
+                      onChange={this.onChange}
+                      value={this.state.loginemail}
                       placeholder="Email"
                       aria-label="Email"
                     />
                     <input
                       class="form-control mr-sm-2"
-                      id="password"
-                      name="password"
+                      id="loginpassword"
+                      name="loginpassword"
                       type="password"
+                      onChange={this.onChange}
+                      value={this.state.loginpassword}
                       placeholder="Password"
                       aria-label="Password"
                     />
@@ -160,6 +179,7 @@ class HomePage extends React.Component {
                       type="text"
                       class="form-control"
                       onChange={this.onChange}
+                      value={this.state.firstname}
                       name="firstname"
                       id="firstname"
                       autocomplete="off"
@@ -171,6 +191,7 @@ class HomePage extends React.Component {
                       type="text"
                       class="form-control"
                       onChange={this.onChange}
+                      value={this.state.lastname}
                       name="lastname"
                       id="lastname"
                       autocomplete="off"
@@ -182,6 +203,7 @@ class HomePage extends React.Component {
                       type="email"
                       class="form-control"
                       onChange={this.onChange}
+                      value={this.state.email}
                       name="email"
                       id="email"
                       autocomplete="off"
@@ -195,6 +217,7 @@ class HomePage extends React.Component {
                       type="password"
                       class="form-control"
                       onChange={this.onChange}
+                      value={this.state.password}
                       id="password"
                       name="password"
                       autocomplete="off"
