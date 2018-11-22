@@ -28,12 +28,12 @@ class Main extends Component {
                 <Route path="/recruiter" component={RecruiterDashboard} exact/>
                 <Route path="/jobshome" component={JobsHome} exact />
                 <Route path="/jobdetailedview" component={JobDetailedView} exact />
-                <Route path="/searchedjobs" component={SearchedJobs} exact />
+                
                 <Route path="/profile" component={Profile} exact />
                 <Route path="/message" component={Message} exact />
                 <Route path="/companypage" component={CompanyPage} exact />
                 <Route path="/jobsaved" component={JobSaved} exact />
-
+                <Route path="/searchedjobs/:title/:location" component={SearchedJobs} exact />
 
 
             </div>

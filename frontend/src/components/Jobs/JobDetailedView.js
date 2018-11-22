@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
+import {set_active_id} from "../../actions/jobCardActiveId";
 
 import "./jobs.css";
 import JobSkills from "./JobSkills";
 import JobFunctions from "./JobFunctions"
 import JobRecruiter from "./JobRecruiter";
-
+import {connect} from "react-redux";
 import Watch from '../Files/Images/Watch.svg';
 import Logo from '../Files/Images/linkedinlogo.png';
 import $ from 'jquery'; 
@@ -19,14 +20,68 @@ class JobDetailedView extends Component {
       applicantFname:"Shubham",
       applicantLname:"Sand",
       applicantHeading:"Former Systems Engineer | Masters in Software Engineering|",
-      applicantLocation:"San Francisco Bay Area"
+      applicantLocation:"San Francisco Bay Area",
+      jobs:[],
+      title:"",
+      company:"",
+      address:{},
+      jobDescription:"",
+      skills:[],
+      easyapply:true,
+      industry:"",
+      type:"",
+      jobFunction:"",
+      recruiter_id:""
+      
+
 
     }
   }
+  
+  setActiveID(id){
+    this.props.set_active_id(id);
+  }
+
+componentWillReceiveProps(nextProps){
+let jobs=nextProps.jobs?nextProps.jobs:null;
+let activeID=nextProps.activeID?nextProps.activeID:null;
+let filteredJob=null;
+if(activeID==null && jobs.length > 0){
+    this.setActiveID(jobs[0]._id);
+}
+if(activeID!=null){
+for(var i=0;i<jobs.length;i++){
+    if(jobs[i]._id==activeID){
+        filteredJob=jobs[i]
+    }
+}
+}
+if(filteredJob!=null){
+    
+    this.setState({
+    title:filteredJob.title,
+    company:filteredJob.company,
+    address:filteredJob.address,
+    jobDescription:filteredJob.description,
+    industry:filteredJob.industry,
+    type:filteredJob.type,
+    skills:filteredJob.skills,
+    easyapply:filteredJob.easy_apply,
+    jobFunction:filteredJob.function,
+    recruiter_id:filteredJob.recruiter
+    })
+}else{
+    return;
+}
+
+}
+
   render() {
+    let activeJob=null;
+console.log("Render RCID",this.state.recruiter_id);
     return (
       <div>
-      <div className="row left-job-detail" >
+      <div className="row left-job-detail">
            
               <div className="col-md-3 left-job-detail-image">
                   <img src="" class="img-fluid job-detail-image" alt="LinkedIn"/>
@@ -100,14 +155,12 @@ class JobDetailedView extends Component {
 
               <div className="col-md-9 left-job-detail-desc">
               <div className="heading-company">
-              Development Officer, West Coast ,(Remote)
+              {this.state.title}
               </div>
               <div className="heading-location">
-              Jesuit Refugee Service/USA Company Location &#9670; 
+              {this.state.company} &#9670; {this.state.address.city}, {this.state.address.country}
               </div>
-              <div className="heading-location">
-              San Francisco
-              </div>
+              
               <div className="heading-location">
               <label style={{color:"green",fontSize:"12px"}}>New &#9670;</label>&nbsp;<label style={{fontSize:"12px"}}>Posted 1 hour ago</label>
               </div>
@@ -134,34 +187,14 @@ class JobDetailedView extends Component {
                 <label className="heading-company">Job description</label>
                 </div>
                 <div>
-                The Google Play VC & Startups team works with new and exciting mobile app and game developers to create freshness and diversity in the Play Store and Android ecosystem. We achieve this by way of working with other key influencers in the startup ecosystem like VC firms and agencies to discover exciting new apps and games and by operating programs that provide tangible value. The team mainly scouts, accelerates, and supports these startup app and game developers as they launch and accelerate on Google Play.
-
-
-Role & Responsibilities:
-
-The team is hiring a program manager (temp role for 1+ years with potential for extension) to help manage our startup program, scout exciting new developers, and oversee a portfolio of startups already participating. Responsibilities will include:
-
-Researching databases, including App Annie and Crunchbase
-Scraping VC funding newsletters
-Canvassing mobile design blogs and other sources
-Keeping track of and managing a portfolio of developers accepted into the program
-Interface with other internal teams and external parties to evangelize the program and create a pipeline of incoming developers
-Manage various other operational aspects of the program
-
-Desired Qualifications:
-
-3-7 years experience at a mobile startup, game developer or a tech company focused on mobile technologies
-A keen eye for mobile trends and signs of what makes a startup high potential
-Familiarity with Google Play Store and Apple App Store and general understanding of mobile ecosystems
-Ability to manage multiple tasks at once and demonstrated superb organizational abilities
-General understanding of venture capital space and familiarity with top VC firms and their investing trends around the world
+                {this.state.jobDescription}
                 </div>
                 
               </div>
               <div className="col-md-4 job-description-partition">
-                  <JobSkills/>
-                  <JobRecruiter/>
-                  <JobFunctions />                  
+                  <JobSkills skills={this.state.skills}/>
+                  <JobRecruiter data={this.state.recruiter_id}/>
+                  <JobFunctions type={this.state.type} industry={this.state.industry} jobFunction={this.state.jobFunction}/>                  
               </div>
               </div>
               
@@ -170,4 +203,25 @@ General understanding of venture capital space and familiarity with top VC firms
     )
   }
 }
-export default JobDetailedView;
+
+function mapStateToProps(state) {
+    console.log("in map Jobs Search",state);
+   return { jobs: state.searched_jobs.jobs,
+            activeID:state.active_id.activeID
+  };
+  }
+  
+  const mapDispachToProps = dispatch => {
+    return {
+      
+        set_active_id: (id) => dispatch(set_active_id(id)),
+
+  
+    };
+  };
+  
+  export default connect(
+    mapStateToProps,
+    mapDispachToProps
+  )(JobDetailedView);
+  
