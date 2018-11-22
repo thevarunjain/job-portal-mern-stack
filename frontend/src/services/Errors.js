@@ -2,8 +2,9 @@ import $ from 'jquery';
 
 const fixUnexpected = () => $(".err_box").removeClass("err_box_hidden").html('An unexpected error occurred!').addClass("err_box_visible");
 
-const timeoutErrorBox = () => setTimeout(() => {$(".err_box").removeClass("err_box_visible").addClass("err_box_hidden") },5000);
-const timeoutMessageBox = () => setTimeout(() => {$(".err_box").removeClass("err_box_visible").addClass("err_box_hidden") },5000);
+const timeoutErrorBox = () => setTimeout(() => {$(".err_box").removeClass("err_box_visible").addClass("err_box_hidden") },3500);
+const timeoutMessageBox = () => setTimeout(() => {$(".err_box").removeClass("err_box_visible").addClass("err_box_hidden") },3500);
+
 export function printError(err)
 {
     try

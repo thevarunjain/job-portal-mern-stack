@@ -6,10 +6,14 @@ import { connect } from "react-redux";
 import fulllogo from "../Files/Images/full-logo.png";
 //import { api } from "../../services/Axios";
 import { api , printError, printMessage} from '../../services/';
+import jwt_decode from 'jwt-decode';
+import login from '../../actions/login';
+
 import "./Home.css";
 
 
 class HomePage extends React.Component {
+
   constructor(props) {
     super(props);
     console.log(printError);
@@ -30,6 +34,22 @@ class HomePage extends React.Component {
     this.usersignup = this.usersignup.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) 
+  {
+      console.log(nextProps);
+      try 
+      {
+        if (nextProps.LoginReducer.user_id && nextProps.LoginReducer.user_token) {
+          this.props.history.push('/jobshome');
+        }
+      }
+      catch(e)
+      {
+        console.log(e);
+      }
+  }
+
+
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   componentWillMount() {
@@ -40,7 +60,12 @@ class HomePage extends React.Component {
 
   handleLogin = async e => {
       
-      let _t = this;
+    let data = {
+      "email": this.state.loginemail,//"saketthakare@gmail.com",
+      "password": this.state.loginpassword
+    };
+      this.props.dispatch(login(data));
+      /* let _t = this;
       let data = {
         "email": this.state.loginemail,//"saketthakare@gmail.com",
         "password": this.state.loginpassword
@@ -51,6 +76,9 @@ class HomePage extends React.Component {
         console.log(ret);
         if(ret.status>=200 && ret.status<300)
         {
+            var decoded = jwt_decode(ret['data']['token']);
+            sessionStorage.setItem("user_id",decoded['sub']);
+            sessionStorage.setItem("profile",decoded['role']);
             sessionStorage.setItem("user_token",ret['data']['token']);
             printMessage("Login successful.");
             _t.setState({
@@ -59,9 +87,10 @@ class HomePage extends React.Component {
             });
         }
       } catch (error) {
-        console.log(Object.keys(error), error.response);
+        console.log(error); 
+        //console.log( error.response);
         printError(error);
-      }
+      } */
   }
 
   async usersignup()
@@ -768,22 +797,18 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage;
+//export default HomePage;
 
-// function mapStateToProps(state) {
-//   console.log("in map state details view",state);
-// //  return { property_detail: state.fetch_details_view.property_detail,
-// //  };
-// }
+function mapStateToProps(state) {
+  console.log("in map state details view123",state);
+  return {
+   LoginReducer: state.LoginReducer
+  }
+//  return { property_detail: state.fetch_details_view.property_detail,
+//  };
+}
 
-// const mapDispachToProps = dispatch => {
-//   return {
-//    //   fetch_detailsview: (id) => dispatch(fetch_detailsview(id)),
+export default connect(
+  mapStateToProps
+)(HomePage);
 
-//   };
-// };
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispachToProps
-// )(Jobs);

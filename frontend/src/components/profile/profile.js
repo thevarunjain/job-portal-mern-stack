@@ -4,7 +4,7 @@ import { IMAGE_PATHS } from '../../constants/routes';
 import bannerlogo from '../Files/Images/profile-banner.svg';
 import profileplaceholder from '../Files/Images/profile-placeholder.png'
 import './profile.css';
-import PlacesAutocomplete, {geocodeByAddress,getLatLng,} from 'react-places-autocomplete';
+import PlacesAutocomplete, {geocodeByAddress,getLatLng,} from 'react-places-autocomplete'
 import $ from 'jquery'; 
 
 
@@ -32,6 +32,11 @@ class profile extends Component {
         this.handleChange.bind = this.handleChange.bind(this);
         this.handleSelect.bind = this.handleSelect.bind(this);
         this.handleText = this.handleText.bind(this);
+    }
+
+    componentDidMount()
+    {
+        console.log("profile loded");
     }
 
 
