@@ -38,7 +38,7 @@ class JobSearchBar extends Component {
       <input  type="text" placeholder="Search Location" className = "inputtext" value={this.state.searchLocation} onChange={this.onChangeLocation} required />
       </div>
       <div className="col-sm-3 searchButton">    
-      <Link to="/searchedjobs"><button type="submit">Search</button></Link>
+      <Link to={`/searchedjobs/${this.state.searchJobName}/${this.state.searchLocation}`}><button type="submit">Search</button></Link>
       </div>
       </div>
       
