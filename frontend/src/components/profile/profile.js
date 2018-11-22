@@ -6,7 +6,8 @@ import profileplaceholder from '../Files/Images/profile-placeholder.png'
 import './profile.css';
 import PlacesAutocomplete, {geocodeByAddress,getLatLng,} from 'react-places-autocomplete'
 import $ from 'jquery'; 
-
+import { connect } from "react-redux";
+import { api , printError, printMessage} from '../../services/';
 
 class profile extends Component {
 
@@ -537,43 +538,43 @@ class profile extends Component {
                                                                         <label for="inputAddress">Address</label>
                                                                         
                                                                         <PlacesAutocomplete
-        value={this.state.street}
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <input
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input form-control',
-              })}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map(suggestion => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
+                                                                                        value={this.state.street}
+                                                                                        onChange={this.handleChange}
+                                                                                        onSelect={this.handleSelect}
+                                                                                    >
+                                                                                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                                                                        <div>
+                                                                                            <input
+                                                                                            {...getInputProps({
+                                                                                                placeholder: 'Search Places ...',
+                                                                                                className: 'location-search-input form-control',
+                                                                                            })}
+                                                                                            />
+                                                                                            <div className="autocomplete-dropdown-container">
+                                                                                            {loading && <div>Loading...</div>}
+                                                                                            {suggestions.map(suggestion => {
+                                                                                                const className = suggestion.active
+                                                                                                ? 'suggestion-item--active'
+                                                                                                : 'suggestion-item';
+                                                                                                // inline style for demonstration purpose
+                                                                                                const style = suggestion.active
+                                                                                                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                                                                : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                                                                                return (
+                                                                                                <div
+                                                                                                    {...getSuggestionItemProps(suggestion, {
+                                                                                                    className,
+                                                                                                    style,
+                                                                                                    })}
+                                                                                                >
+                                                                                                    <span>{suggestion.description}</span>
+                                                                                                </div>
+                                                                                                );
+                                                                                            })}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        )}
+                                                                                    </PlacesAutocomplete>
                                                                     </div>
                                                                     <div class="form-row">
                                                                         <div class="form-group col-md-4">
@@ -613,4 +614,22 @@ class profile extends Component {
     }
 }
 
-export default profile;
+//export default profile;
+
+
+//export default HomePage;
+
+function mapStateToProps(state) {
+    console.log("in map state details profileVIEW",state);
+    return {
+     LoginReducer: state.LoginReducer
+    }
+  //  return { property_detail: state.fetch_details_view.property_detail,
+  //  };
+  }
+  
+  export default connect(
+    mapStateToProps
+  )(profile);
+  
+  

@@ -8,6 +8,16 @@ import Main from "./components/Main/Main";
 import { Provider } from "react-redux";
 
 
+
+import StateLoader from "./store/store-actions";
+
+const stateLoader = new StateLoader();
+
+store.subscribe(() => {
+    stateLoader.saveState(store.getState());
+});
+
+
 class App extends Component {
   render() {
     return (
