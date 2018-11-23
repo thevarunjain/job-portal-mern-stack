@@ -1,0 +1,3 @@
+scp .env ec2-user@54.183.95.207:/home/ec2-user/linkedin/current/backend
+scp .env ec2-user@18.144.19.140:/home/ec2-user/linkedin/current/backend
+scp .env ec2-user@18.144.70.163:/home/ec2-user/linkedin/current/backend
