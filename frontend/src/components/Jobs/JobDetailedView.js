@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import {set_active_id} from "../../actions/jobCardActiveId";
+import { api , printError, printMessage} from '../../services/';
 
 import "./jobs.css";
 import JobSkills from "./JobSkills";
@@ -31,13 +32,39 @@ class JobDetailedView extends Component {
       industry:"",
       type:"",
       jobFunction:"",
-      recruiter_id:""
+      recruiter_id:"",
+      job_id:"",
       
 
 
     }
+    this.saveJob=this.saveJob.bind(this);
   }
   
+ async saveJob(){
+     console.log("JOB ID",this.state.job_id);
+    try {
+        let ret = await api('GET','/jobs/'+this.state.job_id+'/save');
+        console.log("ttt",ret);
+        if(ret.status===200)
+        {
+            printMessage("Success! This job is successfully saved");
+            
+        }
+        else 
+        {
+            throw "error";
+        }
+      } 
+      catch (error) 
+      {
+        console.log("ERROR in SAVE",error);
+        console.log(Object.keys(error), error.response);
+        printError(error);
+      }
+        
+  }
+
   setActiveID(id){
     this.props.set_active_id(id);
   }
@@ -68,7 +95,9 @@ if(filteredJob!=null){
     skills:filteredJob.skills,
     easyapply:filteredJob.easy_apply,
     jobFunction:filteredJob.function,
-    recruiter_id:filteredJob.recruiter
+    recruiter_id:filteredJob.recruiter,
+    job_id:filteredJob._id
+
     })
 }else{
     return;
@@ -79,6 +108,14 @@ if(filteredJob!=null){
   render() {
     let activeJob=null;
 console.log("Render RCID",this.state.recruiter_id);
+let easyApplyButton=null;
+
+if(this.state.easyapply){
+    easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" data-toggle="modal" data-target="#easyApplyModal">Easy Apply</button></div>
+
+}else{
+    easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply">Apply</button></div>
+}
     return (
       <div>
       <div className="row left-job-detail">
@@ -169,8 +206,8 @@ console.log("Render RCID",this.state.recruiter_id);
               </div>
               <div className="heading-location-button">
               <div class='parent' >
-              <div class='child inline-block-child' style={{paddingRight:"20px"}}><button type="button" class="btn btn-outline-primary" style={{fontWeight:"bold"}}>Save</button></div>
-              <div class='child inline-block-child'><button type="button" className="btn easy-apply" data-toggle="modal" data-target="#easyApplyModal">Easy Apply</button></div>
+              <div class='child inline-block-child' style={{paddingRight:"20px"}}><button type="button" class="btn btn-outline-primary" style={{fontWeight:"bold"}} onClick={this.saveJob}>Save</button></div>
+              {easyApplyButton}
             </div>
             </div>
             
