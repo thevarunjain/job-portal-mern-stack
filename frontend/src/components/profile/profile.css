@@ -226,7 +226,7 @@
     position: relative;
   }
 
-  .suggestions-list:hover .detail-boxes i
+  .detail-boxes:hover  i
   {
     visibility: visible;
   }
@@ -321,4 +321,71 @@
 .pac-container, .pac-item {
   width: inherit !important;
 }
+
+
+.exp-title
+{
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color : rgba(0,0,0,.9) !important;
+  font-family: linkedin-regular-font;
+}
+
+.exp-company
+{
+  font-size: 18px !important;
+  line-height: 31px !important;
+  color: rgba(0,0,0,.9) !important;
+  font-family: linkedin-regular-font;
+  font-weight: 300;
+}
+
+
+.exp-dates
+{
+  color: rgba(0,0,0,.6);
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.exp-location
+{
+  color: rgba(0,0,0,.6);
+  font-size: 14px;
+  font-weight: 300;
+  padding: 5px 0px 15px 0px;
+}
+
+.exp-desc
+{
+  color: rgba(0,0,0,.9);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 10px 0px 15px 0px;
+}
+
+.skill-sug
+{
+  font-weight: 600 !important;
+  padding : 5px 10px !important;
+}
+
+
+.onlyskillsbt
+{
+  right: 50px !important;
+  font-size: 21px !important;
+}
+
+.modal-body table
+{
+  width : 100%;
+}
+
+.modal-body table td 
+{
+  padding: 5px;
+}
+
+
   /*****************************************/
