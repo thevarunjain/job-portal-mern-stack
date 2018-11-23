@@ -17,7 +17,7 @@ class SearchedJobs extends Component {
     this.state={
       title:props.match.params.title,
       location:props.match.params.location,
-      jobs:[],
+      jobs:null,
       message:"",
       activeID: null
     }
@@ -26,7 +26,6 @@ class SearchedJobs extends Component {
 componentDidMount(){
     //axios post http://localhost:3000/api/search/jobs
 
-    sessionStorage.setItem('user_token','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YmVlN2U2NGM0YmYxNzRkMWNkYTc4NzYiLCJyb2xlIjoicmVjcnVpdGVyIiwiaWF0IjoxNTQyNTI1Mzk2fQ.MKXcOMdG-IOdGVYPS7KN_nZQ8E1IqSzHhGKqcuXMac0');
    var data={
     "company" : "facebook",
     "title": "Software Developer",
@@ -51,8 +50,11 @@ updateActiveID(id){
   render() {
 let jobsComponent=null;
 var message="";
-if(this.state.jobs.length===0){
-  message="No Jobs available for you search criteria"
+if(this.props.jobs){
+  message="";
+}else{
+  message="No Jobs available for you search criteria";
+
 }
 jobsComponent =this.props.jobs?this.props.jobs.map(job => {
   return(
@@ -61,6 +63,7 @@ jobsComponent =this.props.jobs?this.props.jobs.map(job => {
     </div>
   )
 }) :null;
+
 
 
     return (
@@ -93,7 +96,7 @@ jobsComponent =this.props.jobs?this.props.jobs.map(job => {
              </div>
 
             <div className="col-md-7 job-detail" style={{paddingTop:"2%"}}>
-            <JobDetailedView/>
+           <JobDetailedView/>
 
             </div>
           </div>
