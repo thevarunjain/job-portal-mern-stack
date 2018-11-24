@@ -82,6 +82,10 @@ class profile extends Component {
                 {
                     userdata['banner_image'] = bannerlogo;
                 }
+                if(userdata['profile']=='')
+                {
+                    userdata['profile'] = profileplaceholder;
+                }
                 u.setState({
                     firstname : userdata['name']['first'],
                     lastname : userdata['name']['last'],
@@ -691,7 +695,10 @@ class profile extends Component {
     {
         let skill = document.getElementById("addSkill").value;
         console.log(skill);
+        if(skill=='')
+            return false;
         let currentLength = $("#skillstable").find("tr").length;
+
         $("#skillstable").append('<tr  data-dellength='+currentLength+' ><td>'+skill+'</td><td><i class="fa fa-trash custom-edit-buttons" onclick=delrows('+currentLength+') ></i></td></tr>');
 
        /*  this.setState((prevState) => ({
@@ -700,8 +707,23 @@ class profile extends Component {
     }
 
 
+    changeDocument(t)
+    {
+        
+        if(t == 'BANNER')
+        {
+            document.querySelector("#bannerbox").click();
+        }
+        else if(t=='PROFILE')
+        {
+            document.querySelector("#profilebox").click();
+        }
+    }
+
+
     async saveSkills()
     {
+        let outerthis = this;
         let skills = [];
         $("#skillstable tr").each(function(){
             skills.push($(this).find("td:nth-child(1)").text())
@@ -716,7 +738,10 @@ class profile extends Component {
             console.log(ret);
             if(ret.status>=200 && ret.status<300)
             {
-                $("#personalModal").modal('hide');
+                $("#skillsModal").modal('hide');
+                outerthis.setState((prevState) => ({
+                    skills : skills
+                }));
                 printMessage("Data Saved Successfully.");
             }
         } catch (error) {
@@ -735,7 +760,6 @@ class profile extends Component {
                 <div className="container">
                     <div className="row block-row">
                         <div className="wrapper col-lg-9">
-
                             <main>
                                 <div className="main-section">
                                     <div>
@@ -745,10 +769,10 @@ class profile extends Component {
                                                     <div className="main-left-sidebar">
                                                         <div className="user_profile custom-wrapper">
                                                             <section className="cover-sec">
-                                                                <img src={this.state.banner} alt="LinkedIn" />
+                                                                <img src={this.state.banner} alt="LinkedIn" onClick={()=>this.changeDocument('BANNER')} />
                                                             </section>
                                                             <div className="user-pro-img">
-                                                                <img src={this.state.userimage} alt="LinkedIn" className="user-image profile-user-image" />
+                                                                <img src={this.state.userimage} alt="LinkedIn" className="user-image profile-user-image"  onClick={()=>this.changeDocument('PROFILE')} />
                                                             </div>{ /* <!--user-pro-img end--> */}
                                                             <div className="user_pro_status">
                                                                 <h3 className="profile-user-name">{this.state.firstname} {this.state.lastname}</h3>
@@ -761,8 +785,14 @@ class profile extends Component {
                                                                     <button id="profile-section" type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Profile Section</button>
                                                                     <div className="dropdown-menu exts" aria-labelledby="profile-section">
                                                                         <button className="dropdown-item" data-toggle="modal" data-target="#expModal">Work Experience</button>
-                                                                        <button className="dropdown-item" data-toggle="modal" data-target="#educationModal">Education</button>
+                                                                        <button className="dropdown-item" data-toggle="modal" data-target="#educationModal">Add Education</button>
                                                                         <button className="dropdown-item" data-toggle="modal" data-target="#skillsModal">Skills</button>
+                                                                        <button className="dropdown-item" data-toggle="modal" data-target="#personalModal">Personal Details</button>
+                                                                        <button className="dropdown-item" data-toggle="modal" data-target="#personalModal"> Add Resume</button>
+
+
+                                                                         
+
                                                                     </div>
                                                                 </div>
 
@@ -970,35 +1000,7 @@ class profile extends Component {
                                                     </div>
                                                 </div>
                                                 
-                                                <div className="col-lg-3">
-                                                    <div className="right-sidebar">
-                                                        <div className="message-btn">
-                                                            <a href="#" title=""><i className="fa fa-envelope"></i> Message</a>
-                                                        </div>
-                                                        <div className="widget widget-portfolio">
-                                                            <div className="wd-heady">
-                                                                <h3>Portfolio</h3>
-                                                                <img src="images/photo-icon.png" alt="" />
-                                                            </div>
-                                                            <div className="pf-gallery">
-                                                                <ul>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="#" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                </ul>
-                                                            </div>{ /* <!--pf-gallery end--> */}
-                                                        </div>{ /* <!--widget-portfolio end--> */}
-                                                    </div>{ /* <!--right-sidebar end--> */}
-                                                </div>
+                                                
                                             </div>
                                         </div>{ /* <!-- main-section-data end--> */}
                                     </div>
@@ -1022,25 +1024,54 @@ class profile extends Component {
                                         <button type="submit" className="save">Save</button>
                                         <button type="submit" className="cancel">Cancel</button>
                                     </form>
-                                    <a href="#" title="" className="close-box"><i className="la la-close"></i></a>
+                                    <a href="javascript:void(0)" title="" className="close-box"><i className="la la-close"></i></a>
                                 </div>
                             </div>
 
                         </div>
+                        
+                                                    <div className="col-lg-3 right-sidebar">
+                                                        <div >
+                                                            <a href="javascript:void(0)" className="view-public save-button"> View Public Page</a>
+                                                        </div>
+                                                        <div className="widget widget-portfolio">
+                                                            <div className="wd-heady">
+                                                                <h3>Portfolio</h3>
+                                                                <img src="images/photo-icon.png" alt="" />
+                                                            </div>
+                                                            <div className="pf-gallery">
+                                                                <ul>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
+                                                                </ul>
+                                                            </div>{ /* <!--pf-gallery end--> */}
+                                                        </div>{ /* <!--widget-portfolio end--> */}
+                                                    </div>{ /* <!--right-sidebar end--> */}
+                                                
                         
                     </div>{ /* <!--theme-layout end--> */}
                     <footer>
                                 <div className="footy-sec mn no-margin">
                                     <div className="container">
                                         <ul>
-                                            <li><a href="#" title="">Help Center</a></li>
-                                            <li><a href="#" title="">Privacy Policy</a></li>
-                                            <li><a href="#" title="">Community Guidelines</a></li>
-                                            <li><a href="#" title="">Cookies Policy</a></li>
-                                            <li><a href="#" title="">Career</a></li>
-                                            <li><a href="#" title="">Forum</a></li>
-                                            <li><a href="#" title="">Language</a></li>
-                                            <li><a href="#" title="">Copyright Policy</a></li>
+                                            <li><a href="javascript:void(0)" title="">Help Center</a></li>
+                                            <li><a href="javascript:void(0)" title="">Privacy Policy</a></li>
+                                            <li><a href="javascript:void(0)" title="">Community Guidelines</a></li>
+                                            <li><a href="javascript:void(0)" title="">Cookies Policy</a></li>
+                                            <li><a href="javascript:void(0)" title="">Career</a></li>
+                                            <li><a href="javascript:void(0)" title="">Forum</a></li>
+                                            <li><a href="javascript:void(0)" title="">Language</a></li>
+                                            <li><a href="javascript:void(0)" title="">Copyright Policy</a></li>
                                         </ul>
                                         <p><img src="images/copy-icon2.png" alt="" />Copyright 2018</p>
                                         <img className="fl-rgt" src="images/logo2.png" alt="" />
@@ -1181,8 +1212,8 @@ class profile extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="modal-footer">
-                                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" className="btn btn-primary" onClick={this.saveSkills} >Save</button>
+                                                                <button type="button" className="btn  delete-button  mr-auto" data-dismiss="modal">Close</button>
+                                                                <button type="button" className="btn save-button" onClick={this.saveSkills} >Save</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1285,6 +1316,16 @@ class profile extends Component {
                                                 </div>
 
 
+
+                                                <div className="hiddenbox">
+                                                    <input type="file" name="profilebox" id="profilebox" />
+                                                </div>
+                                                <div className="hiddenbox">
+                                                    <input type="file" name="bannerbox" id="bannerbox" />
+                                                </div>
+                                                <div className="hiddenbox">
+                                                    <input type="file" name="resumebox" id="resumebox" />
+                                                </div>
 
             </div>
         );

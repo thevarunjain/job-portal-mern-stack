@@ -480,4 +480,26 @@
   border-width : 0px !important;
 }
 
+.right-sidebar
+{
+  padding : 45px 0px !important;
+}
+
+.view-public
+{
+  width: 100%;
+    padding: 4px;
+    height: 40px;
+    font-family: linkedin-regular-font;
+    margin-bottom: 15px;
+}
+
+.view-public:hover
+{
+  color : white !important;
+}
+
+
+
+
   /*****************************************/
