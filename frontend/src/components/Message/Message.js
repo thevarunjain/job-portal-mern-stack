@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import Header from "../Common/Header"
 import {connect} from "react-redux";
 import "./message.css";
-
+import axios from "axios";
+import { api } from "../../services/Axios";
+import {BASE_URL} from "../../constants/routes"
 
 class Message extends Component {
 	constructor(props) {
@@ -10,9 +12,37 @@ class Message extends Component {
 
 		this.state = ({
 			
-		})
+		})	
 	}
 
+	// componentWillMount(){
+	// 	var headers = new Headers();
+    //     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YmVlN2VkMmM0YmYxNzRkMWNkYTc4NzkiLCJyb2xlIjoiYXBwbGljYW50IiwiaWF0IjoxNTQyNTc2Mzc4fQ.BHLiKXbJJ5KxwxwhvFty5e0VFHhdZ_QPZcjKwE_Xjjg"
+	// 	const config = {
+	// 		headers: 
+	// 		{ 
+	// 			'Authorization': 'Bearer ' + token
+	// 		}
+	// 	};
+	// 	axios.defaults.withCredentials = true;
+	// 	sessionStorage.setItem("user_token",'Bearer '+ token);
+	// 	//var res = api("get", "/message/findByUser" ,{})
+	// 	console.log(res);
+
+	// 	axios.get(`http://localhost:3001/api/message/findByUser` , config).
+	// 	then(response => {
+    //             console.log("Status Code  is : ",response.status);
+    //             console.log(response.data);
+    //             if(response.status === 200){
+    //                 this.setState({
+    //                     status : 200
+    //                 })
+    //                     console.log('Changed saved successfully');
+    //             }else{
+    //                 console.log('Changed failed !!! ');
+    //             }
+    //         });
+	// }
 	
 
   render() {
@@ -55,102 +85,17 @@ class Message extends Component {
 											</div>
 										</li>
                                         <li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
+											<div className="usr-msg-details">
+												<div className="usr-ms-img">
 													<img src="http://via.placeholder.com/50x50" alt="" />
 												</div>
-												<div class="usr-mg-info">
+												<div className="usr-mg-info">
 													<h3>Shubham</h3>
 													<p>Muh Mai lelo</p>
 												</div>
-												<span class="posted_time">1:55 PM</span>
+												<span className="posted_time">1:55 PM</span>
 											</div>
 										</li>
-                                        <li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" />
-												</div>
-												<div class="usr-mg-info">
-													<h3>Shubham</h3>
-													<p>Muh Mai lelo</p>
-												</div>
-												<span class="posted_time">1:55 PM</span>
-											</div>
-										</li>
-                                        <li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" />
-												</div>
-												<div class="usr-mg-info">
-													<h3>Shubham</h3>
-													<p>Muh Mai lelo</p>
-												</div>
-												<span class="posted_time">1:55 PM</span>
-											</div>
-										</li>
-                                        <li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" />
-												</div>
-												<div class="usr-mg-info">
-													<h3>Shubham</h3>
-													<p>Muh Mai lelo</p>
-												</div>
-												<span class="posted_time">1:55 PM</span>
-											</div>
-										</li>
-                                        <li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" />
-												</div>
-												<div class="usr-mg-info">
-													<h3>Shubham</h3>
-													<p>Muh Mai lelo</p>
-												</div>
-												<span class="posted_time">1:55 PM</span>
-											</div>
-										</li>
-                                        <li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" />
-												</div>
-												<div class="usr-mg-info">
-													<h3>Shubham</h3>
-													<p>Muh Mai lelo</p>
-												</div>
-												<span class="posted_time">1:55 PM</span>
-											</div>
-										</li>
-                                        <li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" />
-												</div>
-												<div class="usr-mg-info">
-													<h3>Shubham</h3>
-													<p>Muh Mai lelo</p>
-												</div>
-												<span class="posted_time">1:55 PM</span>
-											</div>
-										</li>
-                                        <li>
-											<div class="usr-msg-details">
-												<div class="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" />
-												</div>
-												<div class="usr-mg-info">
-													<h3>Shubham</h3>
-													<p>Muh Mai lelo</p>
-												</div>
-												<span class="posted_time">1:55 PM</span>
-											</div>
-										</li>
-
 									</ul>
 								</div>
 							</div>
