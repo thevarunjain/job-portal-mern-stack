@@ -14,6 +14,10 @@ const applicantSchema = new Schema({
     required: true,
     index: true
   },
+  email: {
+    type: 'String',
+    required: true
+  },
   name: {
     type: name.schema,
     required: true
