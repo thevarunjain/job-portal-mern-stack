@@ -2,12 +2,43 @@ import React, { Component } from 'react'
 import JobSearchBar from "./JobSearchBar";
 import Header from "../Common/Header"
 import {connect} from "react-redux";
+import axios from "axios";
 import "./jobs.css";
+import { api , printError} from '../../services/Axios';
+
 
 //import Navabar
 
 class JobsHome extends Component {
- 
+    constructor(props) {
+		super(props);
+
+		this.state = ({
+			
+		})
+    }
+    
+    // Bringing the jobs according to the skill set of the user
+    // async componentDidMount(){
+    //     var headers = new Headers();
+    //     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YmVlN2VkMmM0YmYxNzRkMWNkYTc4NzkiLCJyb2xlIjoiYXBwbGljYW50IiwiaWF0IjoxNTQyNTc2Mzc4fQ.BHLiKXbJJ5KxwxwhvFty5e0VFHhdZ_QPZcjKwE_Xjjg"
+	// 	const config = {
+	// 		headers: 
+	// 		{ 
+	// 			'Authorization': 'Bearer ' + token
+	// 		}
+	// 	};
+	// 	axios.defaults.withCredentials = true;
+    //     let ret = await api('GET','/users/5bee7ed2c4bf174d1cda7879',config);
+    //     var skills_set = ret.data.payLoad.user.skills;
+    //     let ret = await api('GET','search/jobs',config);
+        
+
+    //     // console.log("data1",temp.data.payLoad);
+
+    // }
+
+
     render() {
 
     return (
