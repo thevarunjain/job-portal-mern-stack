@@ -16,7 +16,7 @@ class HomePage extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(printError);
+    //console.log(printError);
     this.state = {
       email: "",
       password: "",
@@ -40,7 +40,7 @@ class HomePage extends React.Component {
       try 
       {
         if (nextProps.LoginReducer.user_id && nextProps.LoginReducer.user_token) {
-          this.props.history.push('/jobshome');
+          this.props.history.push('/profile');
         }
       }
       catch(e)

@@ -12,6 +12,7 @@
     "jwt-decode": "^2.2.0",
     "loadash": "^1.0.0",
     "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "popper.js": "^1.14.4",
     "react": "^16.6.3",
     "react-cookies": "^0.1.0",
