@@ -27,8 +27,8 @@ class profile extends Component {
             'state' : '',
             'country' : '',
             'zipcode' : '',
-            'latitude' : '',
-            'longitude' : '',
+            'latitude' : '-1',
+            'longitude' : '-1',
             'address' : '',
             'profile' : '',
             'education' : [],
@@ -50,6 +50,8 @@ class profile extends Component {
         this.deleteExp = this.deleteExp.bind(this);
         this.addEducation = this.addEducation.bind(this);
         this.deleteEducation = this.deleteEducation.bind(this);
+        this.addPersonal =  this.addPersonal.bind(this);
+        this.delPersonal =  this.delPersonal.bind(this);
     }
 
     componentDidMount()
@@ -158,7 +160,37 @@ class profile extends Component {
             $("#skillsModal").modal('hide');
             $("#expModal").modal('hide');
             $('#personalModal').modal('hide');
-            $("#educationModal").modal('show');
+                        //****existing pre fetched values if data exists ****/
+                        if(ex1>=0)
+                        {
+                            let copyval = this.state.education[ex1];
+                            console.log(copyval);
+                            $("#educationModal").find("input").eq(4).val(moment(copyval['date']['startdate']).format('YYYY-MM-DD'));
+                            $("#educationModal").find("input").eq(5).val(moment(copyval['date']['enddate']).format('YYYY-MM-DD'));
+                            $("#educationModal").find("input").eq(0).val(copyval['school']);
+                            $("#educationModal").find("input").eq(1).val(copyval['degree']);
+                            $("#educationModal").find("input").eq(2).val(copyval['field']);
+                            $("#educationModal").find("input").eq(3).val(copyval['grade']);
+                            $("#educationModal").find("input").eq(6).val(copyval['description']);
+            
+                            //add edit attributes to the submit values
+                            $("#educationModal").attr("data-ind",ex1);
+                            $("#educationModal").attr("data-id",ex2);
+                        }
+                        else 
+                        {
+                            $("#educationModal").removeAttr("data-id");
+                            $("#educationModal").removeAttr("data-ind");
+                            $("#educationModal").find("input").eq(2).val('');
+                            $("#educationModal").find("input").eq(3).val('');
+                            $("#educationModal").find("input").eq(0).val('');
+                            $("#educationModal").find("input").eq(1).val('');
+                            $("#educationModal").find("input").eq(4).val('');
+                            $("#educationModal").find("input").eq(5).val('');
+                            $("#educationModal").find("input").eq(6).val('');
+                        }
+            
+                        $("#educationModal").modal('show');
         }
         else if(d=='PERSONAL')
         {
@@ -196,6 +228,7 @@ class profile extends Component {
         geocodeByAddress(address)
           .then(results => {
               console.log(results);///formatted_address
+              
               this.setState({
                 country : '',
                 state : '',
@@ -232,7 +265,14 @@ class profile extends Component {
                   zipcode : tempdata.zipcode,
                   street : results[0]['formatted_address']
               });
-              //return getLatLng(results[0])
+              return getLatLng(results[0])
+          })
+          .then(par=>{
+                console.log(par);
+                this.setState({
+                    latitude : par.lat,
+                    longitude : par.lng
+                });
           })
           .catch(error => {
               console.error('Error', error)
@@ -435,7 +475,7 @@ class profile extends Component {
             //*****
             //*** Editing existing entry to the experiece array ***
             //****/
-            let temp  = this.state.experience;
+            let temp  = this.state.education;
             sendData = [];
             for( let g = 0 ; g < temp.length ; g++)
             {
@@ -443,18 +483,18 @@ class profile extends Component {
                 {
                     console.log("EDIT");
                     let dataToPush = {
-                        title : $("#educationModal").find("input").eq(0).val(),
-                        company : $("#expModal").find("input").eq(1).val(),
+                        school : $("#educationModal").find("input").eq(0).val(),
+                        degree : $("#educationModal").find("input").eq(1).val(),
                         date : {
-                            startdate : (new Date($("#educationModal").find("input").eq(2).val()).toString()), 
-                            enddate : (new Date($("#educationModal").find("input").eq(3).val()).toString()),
+                            startdate : (new Date($("#educationModal").find("input").eq(4).val()).toString()), 
+                            enddate : (new Date($("#educationModal").find("input").eq(5).val()).toString()),
                         },
-                        headline : $("#educationModal").find("input").eq(4).val(),
-                        location : $("#educationModal").find("input").eq(5).val(),
+                        field : $("#educationModal").find("input").eq(2).val(),
+                        grade : $("#educationModal").find("input").eq(3).val(),
                         description : $("#educationModal").find("input").eq(6).val()
                     }
 
-                    if(dataToPush['title'] == '' || dataToPush['company'] == '' || dataToPush['date']['startdate'] == '' || dataToPush['date']['enddate'] == '' || dataToPush['headline'] == '' || dataToPush['location'] == '' || dataToPush['description'] == '') 
+                    if(dataToPush['school'] == '' || dataToPush['degree'] == '' || dataToPush['date']['startdate'] == '' || dataToPush['date']['enddate'] == '' || dataToPush['field'] == '' || dataToPush['grade'] == '' || dataToPush['description'] == '') 
                     {
                         printMessage("Please enter all fields to save");
                         return false;
@@ -469,10 +509,10 @@ class profile extends Component {
                             'startdate' : temp[g].date.startdate,
                             'enddate' : temp[g].date.enddate,
                         },
-                        'title' : temp[g].title,
-                        'company' : temp[g].company,
-                        'headline' : temp[g].headline,
-                        'location' : temp[g].location,
+                        'school' : temp[g].school,
+                        'degree' : temp[g].degree,
+                        'field' : temp[g].field,
+                        'grade' : temp[g].grade,
                         'description' : temp[g].description
                     });
                 }
@@ -486,24 +526,24 @@ class profile extends Component {
             //****/
             console.log(this.props);
             let dataToPush = {
-                title : $("#educationModal").find("input").eq(0).val(),
-                company : $("#educationModal").find("input").eq(1).val(),
+                school : $("#educationModal").find("input").eq(0).val(),
+                degree : $("#educationModal").find("input").eq(1).val(),
                 date : {
-                    startdate : (new Date($("#educationModal").find("input").eq(2).val()).toString()), 
-                    enddate : (new Date($("#educationModal").find("input").eq(3).val()).toString()),
+                    startdate : (new Date($("#educationModal").find("input").eq(4).val()).toString()), 
+                    enddate : (new Date($("#educationModal").find("input").eq(5).val()).toString()),
                 },
-                headline : $("#educationModal").find("input").eq(4).val(),
-                location : $("#educationModal").find("input").eq(5).val(),
+                field : $("#educationModal").find("input").eq(2).val(),
+                grade : $("#educationModal").find("input").eq(3).val(),
                 description : $("#educationModal").find("input").eq(6).val()
-            };
+            }
 
-            if(dataToPush['title'] == '' || dataToPush['company'] == '' || dataToPush['date']['startdate'] == '' || dataToPush['date']['enddate'] == '' || dataToPush['headline'] == '' || dataToPush['location'] == '' || dataToPush['description'] == '') 
+            if(dataToPush['school'] == '' || dataToPush['degree'] == '' || dataToPush['date']['startdate'] == '' || dataToPush['date']['enddate'] == '' || dataToPush['field'] == '' || dataToPush['grade'] == '' || dataToPush['description'] == '') 
             {
                 printMessage("Please enter all fields to save");
                 return false;
             }
 
-            let temp  = this.state.experience;
+            let temp  = this.state.education;
             sendData = [];
             for( let g = 0 ; g < temp.length ; g++)
             {
@@ -512,10 +552,10 @@ class profile extends Component {
                         'startdate' : temp[g].date.startdate,
                         'enddate' : temp[g].date.enddate,
                     },
-                    'title' : temp[g].title,
-                    'company' : temp[g].company,
-                    'headline' : temp[g].headline,
-                    'location' : temp[g].location,
+                    'school' : temp[g].school,
+                    'degree' : temp[g].degree,
+                    'field' : temp[g].field,
+                    'grade' : temp[g].grade,
                     'description' : temp[g].description
                 });
             }
@@ -525,17 +565,18 @@ class profile extends Component {
         }
         
         let data = {
-            'experience' : sendData
+            'education' : sendData
         }
+        
         console.log(data);
-        //return false;
+        //return false;exp
         try {
             let ret = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
             console.log(ret);
             if(ret.status>=200 && ret.status<300)
             {
                 outerthis.setState((prevState)=>({
-                    experience : sendData
+                    education : sendData
                 }));
                 $("#educationModal").modal('hide');
                 $("#educationModal").removeAttr("data-id");
@@ -560,11 +601,11 @@ class profile extends Component {
             return false;
         }
             
-        let rem = this.state.experience;
+        let rem = this.state.education;
         rem.splice(delIndex,1);
         let data = 
         {
-            'experience' : rem
+            'education' : rem
         }
         console.log(data);
         try {
@@ -573,7 +614,7 @@ class profile extends Component {
             if(ret.status>=200 && ret.status<300)
             {
                 this.setState((prevState)=>({
-                        experience : rem
+                        education : rem
                 }));
                 $("#educationModal").modal('hide');
                 printMessage("Enrtry Deleted Successfully.");
@@ -583,6 +624,52 @@ class profile extends Component {
             printError(error);   //Pass Full response object to the printError method.
         }
        
+    }
+
+
+    async addPersonal()
+    {
+        let summary = $("#personalModal").find("textarea").eq(0).val();
+        let name = {
+            first : $("#personalModal").find("input").eq(0).val(),
+            last : $("#personalModal").find("input").eq(1).val()
+        };
+
+        let address =  {
+            "street": this.state.street,
+            "city": this.state.city,
+            "country": this.state.country,
+            "zipcode": this.state.zipcode,
+            "coordinates": {
+              "latitude": this.state.latitude,
+              "longitude": this.state.longitude
+            }
+        };
+        let data = {
+            summary,
+            name,
+            address
+        }
+        console.log(data);
+        try {
+            let ret = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+            console.log(ret);
+            if(ret.status>=200 && ret.status<300)
+            {
+                $("#personalModal").modal('hide');
+                printMessage("Data Saved Successfully.");
+            }
+        } catch (error) {
+            console.log(Object.keys(error), error.response);
+            printError(error);   //Pass Full response object to the printError method.
+        }
+
+        console.log(summary,name,address);
+    }
+
+    async delPersonal()
+    {
+        $("#personalModal").modal('hide');
     }
 
     render() {
@@ -1042,11 +1129,11 @@ class profile extends Component {
                                                                     <div class="form-row">
                                                                         <div class="form-group col-md-6">
                                                                             <label for="inputEmail4">First Name</label>
-                                                                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email" />
+                                                                            <input type="text" class="form-control" id="firstname" name="firstname" onChange={this.handleText} value={this.state.firstname} placeholder="Email" />
                                                                         </div>
                                                                         <div class="form-group col-md-6">
                                                                             <label for="inputPassword4">Last Name</label>
-                                                                            <input type="password" class="form-control" id="inputPassword4" placeholder="Password" />
+                                                                            <input class="form-control"  id="lastname" name="lastname" onChange={this.handleText} value={this.state.lastname}  />
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
@@ -1107,16 +1194,16 @@ class profile extends Component {
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="inputAddress">Address</label>
-                                                                        <textarea class="form-control"   ></textarea>
+                                                                        <label for="inputAddress">Summary</label>
+                                                                        <textarea class="form-control" name="summary" id="summary" onChange={this.handleText} value={this.state.summary}   ></textarea>
                                                                     </div>
 
 
                                                                 </form>
                                                             </div>
                                                             <div className="modal-footer">
-                                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" className="btn btn-primary">Save</button>
+                                                                <button type="button" className="btn  delete-button  mr-auto" onClick={this.delPersonal} >Close</button>
+                                                                <button type="button" onClick={this.addPersonal} className="btn save-button">Save Details</button>
                                                             </div>
                                                         </div>
                                                     </div>
