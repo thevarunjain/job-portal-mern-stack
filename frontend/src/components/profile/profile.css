@@ -500,6 +500,15 @@
 }
 
 
+.skill-sug h4 
+{
+  font-size: 18px;
+  font-weight: 500;
+}
 
+.hiddenbox
+{
+  visibility: hidden;
+}
 
   /*****************************************/
