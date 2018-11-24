@@ -67,13 +67,13 @@ exports.getFilteredJobs = async (req, res, next) => {
     for (let index = 0; index < job.length; index++) {
       const element = job[index]
       let passesCriteria = true
-      if (lat && long) {
+      if (lat && long && passesCriteria) {
         passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
       }
-      if (title && element.title) {
+      if (title && element.title && passesCriteria) {
         passesCriteria = element.title.toLowerCase().includes(title.toLowerCase())
       }
-      if (company && element.company) {
+      if (company && element.company && passesCriteria) {
         passesCriteria = element.company.toLowerCase().includes(company.toLowerCase())
       }
       if (passesCriteria) {
