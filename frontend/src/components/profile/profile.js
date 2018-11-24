@@ -47,6 +47,9 @@ class profile extends Component {
         this.handleSelect.bind = this.handleSelect.bind(this);
         this.handleText = this.handleText.bind(this);
         this.addExperience = this.addExperience.bind(this);
+        this.deleteExp = this.deleteExp.bind(this);
+        this.addEducation = this.addEducation.bind(this);
+        this.deleteEducation = this.deleteEducation.bind(this);
     }
 
     componentDidMount()
@@ -108,9 +111,38 @@ class profile extends Component {
             $("#skillsModal").modal('hide');
             $('#personalModal').modal('hide');
 
-            //add edit attributes to the submit values
-            $("#expModal").attr("data-ind",ex1);
-            $("#expModal").attr("data-id",ex2);
+            console.log(ex1,ex2);
+
+            //****existing pre fetched values if data exists ****/
+            if(ex1>=0)
+            {
+                let copyval = this.state.experience[ex1];
+                console.log(copyval);
+                $("#expModal").find("input").eq(2).val(moment(copyval['date']['startdate']).format('YYYY-MM-DD'));
+                $("#expModal").find("input").eq(3).val(moment(copyval['date']['enddate']).format('YYYY-MM-DD'));
+                $("#expModal").find("input").eq(0).val(copyval['title']);
+                $("#expModal").find("input").eq(1).val(copyval['company']);
+                $("#expModal").find("input").eq(4).val(copyval['headline']);
+                $("#expModal").find("input").eq(5).val(copyval['location']);
+                $("#expModal").find("input").eq(6).val(copyval['description']);
+
+                //add edit attributes to the submit values
+                $("#expModal").attr("data-ind",ex1);
+                $("#expModal").attr("data-id",ex2);
+            }
+            else 
+            {
+                $("#expModal").removeAttr("data-id");
+                $("#expModal").removeAttr("data-ind");
+                $("#expModal").find("input").eq(2).val('');
+                $("#expModal").find("input").eq(3).val('');
+                $("#expModal").find("input").eq(0).val('');
+                $("#expModal").find("input").eq(1).val('');
+                $("#expModal").find("input").eq(4).val('');
+                $("#expModal").find("input").eq(5).val('');
+                $("#expModal").find("input").eq(6).val('');
+            }
+
             $("#expModal").modal('show');
 
         }
@@ -238,7 +270,7 @@ class profile extends Component {
         let ref2 = $("#expModal").attr("data-ind");
         console.log(ref1,ref2);
         let sendData,outerthis = this;
-        if(ref1!='' && ref2!='')
+        if(ref1 && ref2)
         {
             //*****
             //*** Editing existing entry to the experiece array ***
@@ -338,19 +370,219 @@ class profile extends Component {
         console.log(data);
         //return false;
         try {
-        let ret = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
-        console.log(ret);
-        if(ret.status>=200 && ret.status<300)
-        {
-            /* outerthis.setState((prevState)=>({
-                experience : prevState.experience.concat(dataToPush)
-            })); */
-            printMessage("Profile Updated Successfully.");
-        }
+            let ret = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+            console.log(ret);
+            if(ret.status>=200 && ret.status<300)
+            {
+                outerthis.setState((prevState)=>({
+                    experience : sendData
+                }));
+                $("#expModal").modal('hide');
+                $("#expModal").removeAttr("data-id");
+                $("#expModal").removeAttr("data-ind");
+                printMessage("Profile Updated Successfully.");
+            }
         } catch (error) {
-        console.log(Object.keys(error), error.response);
-        printError(error);   //Pass Full response object to the printError method.
+            console.log(Object.keys(error), error.response);
+            printError(error);   //Pass Full response object to the printError method.
         }
+    }
+
+    async deleteExp()
+    {
+        
+        let delIndex  = $("#expModal").attr("data-ind");
+        console.log(delIndex);
+        if(delIndex===undefined)
+        {
+            $("#expModal").modal('hide');
+            return false;
+        }
+            
+        let rem = this.state.experience;
+        rem.splice(delIndex,1);
+        let data = 
+        {
+            'experience' : rem
+        }
+        console.log(data);
+        try {
+            let ret = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+            console.log(ret);
+            if(ret.status>=200 && ret.status<300)
+            {
+                this.setState((prevState)=>({
+                        experience : rem
+                }));
+                $("#expModal").modal('hide');
+                printMessage("Enrtry Deleted Successfully.");
+            }
+        } catch (error) {
+            console.log(Object.keys(error), error.response);
+            printError(error);   //Pass Full response object to the printError method.
+        }
+       
+    }
+
+    async addEducation()
+    { 
+        let ref1 = $("#educationModal").attr("data-id");
+        let ref2 = $("#educationModal").attr("data-ind");
+        console.log(ref1,ref2);
+        let sendData,outerthis = this;
+        if(ref1 && ref2)
+        {
+            //*****
+            //*** Editing existing entry to the experiece array ***
+            //****/
+            let temp  = this.state.experience;
+            sendData = [];
+            for( let g = 0 ; g < temp.length ; g++)
+            {
+                if((g == ref2) && (temp[g]["_id"]==ref1))
+                {
+                    console.log("EDIT");
+                    let dataToPush = {
+                        title : $("#educationModal").find("input").eq(0).val(),
+                        company : $("#expModal").find("input").eq(1).val(),
+                        date : {
+                            startdate : (new Date($("#educationModal").find("input").eq(2).val()).toString()), 
+                            enddate : (new Date($("#educationModal").find("input").eq(3).val()).toString()),
+                        },
+                        headline : $("#educationModal").find("input").eq(4).val(),
+                        location : $("#educationModal").find("input").eq(5).val(),
+                        description : $("#educationModal").find("input").eq(6).val()
+                    }
+
+                    if(dataToPush['title'] == '' || dataToPush['company'] == '' || dataToPush['date']['startdate'] == '' || dataToPush['date']['enddate'] == '' || dataToPush['headline'] == '' || dataToPush['location'] == '' || dataToPush['description'] == '') 
+                    {
+                        printMessage("Please enter all fields to save");
+                        return false;
+                    }
+
+                    sendData.push(dataToPush);
+                }
+                else 
+                {
+                    sendData.push({
+                        'date' : {
+                            'startdate' : temp[g].date.startdate,
+                            'enddate' : temp[g].date.enddate,
+                        },
+                        'title' : temp[g].title,
+                        'company' : temp[g].company,
+                        'headline' : temp[g].headline,
+                        'location' : temp[g].location,
+                        'description' : temp[g].description
+                    });
+                }
+            }
+            console.log(sendData);
+        }
+        else 
+        {
+            //*****
+            //*** Adding new entry to the experiece array ***
+            //****/
+            console.log(this.props);
+            let dataToPush = {
+                title : $("#educationModal").find("input").eq(0).val(),
+                company : $("#educationModal").find("input").eq(1).val(),
+                date : {
+                    startdate : (new Date($("#educationModal").find("input").eq(2).val()).toString()), 
+                    enddate : (new Date($("#educationModal").find("input").eq(3).val()).toString()),
+                },
+                headline : $("#educationModal").find("input").eq(4).val(),
+                location : $("#educationModal").find("input").eq(5).val(),
+                description : $("#educationModal").find("input").eq(6).val()
+            };
+
+            if(dataToPush['title'] == '' || dataToPush['company'] == '' || dataToPush['date']['startdate'] == '' || dataToPush['date']['enddate'] == '' || dataToPush['headline'] == '' || dataToPush['location'] == '' || dataToPush['description'] == '') 
+            {
+                printMessage("Please enter all fields to save");
+                return false;
+            }
+
+            let temp  = this.state.experience;
+            sendData = [];
+            for( let g = 0 ; g < temp.length ; g++)
+            {
+                sendData.push({
+                    'date' : {
+                        'startdate' : temp[g].date.startdate,
+                        'enddate' : temp[g].date.enddate,
+                    },
+                    'title' : temp[g].title,
+                    'company' : temp[g].company,
+                    'headline' : temp[g].headline,
+                    'location' : temp[g].location,
+                    'description' : temp[g].description
+                });
+            }
+        
+            sendData.push(dataToPush);
+            console.log(sendData);
+        }
+        
+        let data = {
+            'experience' : sendData
+        }
+        console.log(data);
+        //return false;
+        try {
+            let ret = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+            console.log(ret);
+            if(ret.status>=200 && ret.status<300)
+            {
+                outerthis.setState((prevState)=>({
+                    experience : sendData
+                }));
+                $("#educationModal").modal('hide');
+                $("#educationModal").removeAttr("data-id");
+                $("#educationModal").removeAttr("data-ind");
+                printMessage("Profile Updated Successfully.");
+            }
+        } catch (error) {
+            console.log(Object.keys(error), error.response);
+            printError(error);   //Pass Full response object to the printError method.
+        }
+    }
+
+
+    async deleteEducation()
+    {
+        
+        let delIndex  = $("#educationModal").attr("data-ind");
+        console.log(delIndex);
+        if(delIndex===undefined)
+        {
+            $("#educationModal").modal('hide');
+            return false;
+        }
+            
+        let rem = this.state.experience;
+        rem.splice(delIndex,1);
+        let data = 
+        {
+            'experience' : rem
+        }
+        console.log(data);
+        try {
+            let ret = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+            console.log(ret);
+            if(ret.status>=200 && ret.status<300)
+            {
+                this.setState((prevState)=>({
+                        experience : rem
+                }));
+                $("#educationModal").modal('hide');
+                printMessage("Enrtry Deleted Successfully.");
+            }
+        } catch (error) {
+            console.log(Object.keys(error), error.response);
+            printError(error);   //Pass Full response object to the printError method.
+        }
+       
     }
 
     render() {
@@ -362,8 +594,6 @@ class profile extends Component {
                 <div className="container">
                     <div className="row block-row">
                         <div className="wrapper col-lg-9">
-                            
-
 
                             <main>
                                 <div className="main-section">
@@ -718,8 +948,8 @@ class profile extends Component {
                                                                 </form>
                                                             </div>
                                                             <div className="modal-footer">
-                                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" onClick={this.addExperience} className="btn btn-primary">Add Experience</button>
+                                                                <button type="button" className="btn  delete-button  mr-auto" onClick={this.deleteExp} >Delete Experience</button>
+                                                                <button type="button" onClick={this.addExperience} className="btn save-button">Add Experience</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -762,8 +992,8 @@ class profile extends Component {
                                                                 </form>
                                                             </div>
                                                             <div className="modal-footer">
-                                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" className="btn btn-primary">Add Education</button>
+                                                                <button type="button" className="btn  delete-button  mr-auto" onClick={this.deleteEducation} >Delete Education</button>
+                                                                <button type="button" onClick={this.addEducation} className="btn save-button">Add Education</button>
                                                             </div>
                                                         </div>
                                                     </div>
