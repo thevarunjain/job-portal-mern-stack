@@ -22,6 +22,7 @@ exports.post = async (req, res, next) => {
   try {
     // console.log('\n\n\n', req.user.role, '\n\n\n')
     const response = { payLoad: {} }
+    req.recruiter = req.user._id
     const job = new Job(req.body)
     const createdJob = await job.save()
     if (!createdJob) throw new APIError(`Job not created`, httpStatus.INTERNAL_SERVER_ERROR)
