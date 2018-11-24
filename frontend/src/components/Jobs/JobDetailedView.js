@@ -34,7 +34,7 @@ class JobDetailedView extends Component {
       jobFunction:"",
       recruiter_id:"",
       job_id:"",
-      
+      time_diff:""
 
 
     }
@@ -96,7 +96,8 @@ if(filteredJob!=null){
     easyapply:filteredJob.easy_apply,
     jobFunction:filteredJob.function,
     recruiter_id:filteredJob.recruiter,
-    job_id:filteredJob._id
+    job_id:filteredJob._id,
+    time_diff:filteredJob.time_diff
 
     })
 }else{
@@ -199,7 +200,7 @@ if(this.state.easyapply){
               </div>
               
               <div className="heading-location">
-              <label style={{color:"green",fontSize:"12px"}}>New &#9670;</label>&nbsp;<label style={{fontSize:"12px"}}>Posted 1 hour ago</label>
+              <label style={{color:"green",fontSize:"12px"}}>New &#9670;</label>&nbsp;<label style={{fontSize:"12px"}}>Posted {this.state.time_diff} ago</label>
               </div>
               <div className="heading-location-button">
               <img src={Watch} style={{width:"4%"}}></img>&nbsp;<label style={{paddingTop:"1%",fontSize:"12px"}}>Be an early applicant</label>
