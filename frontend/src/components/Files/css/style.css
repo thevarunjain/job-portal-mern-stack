@@ -393,7 +393,7 @@ header {
 	color: #283e4a;
 	font-size: 20px;
 	font-weight: bold;
-	transform: rotate(-90deg);
+	/*transform: rotate(-90deg);*/
 }
 
 
@@ -444,7 +444,7 @@ header {
 	color: #283e4a;
 	font-size: 20px;
 	font-weight: bold;
-	transform: rotate(-90deg);
+	/*transform: rotate(-90deg);*/
 }
 
 
@@ -596,6 +596,7 @@ nav > ul > li > a:hover {
 	border-right: 1px solid #283e4a;
 	box-sizing: border-box;
 	position: relative;
+	cursor: pointer;
 }
 .user-info {
 	float: left;

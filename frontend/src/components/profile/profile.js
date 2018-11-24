@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../Common/Header';
-import { IMAGE_PATHS } from '../../constants/routes';
+import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
 import bannerlogo from '../Files/Images/profile-banner.svg';
 import profileplaceholder from '../Files/Images/profile-placeholder.png'
 import './profile.css';
@@ -58,6 +58,7 @@ class profile extends Component {
         this.delPersonal =  this.delPersonal.bind(this);
         this.addSkill = this.addSkill.bind(this);
         this.saveSkills = this.saveSkills.bind(this);
+        this.viewPDF = this.viewPDF.bind(this);
     }
 
     componentDidMount()
@@ -719,6 +720,10 @@ class profile extends Component {
         {
             document.querySelector("#profilebox").click();
         }
+        else if(t=='RESUME')
+        {
+            document.querySelector("#resumebox").click();
+        }
     }
 
     async docChange(t)
@@ -727,6 +732,11 @@ class profile extends Component {
         {
             var fd = new FormData();
             var filesList = document.getElementById("bannerbox").files;
+            if (!filesList[0].name.match(/.(jpg|jpeg|png|gif)$/i))
+            {
+                printMessage("Please select an image to upload.");
+                return false;
+            }
             fd.append("uploadSelect",filesList[0]);
             console.log(fd);
             
@@ -735,8 +745,15 @@ class profile extends Component {
                 console.log(ret);
                 if(ret.status>=200 && ret.status<300)
                 {
-                    $("#personalModal").modal('hide');
-                    printMessage("Data Saved Successfully.");
+                    let data = {
+                        'banner_image' : ((S3_URL) + ret['data']['payLoad'])
+                    }
+                    let ret2 = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+                    printMessage("File Saved Successfully.");
+                    this.setState({
+                        banner : data.banner_image
+                    })
+                    
                 }
             } catch (error) {
                 console.log(Object.keys(error), error.response);
@@ -748,8 +765,69 @@ class profile extends Component {
         {
             var fd = new FormData();
             var filesList = document.getElementById("profilebox").files;
+            if (!filesList[0].name.match(/.(jpg|jpeg|png|gif)$/i))
+            {
+                printMessage("Please select an image to upload.");
+                return false;
+            }
             fd.append("uploadSelect",filesList[0]);
             console.log(fd);
+            
+            try {
+                let ret = await api('POST','/document/upload',fd,{'Content-Type': 'multipart/form-data'});
+                console.log(ret);
+                if(ret.status>=200 && ret.status<300)
+                {
+                    let data = {
+                        'profile_image' : ((S3_URL) + ret['data']['payLoad'])
+                    }
+                    let ret2 = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+                    
+                    this.setState({
+                        userimage : data.profile_image
+                    });
+                    printMessage("File Saved Successfully.");
+                    
+                }
+            } catch (error) {
+                console.log(Object.keys(error), error.response);
+                printError(error);   //Pass Full response object to the printError method.
+            }
+        }
+        else if(t=='RESUME')
+        {  
+            var fd = new FormData();
+            var filesList = document.getElementById("resumebox").files;
+            console.log(filesList[0]);
+            if (!filesList[0].name.match(/.(pdf|doc|docx|txt|rtf)$/i))
+            {
+                printMessage("Please select an document file to upload.");
+                return false;
+            }
+            //if()
+            fd.append("uploadSelect",filesList[0]);
+            console.log(fd);
+            
+            try {
+                let ret = await api('POST','/document/upload',fd,{'Content-Type': 'multipart/form-data'});
+                console.log(ret);
+                if(ret.status>=200 && ret.status<300)
+                {
+                    let data = {
+                        'resume' : ((S3_URL) + ret['data']['payLoad'])
+                    }
+                    let ret2 = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+                    
+                    this.setState({
+                        resume : data.resume
+                    });
+                    printMessage("File Saved Successfully.");
+                    
+                }
+            } catch (error) {
+                console.log(Object.keys(error), error.response);
+                printError(error);   //Pass Full response object to the printError method.
+            }
         }
         
     }
@@ -784,6 +862,14 @@ class profile extends Component {
         }
     }
 
+
+    viewPDF()
+    {
+        if(this.state.resume)
+        {
+            window.open(this.state.resume,'_blank');
+        }
+    }
 
     render() {
         
@@ -822,7 +908,7 @@ class profile extends Component {
                                                                         <button className="dropdown-item" data-toggle="modal" data-target="#educationModal">Add Education</button>
                                                                         <button className="dropdown-item" data-toggle="modal" data-target="#skillsModal">Skills</button>
                                                                         <button className="dropdown-item" data-toggle="modal" data-target="#personalModal">Personal Details</button>
-                                                                        <button className="dropdown-item" data-toggle="modal" data-target="#personalModal"> Add Resume</button>
+                                                                        <button className="dropdown-item" type="button" onClick={()=>this.changeDocument('RESUME')} > Add Resume</button>
 
 
                                                                          
@@ -836,7 +922,11 @@ class profile extends Component {
                                                                 {this.state.summary}
 
                                                                 </div>
-
+                                                                {
+                                                                    this.state.resume && (<div className="user-resume"  onClick={this.viewPDF}>
+                                                                        <i class="fa fa-file-pdf resume-icon"></i> View Resume
+                                                                    </div>)
+                                                                }
                                                             </div> 
                                                         
                                                         </div> 

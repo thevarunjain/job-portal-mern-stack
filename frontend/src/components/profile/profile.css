@@ -126,7 +126,7 @@
   .cover-sec img 
   {
     position: relative;
-    width : auto !important;
+    width : 100% !important;
     max-height: 250px;
     min-height: 250px;
   }
@@ -509,6 +509,24 @@
 .hiddenbox
 {
   visibility: hidden;
+}
+
+.resume-icon
+{
+        /* float: right; */
+        font-size: 30px;
+        /* position: absolute; */
+        left: 10px;
+        top: 15px;
+        color: white;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #e60922;
+    
+}
+
+.user-resume
+{
+  cursor: pointer;
 }
 
   /*****************************************/

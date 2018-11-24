@@ -1,9 +1,20 @@
 import React, { Component } from 'react'
 import { IMAGE_PATHS} from '../../constants/routes';
 import { Link } from 'react-router-dom'
-
+import $ from 'jquery';
 
 class Header extends Component {
+
+  constructor(props)
+  {
+	  super(props);
+  }
+
+  toggleMenu()
+  {	
+	$(".user-account-settingss").toggleClass("active");
+  }
+
   render() {
     return (
       <div>
@@ -11,7 +22,7 @@ class Header extends Component {
 			<div className="container">
 				<div className="header-data">
 					<div className="logo">
-						<a href="index.html" title=""><img className="header-logo" src={require('../Files/Images/linkedinlogo.png')} alt="" /></a>
+						<a href="/" title=""><img className="header-logo" src={require('../Files/Images/linkedinlogo.png')} alt="" /></a>
 					</div>
 					<div className="search-bar">
 						<form>
@@ -185,7 +196,7 @@ class Header extends Component {
 						<a href="#" title=""><i className="fa fa-bars"></i></a>
 					</div>
 					<div className="user-account">
-						<div className="user-info">
+						<div className="user-info" onClick={this.toggleMenu}>
 							<img src="http://via.placeholder.com/30x30" alt="" />
 							<Link to="/profile">John</Link>
 							<i className="la la-sort-down"></i>
