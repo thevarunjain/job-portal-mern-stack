@@ -443,5 +443,41 @@
 
 }
 
+.save-btn-small
+{
+  background: #0074b6;
+  color: white;
+}
+
+.skilltable
+{
+  margin-top : 20px;
+}
+
+.skilltable thead 
+{
+  font-weight: bold;
+}
+
+.skilltable td 
+{
+  padding: 10px !important;
+}
+
+.skilltable tr td:nth-child(2)
+{
+  text-align: right;
+}
+
+.fa-trash
+{
+  color : #858e97;
+  cursor: pointer;
+}
+
+#skillstable td, #skillstable th
+{
+  border-width : 0px !important;
+}
 
   /*****************************************/

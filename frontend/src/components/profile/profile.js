@@ -11,7 +11,9 @@ import { api , printError, printMessage} from '../../services/';
 import fetchProfile from '../../actions/profile';
 import * as moment from 'moment';
 
-
+window.delrows =  function(f){
+    document.querySelector("#skillstable tr[data-dellength='"+(f)+"']").remove();
+}
 class profile extends Component {
 
     constructor(props)
@@ -52,6 +54,8 @@ class profile extends Component {
         this.deleteEducation = this.deleteEducation.bind(this);
         this.addPersonal =  this.addPersonal.bind(this);
         this.delPersonal =  this.delPersonal.bind(this);
+        this.addSkill = this.addSkill.bind(this);
+        this.saveSkills = this.saveSkills.bind(this);
     }
 
     componentDidMount()
@@ -74,6 +78,10 @@ class profile extends Component {
                 let userdata = this.props.user_profile.user_profile.user;
                 console.log(moment(userdata['createdAt']));
                 console.log(userdata);
+                if(userdata['banner_image']=='')
+                {
+                    userdata['banner_image'] = bannerlogo;
+                }
                 u.setState({
                     firstname : userdata['name']['first'],
                     lastname : userdata['name']['last'],
@@ -153,6 +161,13 @@ class profile extends Component {
             $("#educationModal").modal('hide');
             $("#expModal").modal('hide');
             $('#personalModal').modal('hide');
+
+            $("#skillstable").html('');
+            for(var u = 0 ; u < this.state.skills.length ; u++)
+            {
+                let currentLength = $("#skillstable").find("tr").length;
+                $("#skillstable").append('<tr data-dellength='+currentLength+' ><td>'+this.state.skills[u]+'</td><td><i class="fa fa-trash custom-edit-buttons" onclick=delrows('+currentLength+') ></i></td></tr>');
+            }
             $("#skillsModal").modal('show');
         }
         else if(d=='EDUCATION')
@@ -672,6 +687,45 @@ class profile extends Component {
         $("#personalModal").modal('hide');
     }
 
+    addSkill()
+    {
+        let skill = document.getElementById("addSkill").value;
+        console.log(skill);
+        let currentLength = $("#skillstable").find("tr").length;
+        $("#skillstable").append('<tr  data-dellength='+currentLength+' ><td>'+skill+'</td><td><i class="fa fa-trash custom-edit-buttons" onclick=delrows('+currentLength+') ></i></td></tr>');
+
+       /*  this.setState((prevState) => ({
+            skills : prevState.skills.concat([skill])
+        })); */
+    }
+
+
+    async saveSkills()
+    {
+        let skills = [];
+        $("#skillstable tr").each(function(){
+            skills.push($(this).find("td:nth-child(1)").text())
+        });
+        let data = {
+            skills
+        }
+        console.log(data);
+        //return false;
+        try {
+            let ret = await api('PUT',('/users/'+this.props.LoginReducer.user_id),data);
+            console.log(ret);
+            if(ret.status>=200 && ret.status<300)
+            {
+                $("#personalModal").modal('hide');
+                printMessage("Data Saved Successfully.");
+            }
+        } catch (error) {
+            console.log(Object.keys(error), error);
+            printError(error);   //Pass Full response object to the printError method.
+        }
+    }
+
+
     render() {
         
         console.log(this.state);
@@ -1099,15 +1153,36 @@ class profile extends Component {
                                                                 </button>
                                                             </div>
                                                             <div className="modal-body">
-                                                                <form>
-                                                                    <label id="work-exp-form"> Skills</label><input type="text" className="form-control" placeholder="Ex. Java"></input><br />
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" placeholder="Ex. Java" id="addSkill"/>
+                                                                    <span class="input-group-btn">
+                                                                        <button className="btn btn-default save-btn-small" type="button" onClick={this.addSkill}>
+                                                                            <i class="fa fa-search"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                    </div>
 
+                                                                <div>
+                                                                    <div className="table table-responsive">
+                                                                        <table className="table skilltable table-striped">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        Skill
+                                                                                    </td>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="skillstable">
 
-                                                                </form>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div className="modal-footer">
                                                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" className="btn btn-primary">Add Skill</button>
+                                                                <button type="button" className="btn btn-primary" onClick={this.saveSkills} >Save</button>
                                                             </div>
                                                         </div>
                                                     </div>
