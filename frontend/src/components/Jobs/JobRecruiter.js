@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Watch from '../Files/Images/Watch.svg';
 import Tick from '../Files/Images/tick.svg';
 import { api , printError} from '../../services/';
+import { throws } from 'assert';
 
 class JobRecruiter extends Component {
 constructor(props){
@@ -13,7 +14,8 @@ constructor(props){
         fname:"Varun",
         lname:"Jain",
         company:"Sr Recruiter at Google",
-        id:""
+        id:"",
+        rec_id:this.props.data
     }
     this.getRecruiter=this.getRecruiter.bind(this);
 
@@ -24,7 +26,7 @@ if(id){
 
   try {
     let ret = await api('GET','/users/'+id);
-    console.log(ret);
+    
     this.setState({
       fname:ret.data.payLoad.user.name.first,
       lname:ret.data.payLoad.user.name.last,
@@ -40,17 +42,16 @@ if(id){
 }
 }
 
-
 componentWillReceiveProps(nextProps){
-  console.log("Props Will",nextProps.data);
- this.getRecruiter(nextProps.data)
+  
+  
+    this.getRecruiter(nextProps.data);
+ 
+  
 }
 
-
-
-
   render() {
-     console.log("Renderrrrr",this.state.id);
+    
     return (
       <div>
 <hr/>
