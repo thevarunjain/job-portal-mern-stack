@@ -720,6 +720,39 @@ class profile extends Component {
         }
     }
 
+    async docChange(t)
+    {
+        if(t == 'BANNER')
+        {
+            var fd = new FormData();
+            var filesList = document.getElementById("bannerbox").files;
+            fd.append("uploadSelect",filesList[0]);
+            console.log(fd);
+            
+            try {
+                let ret = await api('POST','/document',fd,{'Content-Type': 'multipart/form-data'});
+                console.log(ret);
+                if(ret.status>=200 && ret.status<300)
+                {
+                    $("#personalModal").modal('hide');
+                    printMessage("Data Saved Successfully.");
+                }
+            } catch (error) {
+                console.log(Object.keys(error), error.response);
+                printError(error);   //Pass Full response object to the printError method.
+            }
+    
+        }
+        else if(t=='PROFILE')
+        {
+            var fd = new FormData();
+            var filesList = document.getElementById("profilebox").files;
+            fd.append("uploadSelect",filesList[0]);
+            console.log(fd);
+        }
+        
+    }
+
 
     async saveSkills()
     {
@@ -1318,13 +1351,13 @@ class profile extends Component {
 
 
                                                 <div className="hiddenbox">
-                                                    <input type="file" name="profilebox" id="profilebox" />
+                                                    <input type="file" name="profilebox" id="profilebox" onChange={()=>this.docChange("PROFILE")} />
                                                 </div>
                                                 <div className="hiddenbox">
-                                                    <input type="file" name="bannerbox" id="bannerbox" />
+                                                    <input type="file" name="bannerbox" id="bannerbox" onChange={()=>this.docChange("BANNER")}  />
                                                 </div>
                                                 <div className="hiddenbox">
-                                                    <input type="file" name="resumebox" id="resumebox" />
+                                                    <input type="file" name="resumebox" id="resumebox"  onChange={()=>this.docChange("RESUME")} />
                                                 </div>
 
             </div>
@@ -1333,7 +1366,6 @@ class profile extends Component {
 }
 
 //export default profile;
-
 
 //export default HomePage;
 
