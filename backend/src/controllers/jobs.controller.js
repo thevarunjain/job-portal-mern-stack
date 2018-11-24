@@ -21,8 +21,9 @@ exports.get = async (req, res, next) => {
 exports.post = async (req, res, next) => {
   try {
     // console.log('\n\n\n', req.user.role, '\n\n\n')
+    if (req.user.role !== 'recruiter') throw new APIError(`Unauthorized only Recruiter can create a job`, httpStatus.UNAUTHORIZED)
     const response = { payLoad: {} }
-    req.recruiter = req.user._id
+    req.body.recruiter = req.user._id
     const job = new Job(req.body)
     const createdJob = await job.save()
     if (!createdJob) throw new APIError(`Job not created`, httpStatus.INTERNAL_SERVER_ERROR)
