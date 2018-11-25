@@ -63,7 +63,7 @@ class JobsHome extends Component {
 
                 <div className="col-md-3">
                     <span className="bluetext"> 10 </span>
-                    <span className ="lightgreytext"> <Link to="/jobshome/savedjobs">Saved Jobs </Link></span>               
+                    <span className ="lightgreytext"> <Link to="/jobshome/savedjobs" className ="lightgreytext"> Saved Jobs </Link></span>               
                 </div> 
         </div>
         </section>
