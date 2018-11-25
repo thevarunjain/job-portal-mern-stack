@@ -18,6 +18,7 @@ import CompanyPage from "../Jobs/CompanyPage";
 import JobSaved from "../Jobs/JobSaved";
 import SavedJobsHome from "../Jobs/SavedJobsHome";
 import JobsBySkill from "../Jobs/JobsBySkill";
+import PublicProfile from "../profile/publicprofile";
 
 class Main extends Component {
   render() {
@@ -36,6 +37,7 @@ class Main extends Component {
                 <Route path="/jobshome/savedjobs" component={SavedJobsHome} exact />
                 <Route path="/searchedjobs/:title/:location" component={SearchedJobs} exact />
                 <Route path="/jobsbyskill" component={JobsBySkill} exact />
+                <Route path="/public-profile/:id" component={PublicProfile} exact />
 
 
 

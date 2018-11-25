@@ -361,6 +361,12 @@ padding : 10px
 
   }
 
+  .pos-rel
+  {
+      position: relative;
+  }
+
+  .pos-rel .autocomplete-dropdown-container
   #card-card1{
     display: block;
     width: 80%;

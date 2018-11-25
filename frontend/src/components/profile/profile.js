@@ -11,6 +11,7 @@ import { api , printError, printMessage} from '../../services/';
 import fetchProfile from '../../actions/profile';
 import * as moment from 'moment';
 import PLACES from '../Common/Places';
+import { Link } from 'react-router-dom';
 
 
 window.delrows =  function(f){
@@ -104,7 +105,8 @@ class profile extends Component {
                     skills : userdata['skills'],
                     summary : userdata['summary'],
                     createdAt : userdata['createdAt'],
-                    updatedAt : userdata['updatedAt']
+                    updatedAt : userdata['updatedAt'],
+                    publicid : userdata['id']
                 });
                 setTimeout(()=>{
                     console.log(u.state);
@@ -870,6 +872,8 @@ class profile extends Component {
         }
     }
 
+
+
     render() {
         
         console.log(this.state);
@@ -1160,7 +1164,7 @@ class profile extends Component {
                         
                                                     <div className="col-lg-3 right-sidebar">
                                                         <div >
-                                                            <a href="javascript:void(0)" className="view-public save-button"> View Public Page</a>
+                                                            <a href="javascript:void(0)" className="view-public save-button"><Link to={`/public-profile/${this.state.publicid}`} target="_blank" >View Public Page</Link> </a>
                                                         </div>
                                                         <div className="widget widget-portfolio">
                                                             <div className="wd-heady">
@@ -1371,7 +1375,7 @@ class profile extends Component {
                                                                             <input class="form-control"  id="lastname" name="lastname" onChange={this.handleText} value={this.state.lastname}  />
                                                                         </div>
                                                                     </div>
-                                                                    <div class="form-group">
+                                                                    <div class="form-group pos-rel">
                                                                         <label for="inputAddress">Address</label>
                                                                         
                                                                         <PlacesAutocomplete
