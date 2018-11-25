@@ -29,6 +29,10 @@ class JobSearchBar extends Component {
   checkret(data)
   {
     console.log(data);
+    this.setState({
+      searchLocation : data.street
+    })
+    
   }
   
   render() {
@@ -36,16 +40,16 @@ class JobSearchBar extends Component {
       <div className="search-box">
       <form>
       <div className="row">
-      <div className="col-sm-3">
+      <div className="col-sm-5">
             <input type="text" placeholder="Search Jobs" className = "inputtext" value={this.state.searchJobName} onChange={this.onChangeSearchJob} required />              
       </div>
 
-      <div className="col-sm-3 inputtext">
+      <div className="col-sm-5 inputtext">
       <PLACES onPosition={this.checkret}></PLACES>
       
       </div>
-      <div className="col-sm-3 searchButton">    
-      <Link to={`/searchedjobs/${this.state.searchJobName}/${this.state.searchLocation}`}><button type="submit">Search</button></Link>
+      <div className="col-sm-2 searchButton">    
+        <Link to={`/searchedjobs/${this.state.searchJobName}/${this.state.searchLocation}`}><button type="button">Search</button></Link>
       </div>
       </div>
       

@@ -73,7 +73,9 @@ class Places extends Component {
                   "longitude": (cord.lng?cord.lng:'')
                 }
               };
-    
+          this.setState({
+            address : address.street
+          })
           this.props.onPosition(address);
       }
   }
