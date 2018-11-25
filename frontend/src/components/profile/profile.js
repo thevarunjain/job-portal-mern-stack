@@ -77,7 +77,7 @@ class profile extends Component {
         {
             if(u.props.user_profile)
             {
-                let userdata = u.props.user_profile.user_profile.user;
+                let userdata = nextProps.user_profile.user_profile.user;
                 console.log(moment(userdata['createdAt']));
                 console.log(userdata);
                 if(userdata['banner_image']=='')

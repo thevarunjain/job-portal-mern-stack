@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-
+import PLACES from '../Common/Places';
 class JobSearchBar extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +11,7 @@ class JobSearchBar extends Component {
     }
     this.onChangeSearchJob = this.onChangeSearchJob.bind(this)
     this.onChangeLocation = this.onChangeLocation.bind(this)
+    this.checkret = this.checkret.bind(this);
 }
 
   onChangeSearchJob(event){
@@ -24,6 +25,11 @@ class JobSearchBar extends Component {
           searchLocation : event.target.value 
       })
   }
+
+  checkret(data)
+  {
+    console.log(data);
+  }
   
   render() {
     return (
@@ -35,7 +41,8 @@ class JobSearchBar extends Component {
       </div>
 
       <div className="col-sm-3 inputtext">
-      <input  type="text" placeholder="Search Location" className = "inputtext" value={this.state.searchLocation} onChange={this.onChangeLocation} required />
+      <PLACES onPosition={this.checkret}></PLACES>
+      
       </div>
       <div className="col-sm-3 searchButton">    
       <Link to={`/searchedjobs/${this.state.searchJobName}/${this.state.searchLocation}`}><button type="submit">Search</button></Link>
