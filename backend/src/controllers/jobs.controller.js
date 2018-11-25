@@ -94,7 +94,7 @@ exports.deleteOne = async (req, res, next) => {
 
 exports.recommendation = async (req, res, next) => {
   try {
-    console.log('\n\n\n', req, '\n\n\n')
+    // console.log('\n\n\n', req, '\n\n\n')
     const user = await Applicant.findOne({ id: req.user._id }).exec()
     const skills = user.skills ? user.skills : []
     const response = { payLoad: [] }
@@ -116,19 +116,21 @@ exports.recommendation = async (req, res, next) => {
     if (response.payLoad.length < 11) {
       let lat = null
       let long = null
-      if (user.address.coordinates) {
-        lat = user.address.coordinates.latitude ? user.address.coordinates.latitude : null
-        long = user.address.coordinates.longitude ? user.address.coordinates.longitude : null
-      }
-      for (let index = 0; index < jobs.length; index++) {
-        const element = jobs[index]
-        passesCriteria = false
-        if (lat && long && passesCriteria) {
-          passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
+      if (user.address) {
+        if (user.address.coordinates) {
+          lat = user.address.coordinates.latitude ? user.address.coordinates.latitude : null
+          long = user.address.coordinates.longitude ? user.address.coordinates.longitude : null
         }
-        if (passesCriteria) {
-          response.payLoad.push(element)
-          jobs.splice(index, 1)
+        for (let index = 0; index < jobs.length; index++) {
+          const element = jobs[index]
+          passesCriteria = false
+          if (lat && long && passesCriteria) {
+            passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
+          }
+          if (passesCriteria) {
+            response.payLoad.push(element)
+            jobs.splice(index, 1)
+          }
         }
       }
     }
