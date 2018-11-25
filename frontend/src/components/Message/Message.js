@@ -78,7 +78,7 @@ class Message extends Component {
 												</div>
 												<div className="usr-mg-info">
 													<h3>Varun Jain</h3>
-													<p>Hello Friends Chai Pee Lo <img src="images/smley.png" alt="" /></p>
+													<p>Hello <img src="images/smley.png" alt="" /></p>
 												</div>
 												<span className="posted_time">1:55 PM</span>
 												{/* <span className="msg-notifc">1</span> */}
@@ -91,7 +91,7 @@ class Message extends Component {
 												</div>
 												<div className="usr-mg-info">
 													<h3>Shubham</h3>
-													<p>Muh Mai lelo</p>
+													<p>Hi, I am dummy data</p>
 												</div>
 												<span className="posted_time">1:55 PM</span>
 											</div>

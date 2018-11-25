@@ -36,7 +36,7 @@ class Header extends Component {
 					<nav>
 						<ul>
 							<li>
-								<a href="index.html" title="">
+								<a href="#" title="">
 									<div>
 										<i className="fa fa-home header-icons"></i>
 									</div>
@@ -44,7 +44,7 @@ class Header extends Component {
 								</a>
 							</li>
 							<li>
-									<a href="index.html" title="">
+									<a href="#" title="">
 										<div>
 											<i className="fa fa-user-friends header-icons"></i>
 										</div>
@@ -60,7 +60,7 @@ class Header extends Component {
 									</Link>
 							</li>
 							<li>
-									<a href="index.html" title="">
+									<a href="#" title="">
 										<div>
 											<i className="fa fa-bell header-icons"></i>
 										</div>
