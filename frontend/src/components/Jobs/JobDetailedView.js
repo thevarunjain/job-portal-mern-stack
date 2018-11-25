@@ -11,7 +11,7 @@ import {connect} from "react-redux";
 import Watch from '../Files/Images/Watch.svg';
 import Logo from '../Files/Images/linkedinlogo.png';
 import $ from 'jquery'; 
-
+import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
 class JobDetailedView extends Component {
 
 
@@ -46,7 +46,7 @@ class JobDetailedView extends Component {
     this.saveJob=this.saveJob.bind(this);
     this.setPhone=this.setPhone.bind(this);
     this.setEmail=this.setEmail.bind(this);
-    this.setResumeName=this.setResumeName.bind(this);
+    this.uploadResume=this.uploadResume.bind(this);
     this.easy_apply=this.easy_apply.bind(this);
     this.getApplicant=this.getApplicant.bind(this);
   }
@@ -62,10 +62,39 @@ setEmail(e){
     })
 }
 
-setResumeName(e){
-    this.setState({
-        applicant_resume_name:"abc.jpeg"
-    })
+async uploadResume(e){
+console.log("RESUMES",e);
+
+
+var fd = new FormData();
+var filesList = document.getElementById("uploadResume").files;
+if (!filesList[0].name.match(/.(pdf|doc|docx)$/i))
+{
+    printMessage("Please select an pdf/doc/docx file to upload.");
+    return false;
+}
+fd.append("uploadSelect",filesList[0]);
+console.log(fd);
+
+try {
+    let ret = await api('POST','/document/upload',fd,{'Content-Type': 'multipart/form-data'});
+    console.log(ret);
+    if(ret.status>=200 && ret.status<300)
+    {
+        let data = {
+            'resume_url' : ((S3_URL) + ret['data']['payLoad'])
+        }
+        printMessage("Resume added Successfully.");
+        this.setState({
+            applicant_resume_name : data.resume_url
+        })
+        
+    }
+} catch (error) {
+    console.log(Object.keys(error), error.response);
+    printError(error);   //Pass Full response object to the printError method.
+}
+
 }
 
 async easy_apply(){
@@ -271,8 +300,8 @@ if(this.state.easyapply){
                 <br/>
                     <div class="input-group">
                       <div class="upload-btn-wrapper">
-                        <button class="btn btn1">Upload Resume</button>
-                        <input type="file" name="myfile" onChange={this.setResumeName} required/>
+                        <button class="btn btn1" >Upload Resume</button>
+                        <input id="uploadResume" type="file" name="myfile" onChange={this.uploadResume} required/>
                       </div>
 
                     </div>
