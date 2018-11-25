@@ -3,7 +3,7 @@
 import axios from 'axios';
 import {BASE_URL}  from '../constants/';
 
-export async function api(type, url , data = {}) {
+export async function api(type, url , data = {},headers = {}) {
     if(url[0]!='/')
         url = '/' + url;
     url = BASE_URL + url;
@@ -11,6 +11,8 @@ export async function api(type, url , data = {}) {
     console.log(url);
     console.log(data);
     let tokenValue = sessionStorage.getItem('user_token');
+    let headersObject = Object.assign({},{ 'Authorization': 'Bearer ' + tokenValue},headers);
+    
     let sendToken; 
     if(tokenValue!==null) sendToken = true; else sendToken = false;
     if( type == 'GET' || type=='get')
@@ -18,10 +20,7 @@ export async function api(type, url , data = {}) {
         if(sendToken)
         {
             const res = await axios.get(url , {
-                    headers: 
-                    { 
-                        'Authorization': 'Bearer ' + tokenValue
-                    }
+                    headers: headersObject
                 });
             return res;
         }
@@ -40,10 +39,7 @@ export async function api(type, url , data = {}) {
                 method: 'POST',
                 data : data,
                 url: url,
-                headers: 
-                    { 
-                        'Authorization': 'Bearer ' + tokenValue
-                    }
+                headers: headersObject
             });
             return res;
         }
@@ -59,14 +55,25 @@ export async function api(type, url , data = {}) {
     }
     else if( type == 'PUT' || type=='put')
     {
-        //TODO
-        /* const res = await axios({
-            method: 'PUT',
-            data : data,
-            url: BASE_URL + url,
-            headers: { 'Authorization': authstring}
-        });
-        return await res; */
+        if(sendToken)
+        {
+            const res = await axios({
+                method: 'PUT',
+                data : data,
+                url: url,
+                headers: headersObject
+            });
+            return res;
+        }
+        else 
+        {
+            const res = await axios({
+                method: 'PUT',
+                data : data,
+                url: url
+            });
+            return res;
+        }
     }
     else if( type == 'PATCH' || type=='patch')
     {
