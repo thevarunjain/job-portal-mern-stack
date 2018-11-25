@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import axios from "axios";
 import "./jobs.css";
 import { api , printError} from '../../services/Axios';
+import JobsBySkill from "../Jobs/JobsBySkill";
 
 
 //import Navabar
@@ -71,37 +72,9 @@ class JobsHome extends Component {
         <div className="smallheading">
 					<h3>Jobs you may be interested in</h3>
 		</div>
-		
-        	<div class="container">
-				<div class="companies-list">
-					<div class="row">
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="company_profile_info greybackground">
-								<div class="company-up-info">
-									<img src="http://via.placeholder.com/90x90" alt="" />
-									<h3>Facebook Inc.</h3>
-									<h4>Establish Feb, 2004</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div>
-                        </div>
-                        
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="company_profile_info greybackground">
-								<div class="company-up-info">
-									<img src="http://via.placeholder.com/90x90" alt="" />
-									<h3>Facebook Inc.</h3>
-									<h4>Establish Feb, 2004</h4>
-								</div>
-							</div>
-                        </div>
-				   </div>
-			</div>
-			</div>
+        <div>
+        <JobsBySkill />
+        </div>
         </section>
         
         
