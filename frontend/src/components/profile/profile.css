@@ -121,14 +121,20 @@
     width: 100%;
     position: relative;
     overflow: hidden;
+    max-height: 250px;
+    min-height: 250px;
   }
 
   .cover-sec img 
   {
-    position: relative;
-    width : 100% !important;
-    max-height: 250px;
-    min-height: 250px;
+
+    width: 100% !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
   }
 
   .profile-user-image
@@ -527,6 +533,11 @@
 .user-resume
 {
   cursor: pointer;
+}
+
+img[src='/static/media/profile-banner.388781bb.svg']
+{
+  transform: scale(1.5,2);
 }
 
   /*****************************************/
