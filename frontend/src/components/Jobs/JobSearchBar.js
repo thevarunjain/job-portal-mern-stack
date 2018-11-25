@@ -44,7 +44,7 @@ class JobSearchBar extends Component {
             <input type="text" placeholder="Search Jobs" className = "inputtext" value={this.state.searchJobName} onChange={this.onChangeSearchJob} required />              
       </div>
 
-      <div className="col-sm-5 inputtext">
+      <div className="col-sm-5 inputtext pos-rel">
       <PLACES onPosition={this.checkret}></PLACES>
       
       </div>

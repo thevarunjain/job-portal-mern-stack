@@ -361,7 +361,12 @@ padding : 10px
 
   }
 
-  .autocomplete-dropdown-container
+  .pos-rel
+  {
+      position: relative;
+  }
+
+  .pos-rel .autocomplete-dropdown-container
   {
     position: absolute;
     top: 40px;

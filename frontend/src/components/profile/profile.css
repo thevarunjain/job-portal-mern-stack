@@ -540,4 +540,21 @@ img[src='/static/media/profile-banner.388781bb.svg']
   transform: scale(1.5,2);
 }
 
+
+.pos-rel 
+{
+  position: relative;
+}
+
+.user-resume
+{
+  text-align: left !important;
+  padding-left: 30px !important; 
+}
+
+.view-public a
+{
+  color : white !important;
+}
+
   /*****************************************/
