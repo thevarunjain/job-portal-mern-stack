@@ -1,21 +1,51 @@
 import React, { Component } from 'react'
 import "./jobs.css";
-
+import { Link } from 'react-router-dom';
+import Pin from '../Files/Images/Pin.svg';
 class JobSaved extends Component {
   render() {
     return (
-      <div className="row left-job-detail" >
+      <div id="card11">
+    <div  className="container py-1">
+    <div id="card-card1" className="card">
+      <div className="row ">
+        <div className="col-md-3">
+          
+            <img src={Pin} style={{width:"40%"}} />
+
+          </div>
+          <div className="col-md-6">
+            <div id="cb" className="card-block">
+              <h3 id="card-heading-saved" className="card-title"><Link id="jobsavedheading" to="">Software Engineering Intern - Machine Learning</Link></h3>
+              <div className="row">
+              <div className="col-md-7" style={{paddingLeft:"0px"}}>
+              <p id="propdetails1">San Jose ,CA</p>
+              <p id="propdetails" className="card-text" style={{paddingTop:"0px"}}>San Jose ,CA</p>
+
+              </div>
+              <div className="col-md-3">
+              <button type="button" className="btn easy-apply" style={{width:"100%"}}>Apply</button>              </div>
+              <div className="col-md-2">
+              <button type="button" class="btn btn-outline-primary">Unsave</button></div>
+              </div>
+              
+
+              
+             
+            </div>
            
-              <div className="col-md-2 left-job-detail-image">
-                  <img src="" class="img-fluid job-card-image" alt="LinkedIn" />
-              </div>
-              <div className="col-md-10 left-job-detail-desc">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-              </div>
-              <div className="job-save-card">
-                        <div class='child inline-block-child' style={{paddingRight:"20px"}}><button type="button" class="btn btn-outline-primary btn-save" style={{fontWeight:"bold"}}>Save</button></div>
-                        <div class='child inline-block-child'><button type="button" className="btn easy-apply">Easy Apply</button></div>
-              </div> 
+            
+        
+          
+              
+          
+
+        </div>
+      </div>
+      
+    </div>
+    </div>
+
       </div>
     )
   }

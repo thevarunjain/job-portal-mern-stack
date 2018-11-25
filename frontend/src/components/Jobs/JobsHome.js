@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import JobSearchBar from "./JobSearchBar";
 import Header from "../Common/Header"
 import {connect} from "react-redux";
+import { Link } from 'react-router-dom';
 import "./jobs.css";
 
 //import Navabar
@@ -30,7 +31,7 @@ class JobsHome extends Component {
 
                 <div className="col-md-3">
                     <span className="bluetext"> 10 </span>
-                    <span className ="lightgreytext"> Saved Jobs </span>               
+                    <span className ="lightgreytext"> <Link to="/jobshome/savedjobs">Saved Jobs </Link></span>               
                 </div> 
         </div>
         </section>
