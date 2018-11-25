@@ -13,6 +13,7 @@ const documentRouter = require('./document.route')
 router.get('/status', (req, res) => { res.send({status: 'OK'}) }) // api status
 
 router.use('/auth', authRouter)
+
 router.use('/users', usersRouter)
 router.use('/jobs', jobsRouter)
 router.use('/search', searchRouter)

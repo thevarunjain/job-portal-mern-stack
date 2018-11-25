@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import JobSearchBar from "./JobSearchBar";
 import Header from "../Common/Header"
 import {connect} from "react-redux";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import "./jobs.css";
 import { api , printError} from '../../services/Axios';
@@ -62,7 +63,7 @@ class JobsHome extends Component {
 
                 <div className="col-md-3">
                     <span className="bluetext"> 10 </span>
-                    <span className ="lightgreytext"> Saved Jobs </span>               
+                    <span className ="lightgreytext"> <Link to="/jobshome/savedjobs" className ="lightgreytext"> Saved Jobs </Link></span>               
                 </div> 
         </div>
         </section>
