@@ -8,6 +8,7 @@ const applicationController = require('../../controllers/application.controller'
 
 router.get('/', auth(), jobsController.get)
 router.post('/', auth(['recruiter']), jobsController.post)
+router.get('/recommendation', auth(['applicant']), jobsController.recommendation)
 router.get('/:jobId', auth(), jobsController.getOne)
 router.put('/:jobId', auth(['recruiter']), jobsController.putOne)
 router.delete('/:jobId', auth(['recruiter']), jobsController.deleteOne)

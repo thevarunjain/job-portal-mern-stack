@@ -32,6 +32,7 @@ exports.apply = async (req, res, next) => {
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
+    console.log(error)
     next(error)
   }
 }
@@ -92,6 +93,7 @@ exports.easyApply = async (req, res, next) => {
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
+    console.log(error)
     next(error)
   }
 }

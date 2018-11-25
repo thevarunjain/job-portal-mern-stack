@@ -16,6 +16,7 @@ import Profile from "../profile/profile";
 import Message from "../Message/Message";
 import CompanyPage from "../Jobs/CompanyPage";
 import JobSaved from "../Jobs/JobSaved";
+import JobsBySkill from "../Jobs/JobsBySkill";
 
 class Main extends Component {
   render() {
@@ -33,6 +34,8 @@ class Main extends Component {
                 <Route path="/companypage" component={CompanyPage} exact />
                 <Route path="/jobsaved" component={JobSaved} exact />
                 <Route path="/searchedjobs/:title/:location" component={SearchedJobs} exact />
+                <Route path="/jobsbyskill" component={JobsBySkill} exact />
+
 
 
             </div>
