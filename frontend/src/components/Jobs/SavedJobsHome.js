@@ -17,10 +17,10 @@ constructor(props){
 
 async componentDidMount(){
     try {
-        let ret = await api('GET','/savedjobs');
-        
+        let ret = await api('GET','/jobs');
+        console.log("saved Jobs",ret);
         this.setState({
-          savedJobs:ret.data.payLoad.jobs,
+          savedJobs:ret.data.payLoad,
           
         })
       } catch (error) {
@@ -30,9 +30,14 @@ async componentDidMount(){
 }
 
   render() {
-
-
-
+let savedjobs=null;
+    savedjobs =this.state.savedJobs?this.state.savedJobs.map(job => {
+        return(
+          <div>
+            <JobSaved data={job}/>
+          </div>
+        )
+      }) :null;
 
       return(
     <div>
@@ -43,7 +48,7 @@ async componentDidMount(){
                 </div>
             </div>
     <div style={{paddingTop:"2%"}}>
-    <JobSaved/>
+   {savedjobs}
     </div>
     </div>
       )
