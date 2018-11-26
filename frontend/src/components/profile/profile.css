@@ -557,4 +557,9 @@ img[src='/static/media/profile-banner.388781bb.svg']
   color : white !important;
 }
 
+.sgt-text
+{
+  width : 80%;
+  max-width: 80%;
+}
   /*****************************************/

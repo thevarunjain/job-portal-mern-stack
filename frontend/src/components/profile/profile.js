@@ -81,14 +81,30 @@ class profile extends Component {
                 let userdata = nextProps.user_profile.user_profile.user;
                 console.log(moment(userdata['createdAt']));
                 console.log(userdata);
-                if(userdata['banner_image']=='')
+                console.log(userdata)
+                if(!userdata['banner_image'])
                 {
                     userdata['banner_image'] = bannerlogo;
                 }
-                if(userdata['userimage']=='')
+                if(!userdata['userimage'])
                 {
                     userdata['userimage'] = profileplaceholder;
                 }
+                if(!userdata['profile_image'])
+                {
+                    userdata['profile_image'] = profileplaceholder;
+                }
+                if(Object.keys(userdata).indexOf("address")==-1)
+                {
+                    userdata['address'] = {
+                        'city' : '',
+                        'street' : '',
+                        'country' : '',
+                        'zipcode' : ''
+                    }
+                }
+                
+
                 u.setState({
                     firstname : userdata['name']['first'],
                     lastname : userdata['name']['last'],

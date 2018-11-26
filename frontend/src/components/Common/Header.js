@@ -2,18 +2,72 @@ import React, { Component } from 'react'
 import { IMAGE_PATHS} from '../../constants/routes';
 import { Link } from 'react-router-dom'
 import $ from 'jquery';
+import { connect } from "react-redux";
+import HeaderImage from '../Files/Images/profile-placeholder.png';
+import fetchProfile from '../../actions/profile';
+import { withRouter } from "react-router";
+
 
 class Header extends Component {
 
   constructor(props)
   {
 	  super(props);
+	  this.state = {
+		'username' : 'LinkedIn user',
+		'profileimage' : HeaderImage
+
+	  }
+	  console.log(HeaderImage);
+	  this.moveToProf = this.moveToProf.bind(this);
+	  console.log(this.props);
   }
 
   toggleMenu()
   {	
 	$(".user-account-settingss").toggleClass("active");
   }
+
+  componentDidMount()
+  {
+
+		this.props.dispatch(fetchProfile());
+  }
+
+  componentWillReceiveProps(nextProps)
+  {
+	  //console.log("HEADER PROPS");
+	  //console.log(nextProps);	  
+	  try 
+	  {
+			  let data = nextProps.user_profile.user_profile.user;
+			  console.log(data);
+			if(data)
+			{
+				console.log(data.userimage);
+				if(!data.profile_image)
+				{
+					data.profile_image = HeaderImage;
+				}
+				this.setState({
+					'username' : (data.name.first + " " +  data.name.last),
+					'profileimage' : data.profile_image
+				})
+			}
+	  }
+	  catch(e)
+	  {
+		  console.log(e);
+	  }
+  }
+
+
+  moveToProf()
+  {
+	  console.log(this.props);
+	this.props.history.push("/profile");
+  }
+
 
   render() {
     return (
@@ -197,45 +251,27 @@ class Header extends Component {
 					</div>
 					<div className="user-account">
 						<div className="user-info" onClick={this.toggleMenu}>
-							<img src="http://via.placeholder.com/30x30" alt="" />
-							<Link to="/profile">John</Link>
-							<i className="la la-sort-down"></i>
+							<img src={this.state.profileimage} className="header-image" alt="" />
+							<a href="javascript:void(0)">Me<i className="toggler fas fa-chevron-down"></i></a>
+							
 						</div>
 						<div className="user-account-settingss">
-							<h3>Online Status</h3>
-							<ul className="on-off-status">
+							<ul className="us-links">
 								<li>
-									<div className="fgt-sec">
-										<input type="radio" name="cc" id="c5" />
-										<label for="c5">
-											<span></span>
-										</label>
-										<small>Online</small>
-									</div>
-								</li>
-								<li>
-									<div className="fgt-sec">
-										<input type="radio" name="cc" id="c6" />
-										<label for="c6">
-											<span></span>
-										</label>
-										<small>Offline</small>
-									</div>
+									<a href="javascript:void(0)" title="" className="lower-menu-text"   onClick={this.moveToProf}>
+										<img src={this.state.profileimage} className="header-image lower-menu-image" alt="" />
+										{this.state.username}<br/>
+										<span className="menu-view-profile" >View Profile</span>
+									</a>
 								</li>
 							</ul>
-							<h3>Custom Status</h3>
-							<div className="search_form">
-								<form>
-									<input type="text" name="search" />
-									<button type="submit">Ok</button>
-								</form>
-							</div>
+							<h3>Free Upgrade to Premium</h3>
 							<h3>Setting</h3>
 							<ul className="us-links">
-								<li><a href="profile-account-setting.html" title="">Account Setting</a></li>
-								<li><a href="#" title="">Privacy</a></li>
-								<li><a href="#" title="">Faqs</a></li>
-								<li><a href="#" title="">Terms & Conditions</a></li>
+								<li><a href="javascript:void(0)" title="">Account Setting</a></li>
+								<li><a href="javascript:void(0)" title="">Privacy</a></li>
+								<li><a href="javascript:void(0)" title="">Faqs</a></li>
+								<li><a href="javascript:void(0)" title="">Terms & Conditions</a></li>
 							</ul>
 							<h3 className="tc"><a href="sign-in.html" title="">Logout</a></h3>
 						</div>
@@ -248,4 +284,17 @@ class Header extends Component {
     )
   }
 }
-export default Header;
+//export default Header;
+
+function mapStateToProps(state) {
+    console.log("in map state details profileVIEW",state);
+    return state;
+  //  return { property_detail: state.fetch_details_view.property_detail,
+  //  };
+  }
+  
+  export default withRouter(connect(
+    mapStateToProps
+  )(Header));
+  
+  
