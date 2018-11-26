@@ -28,5 +28,6 @@ module.exports = {
     username: process.env.NEO4J_USERNAME,
     password: process.env.NEO4J_PASSWORD
 
-  }
+  },
+  redisPort: process.env.REDIS_PORT
 }
