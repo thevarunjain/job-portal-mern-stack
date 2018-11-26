@@ -47,6 +47,7 @@
     "neo4j-driver": "^1.7.2",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "kafka-node": "^2.5.0"
   }
 }

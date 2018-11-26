@@ -8,11 +8,11 @@ const request_packet = {
 }
 const httpStatus = require('http-status')
 // const mongoose = require('mongoose')
-const APIError = require('../utils/APIError')
+//const APIError = require('../utils/APIError')
 const Recruiter = require('../models/recruiter.model')
 const Applicant = require('../models/applicant.model')
 const Job = require('../models/job.model')
-const kafka = require('../kafka/client')
+
 // const Thread = require('../models/conversation.model')
 // const sql = require('./../services/sql')
 
@@ -58,57 +58,45 @@ exports.getUsers = async (req, res, next) => {
 }
 
 // router.post('/jobs', auth(), searchController.getFilteredJobs)
-exports.getFilteredJobs = async (req, res, next) => {
-  try {
-    request_packet.service = 'GET_FILTERED_JOBS'
-    request_packet.payLoad = req.body
-    kafka.make_request(config.topic.search, request_packet, (err, response) => {
-      if (err) {
-        throw new APIError(err)
+exports.getFilteredJobs = async (request) => {
+    console.log("in kafka-backend",request.payLoad);
+    const response = { payLoad: [] }
+    const title = request.payLoad.title ? request.payLoad.title : null
+    const company = request.payLoad.company ? request.payLoad.company : null
+    const skills = request.payLoad.skills ? request.payLoad.skills : []
+    let lat = null
+    let long = null
+    if (request.payLoad.coordinates) {
+      lat = request.payLoad.coordinates.latitude ? request.payLoad.coordinates.latitude : null
+      long = request.payLoad.coordinates.longitude ? request.payLoad.coordinates.longitude : null
+    }
+    const job = await Job.find().exec()
+    for (let index = 0; index < job.length; index++) {
+      const element = job[index]
+      let passesCriteria = true
+      if (lat && long && passesCriteria) {
+        passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
       }
-      console.log('came back', response)
-      res.status(httpStatus.CREATED)
-      res.send(response)
-    })
-    // const response = { payLoad: [] }
-    // const title = req.body.title ? req.body.title : null
-    // const company = req.body.company ? req.body.company : null
-    // const skills = req.body.skills ? req.body.skills : []
-    // let lat = null
-    // let long = null
-    // if (req.body.coordinates) {
-    //   lat = req.body.coordinates.latitude ? req.body.coordinates.latitude : null
-    //   long = req.body.coordinates.longitude ? req.body.coordinates.longitude : null
-    // }
-    // const job = await Job.find().exec()
-    // for (let index = 0; index < job.length; index++) {
-    //   const element = job[index]
-    //   let passesCriteria = true
-    //   if (lat && long && passesCriteria) {
-    //     passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
-    //   }
-    //   if (title && element.title && passesCriteria) {
-    //     passesCriteria = element.title.toLowerCase().includes(title.toLowerCase())
-    //   }
-    //   if (company && element.company && passesCriteria) {
-    //     passesCriteria = element.company.toLowerCase().includes(company.toLowerCase())
-    //   }
-    //   if (skills.length > 0 && element.skills && passesCriteria) {
-    //     passesCriteria = false
-    //     skills.forEach(skill => {
-    //       if (element.skills.includes(skill)) passesCriteria = true
-    //     })
-    //   }
-    //   if (passesCriteria) {
-    //     response.payLoad.push(element)
-    //   }
-    // }
-    // res.status(httpStatus.OK)
-    // res.send(response)
-  } catch (error) {
-    next(error)
-  }
-}
+      if (title && element.title && passesCriteria) {
+        passesCriteria = element.title.toLowerCase().includes(title.toLowerCase())
+      }
+      if (company && element.company && passesCriteria) {
+        passesCriteria = element.company.toLowerCase().includes(company.toLowerCase())
+      }
+      if (skills.length > 0 && element.skills && passesCriteria) {
+        passesCriteria = false
+        skills.forEach(skill => {
+          if (element.skills.includes(skill)) passesCriteria = true
+        })
+      }
+      if (passesCriteria) {
+        response.payLoad.push(element)
+      }
+    }
+    
+    return response
+  } 
+
 
 // router.post('/users', auth(), searchController.getFilteredUsers)
 exports.getFilteredUsers = async (req, res, next) => {
@@ -139,17 +127,17 @@ exports.getFilteredUsers = async (req, res, next) => {
   }
 }
 
-// const distance = (lat1, lon1, lat2, lon2) => {
-//   var radlat1 = Math.PI * lat1 / 180
-//   var radlat2 = Math.PI * lat2 / 180
-//   var theta = lon1 - lon2
-//   var radtheta = Math.PI * theta / 180
-//   var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
-//   if (dist > 1) {
-//     dist = 1
-//   }
-//   dist = Math.acos(dist)
-//   dist = dist * 180 / Math.PI
-//   dist = dist * 60 * 1.1515
-//   return dist.toPrecision(2)
-// }
+const distance = (lat1, lon1, lat2, lon2) => {
+  var radlat1 = Math.PI * lat1 / 180
+  var radlat2 = Math.PI * lat2 / 180
+  var theta = lon1 - lon2
+  var radtheta = Math.PI * theta / 180
+  var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
+  if (dist > 1) {
+    dist = 1
+  }
+  dist = Math.acos(dist)
+  dist = dist * 180 / Math.PI
+  dist = dist * 60 * 1.1515
+  return dist.toPrecision(2)
+}
