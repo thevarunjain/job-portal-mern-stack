@@ -562,4 +562,17 @@ img[src='/static/media/profile-banner.388781bb.svg']
   width : 80%;
   max-width: 80%;
 }
+
+.left-icons 
+{
+  float: left !important;
+  /* width: 100%; */
+  /* padding: 15px 20px; */
+  font-size: 29px;
+  color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #0073b1;
+}
+
+
   /*****************************************/

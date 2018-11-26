@@ -214,7 +214,7 @@ class PublicProfile extends Component {
                                                                             return (
                                                                                 <div className="">
                                                                                 <div className="suggestion-usd detail-boxes ">
-                                                                                    <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                                <span class="fa fa-briefcase left-icons"></span>
                                                                                     <div className="sgt-text">
                                                                                         <h4>
                                                                                     <div className="exp-title"> 
@@ -274,7 +274,7 @@ class PublicProfile extends Component {
                                                                             return (
                                                                                 <div className="">
                                                                                 <div className="suggestion-usd detail-boxes ">
-                                                                                    <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                                <span class="fa fa-certificate left-icons"></span>
                                                                                     <div className="sgt-text">
                                                                                         <h4>
                                                                                     <div className="exp-title"> 
@@ -362,7 +362,7 @@ class PublicProfile extends Component {
                                                             <div className="suggestion-usd detail-boxes ">
                                                                 
                                                                 
-                                                                <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                <span class="fa fa-user-circle left-icons"></span>
                                                                 <div className="sgt-text">
                                                                      <div className="exp-company">
                                                                         {this.state.firstname} {this.state.lastname}

@@ -971,7 +971,7 @@ class profile extends Component {
                                                                                 return (
                                                                                     <div className="">
                                                                                     <div className="suggestion-usd detail-boxes ">
-                                                                                        <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                                    <span class="fa fa-briefcase left-icons"></span>
                                                                                         <div className="sgt-text">
                                                                                             <h4>
                                                                                         <div className="exp-title"> 
@@ -1016,7 +1016,7 @@ class profile extends Component {
                                                         <div className=" custom-wrapper suggestions full-width">
                                                             <div className="sd-title">
                                                             <h5 className="profile-user-heading">
-                                                                Education                                     
+                                                            Education                                     
                                                                 
                                                               {/*  <i className="fa fa-pen custom-edit-buttons" aria-hidden="true"></i>*/}
                                                                 <i className="fa fa-plus custom-edit-buttons" aria-hidden="true" onClick={()=>this.openModal('EDUCATION')}></i>
@@ -1032,7 +1032,7 @@ class profile extends Component {
                                                                                 return (
                                                                                     <div className="">
                                                                                     <div className="suggestion-usd detail-boxes ">
-                                                                                        <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                                        <span class="fa fa-certificate left-icons"></span>
                                                                                         <div className="sgt-text">
                                                                                             <h4>
                                                                                         <div className="exp-title"> 
@@ -1122,7 +1122,7 @@ class profile extends Component {
                                                                 <div className="suggestion-usd detail-boxes ">
                                                                     
                                                                     
-                                                                    <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                <span class="fa fa-user-circle left-icons"></span>
                                                                     <div className="sgt-text">
                                                                          <div className="exp-company">
                                                                             {this.state.firstname} {this.state.lastname}
