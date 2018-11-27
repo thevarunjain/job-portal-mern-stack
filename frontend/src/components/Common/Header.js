@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import HeaderImage from '../Files/Images/profile-placeholder.png';
 import fetchProfile from '../../actions/profile';
 import { withRouter } from "react-router";
-
+import ReactAutocomplete from "react-autocomplete";
 
 class Header extends Component {
 
@@ -15,8 +15,13 @@ class Header extends Component {
 	  super(props);
 	  this.state = {
 		'username' : 'LinkedIn user',
-		'profileimage' : HeaderImage
-
+		'profileimage' : HeaderImage,
+		'searchResults' : [
+			{ id: 'foo', label: 'fobo' },
+			{ id: 'bar', label: 'bar' },
+			{ id: 'baz', label: 'baz' },
+		],
+		'value':'b'
 	  }
 	  console.log(HeaderImage);
 	  this.moveToProf = this.moveToProf.bind(this);
@@ -66,10 +71,33 @@ class Header extends Component {
   {
 	  console.log(this.props);
 	this.props.history.push("/profile");
+
+  }
+
+  
+
+
+  onSearchFocus()
+  {
+	  console.log('focus yes');
+	  $(".searchBtn-left").addClass("rightfocus").removeClass("leftfocus");
+	  //$(".searchBtn-right").removeClass("rightfocus");
   }
 
 
+  onSearchBlur()
+  {
+	console.log("focus no");
+	$(".searchBtn-left").addClass("leftfocus").removeClass("rightfocus");
+	//$(".searchBtn-left").removeClass("leftfocus");
+	  //$(".searchBtn-right").addClass("rightfocus");
+  }
+
   render() {
+	const commonProps = {
+		'onFocus': this.onSearchFocus,
+		'onBlur' : this.onSearchBlur
+	};
     return (
       <div>
         <header>
@@ -81,9 +109,28 @@ class Header extends Component {
 					<div className="search-bar">
 						<form>
 							
-							<input type="text" name="search" placeholder="Search..." />
-							<button type="button"><i className="fa fa-search"></i></button>
-							<button type="button" className="afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>
+							{/*<!--<input type="text" name="search" placeholder="Search..." />-->*/}
+						 <ReactAutocomplete
+								items={this.state.searchResults}
+								shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
+								getItemValue={item => item.label}
+								inputProps={commonProps}
+								wrapperStyle={{ position: 'relative' }}
+    							menuStyle={{ position: 'absolute' }}
+								renderItem={(item, highlighted) =>
+								<div
+									key={item.id}
+									style={{ backgroundColor: highlighted ? '#eee' : 'transparent',padding : '20px'}}
+								>
+									{item.label}
+								</div>
+								}
+								value={this.state.value}
+								onChange={e => this.setState({ value: e.target.value })}
+								onSelect={value => this.setState({ value })}
+							/> 
+							<button type="button" className="searchBtn-left leftfocus"><i className="fa fa-search"></i></button>
+							{/*<!--<button type="button" className="searchBtn-right afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>-->*/}
 							
 						</form>
 					</div>
