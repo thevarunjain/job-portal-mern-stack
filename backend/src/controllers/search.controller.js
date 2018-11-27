@@ -126,6 +126,9 @@ exports.getFilteredUsers = async (req, res, next) => {
       }
     }
     res.status(httpStatus.OK)
+    if (response.payLoad.length > 15) {
+      response.payLoad = response.payLoad.splice(0, 14)
+    }
     res.send(response)
   } catch (error) {
     next(error)
