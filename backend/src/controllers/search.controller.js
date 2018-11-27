@@ -56,6 +56,7 @@ exports.getUsers = async (req, res, next) => {
 // router.post('/jobs', auth(), searchController.getFilteredJobs)
 exports.getFilteredJobs = async (req, res, next) => {
   try {
+    console.log('In sarch/job Route')
     const response = { payLoad: [] }
     const criterion = req.body.criterion ? req.body.criterion : null
     let lat = null
