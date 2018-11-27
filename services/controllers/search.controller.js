@@ -61,39 +61,43 @@ exports.getUsers = async (req, res, next) => {
 exports.getFilteredJobs = async (request) => {
     console.log("in kafka-backend",request.payLoad);
     const response = { payLoad: [] }
-    const title = request.payLoad.title ? request.payLoad.title : null
-    const company = request.payLoad.company ? request.payLoad.company : null
-    const skills = request.payLoad.skills ? request.payLoad.skills : []
+    const criterion = request.payLoad.criterion ? request.payLoad.criterion : null
     let lat = null
     let long = null
     if (request.payLoad.coordinates) {
       lat = request.payLoad.coordinates.latitude ? request.payLoad.coordinates.latitude : null
       long = request.payLoad.coordinates.longitude ? request.payLoad.coordinates.longitude : null
     }
-    const job = await Job.find().exec()
-    for (let index = 0; index < job.length; index++) {
-      const element = job[index]
-      let passesCriteria = true
-      if (lat && long && passesCriteria) {
-        passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
-      }
-      if (title && element.title && passesCriteria) {
-        passesCriteria = element.title.toLowerCase().includes(title.toLowerCase())
-      }
-      if (company && element.company && passesCriteria) {
-        passesCriteria = element.company.toLowerCase().includes(company.toLowerCase())
-      }
-      if (skills.length > 0 && element.skills && passesCriteria) {
-        passesCriteria = false
-        skills.forEach(skill => {
-          if (element.skills.includes(skill)) passesCriteria = true
-        })
-      }
-      if (passesCriteria) {
-        response.payLoad.push(element)
-      }
+
+    var search_words = criterion.split(" ")
+    for (let index = 0; index < search_words.length; index++){
+        var query = {
+            "$or": [
+                {
+                    "title": {
+                        "$regex": search_words[index],
+                        "$options": "i"
+                    }
+                },
+                {
+                    "company": {
+                        "$regex": search_words[index],
+                        "$options": "i"
+                    }
+                },
+                {
+                    "skills": {
+                        "$regex": search_words[index],
+                        "$options": "i"
+                    }
+                }
+            ]
+        };
+        var result = await Job.find(query).exec()
+        result = result.filter(job => distance(lat, long, job.address.coordinates.latitude,
+            job.address.coordinates.longitude) < 50)
+        response.payLoad = response.payLoad.concat(result)
     }
-    
     return response
   } 
 

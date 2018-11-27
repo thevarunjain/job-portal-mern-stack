@@ -16,7 +16,9 @@ import Profile from "../profile/profile";
 import Message from "../Message/Message";
 import CompanyPage from "../Jobs/CompanyPage";
 import JobSaved from "../Jobs/JobSaved";
+import SavedJobsHome from "../Jobs/SavedJobsHome";
 import JobsBySkill from "../Jobs/JobsBySkill";
+import PublicProfile from "../profile/publicprofile";
 
 class Main extends Component {
   render() {
@@ -32,9 +34,10 @@ class Main extends Component {
                 <Route path="/profile" component={Profile} exact />
                 <Route path="/message" component={Message} exact />
                 <Route path="/companypage" component={CompanyPage} exact />
-                <Route path="/jobsaved" component={JobSaved} exact />
+                <Route path="/jobshome/savedjobs" component={SavedJobsHome} exact />
                 <Route path="/searchedjobs/:title/:location" component={SearchedJobs} exact />
                 <Route path="/jobsbyskill" component={JobsBySkill} exact />
+                <Route path="/public-profile/:id" component={PublicProfile} exact />
 
 
 

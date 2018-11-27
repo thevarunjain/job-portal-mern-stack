@@ -38,6 +38,7 @@
     "http-status": "^1.0.1",
     "joi": "^13.1.2",
     "jsonwebtoken": "^8.1.1",
+    "kafka-node": "^2.6.1",
     "mongoose": "^5.0.7",
     "mongoose-error-handler": "^1.0.0",
     "morgan": "^1.9.0",
@@ -47,7 +48,7 @@
     "neo4j-driver": "^1.7.2",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
-    "uuid": "^3.3.2",
-    "kafka-node": "^2.5.0"
+    "redis": "^2.8.0",
+    "uuid": "^3.3.2"
   }
 }

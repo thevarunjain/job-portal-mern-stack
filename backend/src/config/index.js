@@ -34,5 +34,6 @@ module.exports = {
     response: process.env.RESPONSE_TOPIC,
     user: process.env.USER_REQUEST_TOPIC,
     search: process.env.SEARCH_REQUEST_TOPIC
-  }
+  },
+  redisPort: process.env.REDIS_PORT
 }

@@ -13,6 +13,8 @@ const Recruiter = require('../models/recruiter.model')
 const Applicant = require('../models/applicant.model')
 const Job = require('../models/job.model')
 const kafka = require('../kafka/client')
+const RedisClient = require('../services/redis')
+
 // const Thread = require('../models/conversation.model')
 // const sql = require('./../services/sql')
 
@@ -62,49 +64,23 @@ exports.getFilteredJobs = async (req, res, next) => {
   try {
     request_packet.service = 'GET_FILTERED_JOBS'
     request_packet.payLoad = req.body
+    const criterion = req.body.criterion ? req.body.criterion : null
+    let lat = null
+    let long = null
+    if (req.body.coordinates) {
+      lat = req.body.coordinates.latitude ? req.body.coordinates.latitude : null
+      long = req.body.coordinates.longitude ? req.body.coordinates.longitude : null
+    }
     kafka.make_request(config.topic.search, request_packet, (err, response) => {
       if (err) {
         throw new APIError(err)
       }
       console.log('came back', response)
-      res.status(httpStatus.CREATED)
+      var key = criterion.split(" ").join("_") + "_" + lat + "_" + long
+      RedisClient.set(key, JSON.stringify(response))
+      res.status(httpStatus.OK)
       res.send(response)
     })
-    // const response = { payLoad: [] }
-    // const title = req.body.title ? req.body.title : null
-    // const company = req.body.company ? req.body.company : null
-    // const skills = req.body.skills ? req.body.skills : []
-    // let lat = null
-    // let long = null
-    // if (req.body.coordinates) {
-    //   lat = req.body.coordinates.latitude ? req.body.coordinates.latitude : null
-    //   long = req.body.coordinates.longitude ? req.body.coordinates.longitude : null
-    // }
-    // const job = await Job.find().exec()
-    // for (let index = 0; index < job.length; index++) {
-    //   const element = job[index]
-    //   let passesCriteria = true
-    //   if (lat && long && passesCriteria) {
-    //     passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
-    //   }
-    //   if (title && element.title && passesCriteria) {
-    //     passesCriteria = element.title.toLowerCase().includes(title.toLowerCase())
-    //   }
-    //   if (company && element.company && passesCriteria) {
-    //     passesCriteria = element.company.toLowerCase().includes(company.toLowerCase())
-    //   }
-    //   if (skills.length > 0 && element.skills && passesCriteria) {
-    //     passesCriteria = false
-    //     skills.forEach(skill => {
-    //       if (element.skills.includes(skill)) passesCriteria = true
-    //     })
-    //   }
-    //   if (passesCriteria) {
-    //     response.payLoad.push(element)
-    //   }
-    // }
-    // res.status(httpStatus.OK)
-    // res.send(response)
   } catch (error) {
     next(error)
   }

@@ -16,29 +16,45 @@ class JobsBySkill extends Component {
         var used_id = sessionStorage.getItem("user_id")
         try 
         {
-            let ret = await api("GET",`/users/${used_id}`);
-            let job = await api("GET",`/search/jobs`);
-            var recommended_jobs = []
-            var skill_set = ret.data.payLoad.user.skills;
-            var all_jobs =job.data.payLoad.job
-            // console.log(skill_set)
-            for(var i=0;i<all_jobs.length;i++){
-                let flag=0;   
-                for(var j=0;j<all_jobs[i].skills.length && flag==0;j++){
-                    for(var k=0; k<skill_set.length; k++){
-                          if(all_jobs[i].skills[j]==skill_set[k]){
-                            recommended_jobs.push(all_jobs[i]);
-                            flag=1;
-                            break;
-                          }  
-                    }                      
-                }
-            }
+//3rd Approach direct by backend route
+            let ret = await api("GET",`/jobs/recommendation`);
+            var recommended_jobs = ret.data.payLoad
 
-            console.log(recommended_jobs);
+//2nd Approach to get jobs by Skills of user
+            // let ret = await api("GET",`/users/${used_id}`);
+            // var skill_set = ret.data.payLoad.user.skills;
+            // var data = { 
+            //     "skills" : skill_set
+            // }
+            // console.log(data)
+            // console.log(data)
+            // let interested_jobs = await api("POST",`/search/jobs`,data);
+            // console.log(interested_jobs);
+
+//1st Approach to get jobs by user skill
+            // let ret = await api("GET",`/users/${used_id}`);
+            // let job = await api("GET",`/search/jobs`);
+            // var recommended_jobs = []
+            // var skill_set = ret.data.payLoad.user.skills;
+            // var all_jobs =job.data.payLoad.job
+            // // console.log(skill_set)
+            // for(var i=0;i<all_jobs.length;i++){
+            //     let flag=0;   
+            //     for(var j=0;j<all_jobs[i].skills.length && flag==0;j++){
+            //         for(var k=0; k<skill_set.length; k++){
+            //               if(all_jobs[i].skills[j]==skill_set[k]){
+            //                 recommended_jobs.push(all_jobs[i]);
+            //                 flag=1;
+            //                 break;
+            //               }  
+            //         }                      
+            //     }
+            // }
+
+           // console.log(recommended_jobs);
 
             this.setState({
-                recommended_jobs : all_jobs
+               recommended_jobs
             })
 
             // all_jobs.map((job)=>{

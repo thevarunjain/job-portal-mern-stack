@@ -30,8 +30,7 @@ function ConnectionProvider() {
             var HighLevelProducer = kafka.HighLevelProducer;
             this.kafkaProducerConnection = new HighLevelProducer(client);
             //this.kafkaConnection = new kafka.Producer(client);
-            console.log('producer ready');
-            client.on('ready', function () { console.log('Producer ready!') })
+            client.on('ready', function () { console.log('Producer ready') })
             client.on('error', function (err) { console.error(error)})
         }
         return this.kafkaProducerConnection;

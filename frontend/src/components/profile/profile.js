@@ -11,6 +11,7 @@ import { api , printError, printMessage} from '../../services/';
 import fetchProfile from '../../actions/profile';
 import * as moment from 'moment';
 import PLACES from '../Common/Places';
+import { Link } from 'react-router-dom';
 
 
 window.delrows =  function(f){
@@ -75,20 +76,35 @@ class profile extends Component {
         let u = this;
         try
         {
-            if(this.props.user_profile)
+            if(u.props.user_profile)
             {
-                let usertype = this.props.user_profile.user_profile.role;
-                let userdata = this.props.user_profile.user_profile.user;
+                let userdata = nextProps.user_profile.user_profile.user;
                 console.log(moment(userdata['createdAt']));
                 console.log(userdata);
-                if(userdata['banner_image']=='')
+                console.log(userdata)
+                if(!userdata['banner_image'])
                 {
                     userdata['banner_image'] = bannerlogo;
                 }
-                if(userdata['profile']=='')
+                if(!userdata['userimage'])
                 {
-                    userdata['profile'] = profileplaceholder;
+                    userdata['userimage'] = profileplaceholder;
                 }
+                if(!userdata['profile_image'])
+                {
+                    userdata['profile_image'] = profileplaceholder;
+                }
+                if(Object.keys(userdata).indexOf("address")==-1)
+                {
+                    userdata['address'] = {
+                        'city' : '',
+                        'street' : '',
+                        'country' : '',
+                        'zipcode' : ''
+                    }
+                }
+                
+
                 u.setState({
                     firstname : userdata['name']['first'],
                     lastname : userdata['name']['last'],
@@ -98,14 +114,15 @@ class profile extends Component {
                     country : userdata['address']['country'],
                     zipcode : userdata['address']['zipcode'],
                     banner : userdata['banner_image'],
-                    profile : userdata['profile_image'],
+                    userimage : userdata['profile_image'],
                     education : userdata['education'],
                     experience : userdata['experience'],
                     resume : userdata['resume'],
                     skills : userdata['skills'],
                     summary : userdata['summary'],
                     createdAt : userdata['createdAt'],
-                    updatedAt : userdata['updatedAt']
+                    updatedAt : userdata['updatedAt'],
+                    publicid : userdata['id']
                 });
                 setTimeout(()=>{
                     console.log(u.state);
@@ -871,6 +888,8 @@ class profile extends Component {
         }
     }
 
+
+
     render() {
         
         console.log(this.state);
@@ -952,7 +971,7 @@ class profile extends Component {
                                                                                 return (
                                                                                     <div className="">
                                                                                     <div className="suggestion-usd detail-boxes ">
-                                                                                        <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                                    <span class="fa fa-briefcase left-icons"></span>
                                                                                         <div className="sgt-text">
                                                                                             <h4>
                                                                                         <div className="exp-title"> 
@@ -997,7 +1016,7 @@ class profile extends Component {
                                                         <div className=" custom-wrapper suggestions full-width">
                                                             <div className="sd-title">
                                                             <h5 className="profile-user-heading">
-                                                                Education                                     
+                                                            Education                                     
                                                                 
                                                               {/*  <i className="fa fa-pen custom-edit-buttons" aria-hidden="true"></i>*/}
                                                                 <i className="fa fa-plus custom-edit-buttons" aria-hidden="true" onClick={()=>this.openModal('EDUCATION')}></i>
@@ -1013,7 +1032,7 @@ class profile extends Component {
                                                                                 return (
                                                                                     <div className="">
                                                                                     <div className="suggestion-usd detail-boxes ">
-                                                                                        <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                                        <span class="fa fa-certificate left-icons"></span>
                                                                                         <div className="sgt-text">
                                                                                             <h4>
                                                                                         <div className="exp-title"> 
@@ -1103,7 +1122,7 @@ class profile extends Component {
                                                                 <div className="suggestion-usd detail-boxes ">
                                                                     
                                                                     
-                                                                    <img src="http://via.placeholder.com/35x35" alt="" />
+                                                                <span class="fa fa-user-circle left-icons"></span>
                                                                     <div className="sgt-text">
                                                                          <div className="exp-company">
                                                                             {this.state.firstname} {this.state.lastname}
@@ -1161,7 +1180,7 @@ class profile extends Component {
                         
                                                     <div className="col-lg-3 right-sidebar">
                                                         <div >
-                                                            <a href="javascript:void(0)" className="view-public save-button"> View Public Page</a>
+                                                            <a href="javascript:void(0)" className="view-public save-button"><Link to={`/public-profile/${this.state.publicid}`} target="_blank" >View Public Page</Link> </a>
                                                         </div>
                                                         <div className="widget widget-portfolio">
                                                             <div className="wd-heady">
@@ -1372,7 +1391,7 @@ class profile extends Component {
                                                                             <input class="form-control"  id="lastname" name="lastname" onChange={this.handleText} value={this.state.lastname}  />
                                                                         </div>
                                                                     </div>
-                                                                    <div class="form-group">
+                                                                    <div class="form-group pos-rel">
                                                                         <label for="inputAddress">Address</label>
                                                                         
                                                                         <PlacesAutocomplete
