@@ -5655,4 +5655,35 @@ nav ul li a:hover .header-icons
 	cursor: pointer;
 }
 
+.search-lastname
+{
+	font-weight: 400;
+	font-size:18px;
+	padding-left: 3px;
+	display: inline-block;
+}
+
+.search-firstname
+{
+	font-weight: 500;
+	font-size: 20px;
+	padding-left: 3px;
+	
+}
+
+
+.search-user-image {
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+    margin-top: -2px;
+}
+
+div.search-bar > form > div > div > div
+{
+	background-color: rgb(238, 238, 238);
+    padding: 10px;
+    cursor: pointer;
+    height: 40px;
+}
 /***********************************************/

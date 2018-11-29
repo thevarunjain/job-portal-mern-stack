@@ -7,6 +7,7 @@ import HeaderImage from '../Files/Images/profile-placeholder.png';
 import fetchProfile from '../../actions/profile';
 import { withRouter } from "react-router";
 import ReactAutocomplete from "react-autocomplete";
+import Autocomplete from "react-autocomplete";
 import { api , printError, printMessage} from '../../services/';
 import profileplaceholder from '../Files/Images/profile-placeholder.png'
 
@@ -18,18 +19,15 @@ class Header extends Component {
 	  this.state = {
 		'username' : 'LinkedIn user',
 		'profileimage' : HeaderImage,
-		'searchResults' : [
-			{ id: 'foo', label: 'fobo' },
-			{ id: 'bar', label: 'bar' },
-			{ id: 'baz', label: 'baz' },
-		],
-		'value':''
+		'searchResults' : [],
+		'value':'',
+		'refererobject' : {}
 	  }
 	  console.log(HeaderImage);
 	  this.moveToProf = this.moveToProf.bind(this);
 	  this.valSelect = this.valSelect.bind(this);
 	  this.onChangeSearch = this.onChangeSearch.bind(this);
-
+	  this.openPublicSearchProfile = this.openPublicSearchProfile.bind(this);
 
 	  console.log(this.props);
   }
@@ -99,8 +97,9 @@ class Header extends Component {
 	  //$(".searchBtn-right").addClass("rightfocus");
   }
 
-  valSelect(e)
+  valSelect(e,id)
   {
+	   
 	  this.setState({
 		  'value' : e
 	  });
@@ -123,23 +122,27 @@ class Header extends Component {
 		try {
 			let ret = await api('POST','/search/users',data);
 			console.log(ret);
+			let refererobject = {};
 			if(ret.status>=200 && ret.status<300)
 			{
 				let temparray = [];
-				for(let k = 0 ; k < ret['data']['payLoad'].length ; k++ )
+				
+				for(let k = 0 ; k < (ret['data']['payLoad'].length>5?5:ret['data']['payLoad'].length) ; k++ )
 				{
 					let currentObj = ret['data']['payLoad'][k];
 					let temp =  {
 						'userimage' : '',
-						'username' : '',
+						'label' : '',
 						'membersince' : '',
+						'userid' :'',
 					};
+					
 					let keys = Object.keys(currentObj);
 					if(keys.indexOf('profile_image')!=-1)
 					{
-						if(ret['data']['payLoad'][k]['profile_image'])
+						if(currentObj['profile_image'])
 						{
-							temp.userimage = ret['data']['payLoad']
+							temp.userimage = currentObj['profile_image']
 						}
 						else 
 						{
@@ -150,10 +153,20 @@ class Header extends Component {
 					{
 						temp.userimage =  profileplaceholder;
 					}
-					temp.username = currentObj['name']['first'] + " " + currentObj['name']['last'];
+					temp.label = currentObj['name']['first'] + " " + currentObj['name']['last'];
+					temp.lastname = '';
 					temp.membersince = '';
+					temp.userid = currentObj['id'];
+					
+
 					temparray.push(temp);
+					//temparray2.push(refererobject);
+					//console.log(this.state);
 				}
+				this.setState({
+					searchResults : temparray
+				});
+				console.log(this.state);
 			}
 			else 
 			{
@@ -169,10 +182,23 @@ class Header extends Component {
   }
 
 
+  openPublicSearchProfile(e,f)
+  {
+		this.setState({
+			'value': f
+		});
+		let strx = '/public-profile/'+e;
+		/* this.props.history.push({
+			pathname: '/public-profile/'+e,
+		}) */
+		window.open(strx,"_blank");
+  }
+
   render() {
 	const commonProps = {
 		'onFocus': this.onSearchFocus,
-		'onBlur' : this.onSearchBlur
+		'onBlur' : this.onSearchBlur,
+		'id' : 'states-autocomplete'
 	};
     return (
       <div>
@@ -195,16 +221,30 @@ class Header extends Component {
     							menuStyle={{ position: 'absolute' }}
 								renderItem={(item, highlighted) =>
 								<div
-									key={item.id}
+									key={item.userid}
+									data-uid={item.userid}
 									style={{ backgroundColor: highlighted ? '#eee' : 'transparent',padding : '10px','cursor' : 'pointer'}}
+									/* onClick={()=>this.openPublicSearchProfile(item.userid)} */
 								>
-									{item.label}
+									<span id={item.userid} className="user-image">
+										<img src={item.userimage}  className="search-user-image" />
+									</span>
+									<span className="search-firstname">{item.label}</span>
+									<span className="search-lastname">{item.lastname}</span>
 								</div>
 								}
 								value={this.state.value}
 								onChange={e => this.onChangeSearch(e)}
-								onSelect={e=>this.valSelect(e)}
+								onSelect={(value, item) => {
+									// set the menu to only the selected item
+									console.log(item);
+									console.log(item.userid)
+									this.openPublicSearchProfile(item.userid,value);
+								  }}
+						
 							/> 
+
+ 
 							<button type="button" className="searchBtn-left leftfocus"><i className="fa fa-search"></i></button>
 							{/*<!--<button type="button" className="searchBtn-right afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>-->*/}
 							
