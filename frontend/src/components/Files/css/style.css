@@ -380,7 +380,7 @@ header {
 .search-bar form div div
 {
 	left : 0px !important;
-	background: red;
+	background: white;
 }
 
 
@@ -407,6 +407,7 @@ header {
 	border: 0;
 	visibility: visible;
 	transition:  all 0.8s ease-in-out;
+	z-index: 99999999999;
 	
 }
 

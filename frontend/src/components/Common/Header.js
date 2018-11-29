@@ -7,6 +7,8 @@ import HeaderImage from '../Files/Images/profile-placeholder.png';
 import fetchProfile from '../../actions/profile';
 import { withRouter } from "react-router";
 import ReactAutocomplete from "react-autocomplete";
+import { api , printError, printMessage} from '../../services/';
+import profileplaceholder from '../Files/Images/profile-placeholder.png'
 
 class Header extends Component {
 
@@ -21,10 +23,14 @@ class Header extends Component {
 			{ id: 'bar', label: 'bar' },
 			{ id: 'baz', label: 'baz' },
 		],
-		'value':'b'
+		'value':''
 	  }
 	  console.log(HeaderImage);
 	  this.moveToProf = this.moveToProf.bind(this);
+	  this.valSelect = this.valSelect.bind(this);
+	  this.onChangeSearch = this.onChangeSearch.bind(this);
+
+
 	  console.log(this.props);
   }
 
@@ -93,6 +99,76 @@ class Header extends Component {
 	  //$(".searchBtn-right").addClass("rightfocus");
   }
 
+  valSelect(e)
+  {
+	  this.setState({
+		  'value' : e
+	  });
+	  this.onSearchBlur();
+	  $(".search-bar form div input").blur();
+  }
+
+
+  async onChangeSearch(e)
+  {
+	  console.log("this chnge");
+	  this.setState({ 
+		  value: e.target.value 
+	  });
+	  if(e.target.value.length>=1)
+	  {
+		let data = {
+			"name" : e.target.value
+		}
+		try {
+			let ret = await api('POST','/search/users',data);
+			console.log(ret);
+			if(ret.status>=200 && ret.status<300)
+			{
+				let temparray = [];
+				for(let k = 0 ; k < ret['data']['payLoad'].length ; k++ )
+				{
+					let currentObj = ret['data']['payLoad'][k];
+					let temp =  {
+						'userimage' : '',
+						'username' : '',
+						'membersince' : '',
+					};
+					let keys = Object.keys(currentObj);
+					if(keys.indexOf('profile_image')!=-1)
+					{
+						if(ret['data']['payLoad'][k]['profile_image'])
+						{
+							temp.userimage = ret['data']['payLoad']
+						}
+						else 
+						{
+							temp.userimage =  profileplaceholder;
+						}
+					}
+					else 
+					{
+						temp.userimage =  profileplaceholder;
+					}
+					temp.username = currentObj['name']['first'] + " " + currentObj['name']['last'];
+					temp.membersince = '';
+					temparray.push(temp);
+				}
+			}
+			else 
+			{
+				throw "error";
+			}
+		  } 
+		  catch (error) 
+		  {
+			console.log(Object.keys(error), error.response);
+			printError(error);
+		  }
+	  }
+  }
+
+
   render() {
 	const commonProps = {
 		'onFocus': this.onSearchFocus,
@@ -120,14 +196,14 @@ class Header extends Component {
 								renderItem={(item, highlighted) =>
 								<div
 									key={item.id}
-									style={{ backgroundColor: highlighted ? '#eee' : 'transparent',padding : '20px'}}
+									style={{ backgroundColor: highlighted ? '#eee' : 'transparent',padding : '10px','cursor' : 'pointer'}}
 								>
 									{item.label}
 								</div>
 								}
 								value={this.state.value}
-								onChange={e => this.setState({ value: e.target.value })}
-								onSelect={value => this.setState({ value })}
+								onChange={e => this.onChangeSearch(e)}
+								onSelect={e=>this.valSelect(e)}
 							/> 
 							<button type="button" className="searchBtn-left leftfocus"><i className="fa fa-search"></i></button>
 							{/*<!--<button type="button" className="searchBtn-right afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>-->*/}
