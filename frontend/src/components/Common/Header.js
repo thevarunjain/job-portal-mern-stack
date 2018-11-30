@@ -122,7 +122,6 @@ class Header extends Component {
 		try {
 			let ret = await api('POST','/search/users',data);
 			console.log(ret);
-			let refererobject = {};
 			if(ret.status>=200 && ret.status<300)
 			{
 				let temparray = [];
@@ -157,11 +156,7 @@ class Header extends Component {
 					temp.lastname = '';
 					temp.membersince = '';
 					temp.userid = currentObj['id'];
-					
-
 					temparray.push(temp);
-					//temparray2.push(refererobject);
-					//console.log(this.state);
 				}
 				this.setState({
 					searchResults : temparray
@@ -191,6 +186,7 @@ class Header extends Component {
 		/* this.props.history.push({
 			pathname: '/public-profile/'+e,
 		}) */
+		this.onSearchBlur();
 		window.open(strx,"_blank");
   }
 
@@ -223,8 +219,7 @@ class Header extends Component {
 								<div
 									key={item.userid}
 									data-uid={item.userid}
-									style={{ backgroundColor: highlighted ? '#eee' : 'transparent',padding : '10px','cursor' : 'pointer'}}
-									/* onClick={()=>this.openPublicSearchProfile(item.userid)} */
+									style={{ backgroundColor: highlighted ? '#FFF' : '#FFF',padding : '10px','cursor' : 'pointer'}}
 								>
 									<span id={item.userid} className="user-image">
 										<img src={item.userimage}  className="search-user-image" />
