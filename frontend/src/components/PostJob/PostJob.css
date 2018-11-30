@@ -1,0 +1,227 @@
+.jobform {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  margin: auto;
+  height: auto;
+  margin-top: 5%;
+  width: 25%;
+  padding: 30px;
+  background-color: white;
+}
+
+.body {
+  background-color: #f5f5f5;
+}
+.jobtext {
+  margin-left: 33%;
+  color: white;
+  font-size: xx-large;
+}
+
+.containerstyle {
+  background: #006097;
+  height: 544px;
+}
+.submitbutton {
+  background-color: #004b7c;
+  border: 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  height: 48px;
+  line-height: 48px;
+  outline-width: 2px;
+  padding: 0 32px;
+  transition-duration: 167ms;
+  transition-property: background-color, box-shadow, color;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  vertical-align: middle;
+}
+
+.wow-page__submit-button {
+  width: 100%;
+  margin: 8px 0 0;
+}
+
+.profile {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: auto;
+
+  margin-top: 5%;
+
+  float: left;
+  width: 50%;
+  padding: 30px;
+
+  margin-left: 7%;
+
+  height: 860px;
+  border: lightgrey 1px solid;
+}
+
+.profileform h2 {
+  margin: 6%;
+  font-size: 160%;
+}
+
+.profileform .form-control {
+  background: #f7f7f7 none repeat scroll 0 0;
+  width: 90%;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px;
+}
+
+.button-large {
+  margin-top: 42%;
+
+  margin-left: 72%;
+  background-color: #004b7c;
+  border: 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-family: inherit;
+  height: 40px;
+  line-height: 40px;
+  overflow: hidden;
+  outline-width: 2px;
+  padding: 0 24px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition-duration: 167ms;
+  transition-property: background-color, box-shadow, color;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  vertical-align: middle;
+  z-index: 0;
+}
+/* .jobsmain {
+  background-color: #fff;
+  background-clip: padding-box;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  -ms-flex-preferred-size: 744px;
+  flex-basis: 744px;
+} */
+.footercrop {
+  width: 1439px;
+  height: 180px;
+}
+
+/* .step1 {
+  width: 50%;
+  margin-left: 5%;
+  height: 860px;
+  border: lightgrey 1px solid;
+} */
+
+.profile1 {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: auto;
+
+  margin-top: 5%;
+
+  float: left;
+  width: 50%;
+  padding: 30px;
+
+  margin-left: 7%;
+
+  height: 460px;
+  border: lightgrey 1px solid;
+}
+
+.profileform1 h2 {
+  margin: 6%;
+  font-size: 160%;
+}
+
+.profileform1 .form-control {
+  background: #f7f7f7 none repeat scroll 0 0;
+  width: 90%;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px;
+}
+
+.buttonstyle {
+  background: white;
+  margin-top: 2%;
+}
+
+.button-large2 {
+  margin-top: 42%;
+
+  margin-left: 12%;
+  background-color: #004b7c;
+  border: 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-family: inherit;
+  height: 40px;
+  line-height: 40px;
+  overflow: hidden;
+  outline-width: 2px;
+  padding: 0 24px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition-duration: 167ms;
+  transition-property: background-color, box-shadow, color;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  vertical-align: middle;
+  z-index: 0;
+}
+
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none; /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+  transition: opacity 0.2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: rgb(76, 91, 175); /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: rgb(76, 91, 175); /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
