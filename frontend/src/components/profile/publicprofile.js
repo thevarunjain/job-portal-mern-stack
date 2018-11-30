@@ -91,7 +91,27 @@ class PublicProfile extends Component {
                                 'zipcode' : ''
                             }
                         }
-                
+                        if(Object.keys(userdata).indexOf("education")==-1)
+                        {
+                            userdata['education'] = [];
+                        }
+                        if(Object.keys(userdata).indexOf("experience")==-1)
+                        {
+                            userdata['experience'] = [];
+                        }
+                        if(Object.keys(userdata).indexOf("resume")==-1)
+                        {
+                            userdata['resume'] = '';
+                        }
+                        if(Object.keys(userdata).indexOf("skills")==-1)
+                        {
+                            userdata['skills'] = [];
+                        }
+                        if(Object.keys(userdata).indexOf("summary")==-1)
+                        {
+                            userdata['summary'] = '';
+                        }
+                       
                         this.setState({
                             firstname : userdata['name']['first'],
                             lastname : userdata['name']['last'],
