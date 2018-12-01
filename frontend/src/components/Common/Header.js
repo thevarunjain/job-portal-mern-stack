@@ -114,6 +114,14 @@ class Header extends Component {
 									</Link>
 							</li>
 							<li>
+									<Link to= "/postedjobs">
+										<div>
+											<i className="fa fa-briefcase header-icons"></i>
+										</div>
+										Posted Jobs
+									</Link>
+							</li>
+							<li>
 									<a href="#" title="">
 										<div>
 											<i className="fa fa-bell header-icons"></i>
