@@ -6,7 +6,10 @@ import { connect } from "react-redux";
 import HeaderImage from '../Files/Images/profile-placeholder.png';
 import fetchProfile from '../../actions/profile';
 import { withRouter } from "react-router";
-
+import ReactAutocomplete from "react-autocomplete";
+import Autocomplete from "react-autocomplete";
+import { api , printError, printMessage} from '../../services/';
+import profileplaceholder from '../Files/Images/profile-placeholder.png'
 
 class Header extends Component {
 
@@ -15,11 +18,17 @@ class Header extends Component {
 	  super(props);
 	  this.state = {
 		'username' : 'LinkedIn user',
-		'profileimage' : HeaderImage
-
+		'profileimage' : HeaderImage,
+		'searchResults' : [],
+		'value':'',
+		'refererobject' : {}
 	  }
 	  console.log(HeaderImage);
 	  this.moveToProf = this.moveToProf.bind(this);
+	  this.valSelect = this.valSelect.bind(this);
+	  this.onChangeSearch = this.onChangeSearch.bind(this);
+	  this.openPublicSearchProfile = this.openPublicSearchProfile.bind(this);
+
 	  console.log(this.props);
   }
 
@@ -66,10 +75,127 @@ class Header extends Component {
   {
 	  console.log(this.props);
 	this.props.history.push("/profile");
+
+  }
+
+  
+
+
+  onSearchFocus()
+  {
+	  console.log('focus yes');
+	  $(".searchBtn-left").addClass("rightfocus").removeClass("leftfocus");
+	  //$(".searchBtn-right").removeClass("rightfocus");
   }
 
 
+  onSearchBlur()
+  {
+	console.log("focus no");
+	$(".searchBtn-left").addClass("leftfocus").removeClass("rightfocus");
+	//$(".searchBtn-left").removeClass("leftfocus");
+	  //$(".searchBtn-right").addClass("rightfocus");
+  }
+
+  valSelect(e,id)
+  {
+	   
+	  this.setState({
+		  'value' : e
+	  });
+	  this.onSearchBlur();
+	  $(".search-bar form div input").blur();
+  }
+
+
+  async onChangeSearch(e)
+  {
+	  console.log("this chnge");
+	  this.setState({ 
+		  value: e.target.value 
+	  });
+	  if(e.target.value.length>=1)
+	  {
+		let data = {
+			"name" : e.target.value
+		}
+		try {
+			let ret = await api('POST','/search/users',data);
+			console.log(ret);
+			if(ret.status>=200 && ret.status<300)
+			{
+				let temparray = [];
+				
+				for(let k = 0 ; k < (ret['data']['payLoad'].length>5?5:ret['data']['payLoad'].length) ; k++ )
+				{
+					let currentObj = ret['data']['payLoad'][k];
+					let temp =  {
+						'userimage' : '',
+						'label' : '',
+						'membersince' : '',
+						'userid' :'',
+					};
+					
+					let keys = Object.keys(currentObj);
+					if(keys.indexOf('profile_image')!=-1)
+					{
+						if(currentObj['profile_image'])
+						{
+							temp.userimage = currentObj['profile_image']
+						}
+						else 
+						{
+							temp.userimage =  profileplaceholder;
+						}
+					}
+					else 
+					{
+						temp.userimage =  profileplaceholder;
+					}
+					temp.label = currentObj['name']['first'] + " " + currentObj['name']['last'];
+					temp.lastname = '';
+					temp.membersince = '';
+					temp.userid = currentObj['id'];
+					temparray.push(temp);
+				}
+				this.setState({
+					searchResults : temparray
+				});
+				console.log(this.state);
+			}
+			else 
+			{
+				throw "error";
+			}
+		  } 
+		  catch (error) 
+		  {
+			console.log(Object.keys(error), error.response);
+			printError(error);
+		  }
+	  }
+  }
+
+
+  openPublicSearchProfile(e,f)
+  {
+		this.setState({
+			'value': f
+		});
+		let strx = '/public-profile/'+e;
+		/* this.props.history.push({
+			pathname: '/public-profile/'+e,
+		}) */
+		this.onSearchBlur();
+		window.open(strx,"_blank");
+  }
+
   render() {
+	const commonProps = {
+		'onFocus': this.onSearchFocus,
+		'onBlur' : this.onSearchBlur,
+		'id' : 'states-autocomplete'
+	};
     return (
       <div>
         <header>
@@ -81,9 +207,41 @@ class Header extends Component {
 					<div className="search-bar">
 						<form>
 							
-							<input type="text" name="search" placeholder="Search..." />
-							<button type="button"><i className="fa fa-search"></i></button>
-							<button type="button" className="afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>
+							{/*<!--<input type="text" name="search" placeholder="Search..." />-->*/}
+						 <ReactAutocomplete
+								items={this.state.searchResults}
+								shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
+								getItemValue={item => item.label}
+								inputProps={commonProps}
+								wrapperStyle={{ position: 'relative' }}
+    							menuStyle={{ position: 'absolute' }}
+								renderItem={(item, highlighted) =>
+								<div
+									key={item.userid}
+									data-uid={item.userid}
+									style={{ backgroundColor: highlighted ? '#FFF' : '#FFF',padding : '10px','cursor' : 'pointer'}}
+								>
+									<span id={item.userid} className="user-image">
+										<img src={item.userimage}  className="search-user-image" />
+									</span>
+									<span className="search-firstname">{item.label}</span>
+									<span className="search-lastname">{item.lastname}</span>
+								</div>
+								}
+								value={this.state.value}
+								onChange={e => this.onChangeSearch(e)}
+								onSelect={(value, item) => {
+									// set the menu to only the selected item
+									console.log(item);
+									console.log(item.userid)
+									this.openPublicSearchProfile(item.userid,value);
+								  }}
+						
+							/> 
+
+ 
+							<button type="button" className="searchBtn-left leftfocus"><i className="fa fa-search"></i></button>
+							{/*<!--<button type="button" className="searchBtn-right afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>-->*/}
 							
 						</form>
 					</div>

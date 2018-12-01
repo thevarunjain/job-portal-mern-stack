@@ -368,6 +368,23 @@ header {
 	width: 100%;
 	position: relative;
 }
+
+.search-bar form div 
+{
+	display: block !important;
+	width:  100% !important;
+	max-width: 280px;
+	z-index: 1111111111;
+}
+
+.search-bar form div div
+{
+	left : 0px !important;
+	background: white;
+}
+
+
+
 .search-bar form input {
 	width: 100%;
 	background-color: #fff;
@@ -379,7 +396,23 @@ header {
 	padding-left: 45px;
 	transition: all 0.25s;
 }
-.search-bar form button:not(.afterfocusbutton) {
+
+
+.searchBtn-left
+{
+	position: absolute;
+    background: white;
+    width: 38px;
+    height: 100%;
+	border: 0;
+	visibility: visible;
+	transition:  all 0.8s ease-in-out;
+	z-index: 99999999999;
+	
+}
+
+
+/* .search-bar form button:not(.afterfocusbutton) {
     position: absolute;
     top: 0;
     left: 0;
@@ -393,7 +426,7 @@ header {
 	color: #283e4a;
 	font-size: 20px;
 	font-weight: bold;
-	/*transform: rotate(-90deg);*/
+	/*transform: rotate(-90deg);
 }
 
 
@@ -407,7 +440,7 @@ header {
 	border: 0;
 	visibility: hidden;
 	
-}
+} */
 
 .search-bar form input:focus
 {
@@ -415,7 +448,7 @@ header {
 	
 }
 
-.search-bar form input:focus ~ button:not(.afterfocusbutton) {
+/* .search-bar form input:focus ~ button:not(.afterfocusbutton) {
     position: absolute;
     top: 0;
     right: 0;
@@ -444,9 +477,50 @@ header {
 	color: #283e4a;
 	font-size: 20px;
 	font-weight: bold;
-	/*transform: rotate(-90deg);*/
+}
+ */
+
+ .leftfocus
+ {
+    top: 0;
+	left: 0;
+ }
+
+ .rightfocus
+ {
+    top: 0;
+    right: 0;
+ }
+
+/* .search-bar form .rightfocus {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #efefef;
+    width: 38px;
+    height: 100%;
+	border: 0;
+	visibility: hidden;
+	
 }
 
+.search-bar form .leftfocus {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #efefef;
+    width: 38px;
+    height: 100%;
+	border: 0;
+	visibility: visible;
+}
+
+
+.search-bar form button.leftfocus i {
+	color: #283e4a;
+	font-size: 20px;
+	font-weight: bold;
+} */
 
 
 nav {
@@ -5581,4 +5655,35 @@ nav ul li a:hover .header-icons
 	cursor: pointer;
 }
 
+.search-lastname
+{
+	font-weight: 400;
+	font-size:18px;
+	padding-left: 3px;
+	display: inline-block;
+}
+
+.search-firstname
+{
+	font-weight: 500;
+	font-size: 18px;
+	padding-left: 3px;
+	
+}
+
+
+.search-user-image {
+    width: 23px;
+    height: 23px;
+    border-radius: 13px;
+    margin-top: -2px;
+}
+
+div.search-bar > form > div > div > div
+{
+	background-color: rgb(238, 238, 238);
+    padding: 10px;
+    cursor: pointer;
+    height: 40px;
+}
 /***********************************************/
