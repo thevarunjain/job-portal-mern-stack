@@ -547,3 +547,15 @@ div.agreement a:hover {
   font-weight: 400;
   color: #0077b5;
 }
+
+
+.pad-top-15{
+  padding-top: 15px;
+}
+
+.bluetext{
+  text-decoration: none;
+  font-weight: 600;
+  border: 0;
+  color: #0073b1;
+}
