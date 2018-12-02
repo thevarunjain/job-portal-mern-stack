@@ -2,7 +2,7 @@
 
 const Joi = require('joi')
 
-// User validation rules
+// Message validation rules
 module.exports = {
   fetch: {
     body: {
