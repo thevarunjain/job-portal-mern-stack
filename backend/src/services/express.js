@@ -11,10 +11,17 @@ const apiRouter = require('../routes/api')
 const passport = require('passport')
 const passportJwt = require('../services/passport')
 
-const app = express()
-app.use(bodyParser.json())
-app.use(cors())
-app.use(helmet())
+const app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+require('./socket_events')(io);
+
+
+
+app.use(bodyParser.json());
+app.use(cors());
+app.use(helmet());
+
 
 if (config.env !== 'test') app.use(morgan('combined'))
 
@@ -27,7 +34,7 @@ app.use(errorHandler.handleNotFound)
 app.use(errorHandler.handleError)
 
 exports.start = () => {
-  app.listen(config.port, (err) => {
+  server.listen(config.port, (err) => {
     if (err) {
       console.log(`Error : ${err}`)
       process.exit(-1)

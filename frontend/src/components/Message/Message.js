@@ -3,46 +3,69 @@ import Header from "../Common/Header"
 import {connect} from "react-redux";
 import "./message.css";
 import axios from "axios";
-import { api } from "../../services/Axios";
+import { api , printError, printMessage} from '../../services/';
 import {BASE_URL} from "../../constants/routes"
+import io from "socket.io-client";
+
+
+
 
 class Message extends Component {
 	constructor(props) {
 		super(props);
+		console.log(window.socket);
 
-		this.state = ({
-			
-		})	
-	}
+		this.state = {
+			messagelist : []
+		}
 
-	// componentWillMount(){
-	// 	var headers = new Headers();
-    //     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YmVlN2VkMmM0YmYxNzRkMWNkYTc4NzkiLCJyb2xlIjoiYXBwbGljYW50IiwiaWF0IjoxNTQyNTc2Mzc4fQ.BHLiKXbJJ5KxwxwhvFty5e0VFHhdZ_QPZcjKwE_Xjjg"
-	// 	const config = {
-	// 		headers: 
-	// 		{ 
-	// 			'Authorization': 'Bearer ' + token
-	// 		}
-	// 	};
-	// 	axios.defaults.withCredentials = true;
-	// 	sessionStorage.setItem("user_token",'Bearer '+ token);
-	// 	//var res = api("get", "/message/findByUser" ,{})
-	// 	console.log(res);
 
-	// 	axios.get(`http://localhost:3001/api/message/findByUser` , config).
-	// 	then(response => {
-    //             console.log("Status Code  is : ",response.status);
-    //             console.log(response.data);
-    //             if(response.status === 200){
-    //                 this.setState({
-    //                     status : 200
-    //                 })
-    //                     console.log('Changed saved successfully');
-    //             }else{
-    //                 console.log('Changed failed !!! ');
-    //             }
-    //         });
-	// }
+
+		this.socket = io('http://localhost:3003/');
+		console.log(this.socket);
+		this.socket.on('connect', function(){alert("asd1")});
+		this.socket.on('news', function(data){
+			console.log("news");
+			console.log(data);
+		});
+		this.socket.emit('client_caller',{'data': 'cleitn caller44'});
+		this.socket.on('disconnect', function(){alert("asd2")});
+	}	
+
+
+	 componentDidMount()
+	 {
+			this.getMessages();
+			console.log(io);
+	 }
+
+	 async getMessages()
+	 {
+		try 
+		{
+			let ret = await api('GET','/message/findByUser');
+			console.log(ret);
+			if(ret.status>=200 && ret.status<300)
+			{
+				//this.props.history.push('/message');
+				this.setState({
+					messagelist : ret['data']['payLoad']
+				})
+			}
+
+		} 
+		catch (error) 
+		{
+			console.log(error); 
+			printError(error);
+		}
+	 }
+
+
+	 async fetchCurrentMessages(g)
+	 {
+		 console.log(g);
+	 }
 	
 
   render() {
@@ -69,33 +92,34 @@ class Message extends Component {
                 
 								<div className="messages-list scroll">
 									<ul>
-                                    <li>
-										{/* <li className="active"> */}
-											<div className="usr-msg-details">
-												<div className="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" /> 
-													{/* <span className="msg-status"></span> */}
-												</div>
-												<div className="usr-mg-info">
-													<h3>Varun Jain</h3>
-													<p>Hello <img src="images/smley.png" alt="" /></p>
-												</div>
-												<span className="posted_time">1:55 PM</span>
-												{/* <span className="msg-notifc">1</span> */}
-											</div>
-										</li>
-                                        <li>
-											<div className="usr-msg-details">
-												<div className="usr-ms-img">
-													<img src="http://via.placeholder.com/50x50" alt="" />
-												</div>
-												<div className="usr-mg-info">
-													<h3>Shubham</h3>
-													<p>Hi, I am dummy data</p>
-												</div>
-												<span className="posted_time">1:55 PM</span>
-											</div>
-										</li>
+
+									{
+										/*
+											Change name and image here after change in Fetch Chats API
+										*/
+										this.state.messagelist.map((val)=>{
+											return (
+												<li onClick={()=>this.fetchCurrentMessages(val._id)}>
+														{/* <li className="active"> */}
+														<div className="usr-msg-details">
+															<div className="usr-ms-img">
+																<img src="http://via.placeholder.com/50x50" alt="" /> 
+																{/* <span className="msg-status"></span> */}
+															</div>
+															<div className="usr-mg-info">
+																<h3>{val._id}</h3>
+																<p>Hello <img src="images/smley.png" alt="" /></p>
+															</div>
+															<span className="posted_time">1:55 PM</span>
+															{/* <span className="msg-notifc">1</span> */}
+														</div>
+													</li>
+											)
+										})
+									}
+
+
+
 									</ul>
 								</div>
 							</div>
@@ -216,13 +240,9 @@ class Message extends Component {
                                         <form>
                                             <div className="mf-field">
                                                 <input type="text" name="message" placeholder="Type a message here" />
-                                                <button type="submit">Send</button>
+                                                <button type="button">Send</button>
                                             </div>
-                                            <ul>
-                                                <li><a href="#" title=""><i className="fa fa-smile-o"></i></a></li>
-                                                <li><a href="#" title=""><i className="fa fa-camera"></i></a></li>
-                                                <li><a href="#" title=""><i className="fa fa-paperclip"></i></a></li>
-                                            </ul>
+                                            
                                         </form>
                                     </div>
 						</div>
