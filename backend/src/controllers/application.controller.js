@@ -57,6 +57,27 @@ exports.save = async (req, res, next) => {
   }
 }
 
+exports.unsave = async (req, res, next) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
+    const response = {payLoad: {}, message: ''}
+    const saveJobPointers = {
+      'job_id': req.params.jobId,
+      'applicant_id': req.user._id
+    }
+    const currentValues = await sql.query(`DELETE FROM saved_job WHERE job_id = '${saveJobPointers.job_id}' AND applicant_id = '${saveJobPointers.applicant_id}'`)
+    if (currentValues.affectedRows >= 1) {
+      response.message = 'SUCCESS'
+    } else {
+      response.message = 'FAILED'
+    }
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 exports.fetchSavedCount = async (req, res, next) => {
   try {
     const response = {payLoad: 0}
