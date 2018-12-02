@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
-import {APPLICANT_LOGIN_ROUTE} from '../../constants/routes';
+import { APPLICANT_LOGIN_ROUTE } from "../../constants/routes";
 
 /*
 ***********
 APP COMPONENT IMPORTS 
 ***********
 */
-import HomePage from '../Home/Home';
-import RecruiterDashboard from '../recruiter/Dashboard/Dashboard';
+import HomePage from "../Home/Home";
+import RecruiterDashboard from "../recruiter/Dashboard/Dashboard";
 import JobsHome from "../Jobs/JobsHome";
 import JobDetailedView from "../Jobs/JobDetailedView";
 import SearchedJobs from "../Jobs/SearchedJobs";
@@ -16,6 +16,11 @@ import Profile from "../profile/profile";
 import Message from "../Message/Message";
 import CompanyPage from "../Jobs/CompanyPage";
 import JobSaved from "../Jobs/JobSaved";
+
+import PostJob from "../PostJob/PostJob";
+
+import PostJobfirst from "../PostJob/PostJobfirst";
+
 import SavedJobsHome from "../Jobs/SavedJobsHome";
 import JobsBySkill from "../Jobs/JobsBySkill";
 import PublicProfile from "../profile/publicprofile";
@@ -27,10 +32,14 @@ import ApplicantConnection from "../Connection/ApplicantConnection"
 
 import ListedJobs from "../recruiter/listedJobs";
 
+
 class Main extends Component {
   render() {
     console.log(APPLICANT_LOGIN_ROUTE);
     return (
+
+         
+
         <BrowserRouter>
             <div>
                 <Route path="/" component={HomePage} exact/>
@@ -49,19 +58,22 @@ class Main extends Component {
                 <Route path="/applicantconnection" component={ApplicantConnection} exact />
                 <Route path="/recruiterhome" component={RecruiterHome} exact />
                 <Route path="/recruiterconnection" component={RecruiterConnection} exact />
-
-
-
-
+                <Route path="/profile" component={Profile} exact />
+                <Route path="/message" component={Message} exact />
+                <Route path="/companypage" component={CompanyPage} exact />
+                <Route path="/jobsaved" component={JobSaved} exact />
+                <Route
+                  path="/searchedjobs/:title/:location"
+                  component={SearchedJobs}
+                  exact
+                />
+                <Route path="/postjob" component={PostJob} exact />
+                <Route path="/postjobfirst" component={PostJobfirst} exact />
             </div>
-        </BrowserRouter>
+          </BrowserRouter>
     );
   }
 }
-
-
-
-
 
 /* const ApplicantPrivateRoute = ({ component: Component, ...rest }) => (
   <Route
