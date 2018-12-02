@@ -106,6 +106,34 @@ exports.fetchSaved = async (req, res, next) => {
   }
 }
 
+exports.fetchAppliedCount = async (req, res, next) => {
+  try {
+    const response = {payLoad: 0}
+    const appliedJobs = await sql.query(`SELECT * FROM job_application WHERE applicant_id = '${req.user._id}'`)
+    response.payLoad = appliedJobs.length
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.fetchApplied = async (req, res, next) => {
+  try {
+    const response = {payLoad: []}
+    const appliedJobs = await sql.query(`SELECT * FROM job_application WHERE applicant_id = '${req.user._id}'`)
+    for (let index = 0; index < appliedJobs.length; index++) {
+      const element = appliedJobs[index]
+      const job = await Job.findById(element.job_id).exec()
+      response.payLoad.push(job)
+    }
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 exports.easyApply = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)

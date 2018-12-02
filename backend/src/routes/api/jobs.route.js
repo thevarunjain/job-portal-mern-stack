@@ -6,6 +6,8 @@ const auth = require('../../middlewares/authorization')
 const jobsController = require('../../controllers/jobs.controller')
 const applicationController = require('../../controllers/application.controller')
 
+router.get('/applied/count', auth(['applicant']), applicationController.fetchAppliedCount)
+router.get('/applied', auth(['applicant']), applicationController.fetchApplied)
 router.get('/saved/count', auth(['applicant']), applicationController.fetchSavedCount)
 router.get('/saved', auth(['applicant']), applicationController.fetchSaved)
 router.get('/', auth(), jobsController.get)
