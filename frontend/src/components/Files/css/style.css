@@ -368,6 +368,23 @@ header {
 	width: 100%;
 	position: relative;
 }
+
+.search-bar form div 
+{
+	display: block !important;
+	width:  100% !important;
+	max-width: 280px;
+	z-index: 1111111111;
+}
+
+.search-bar form div div
+{
+	left : 0px !important;
+	background: white;
+}
+
+
+
 .search-bar form input {
 	width: 100%;
 	background-color: #fff;
@@ -379,7 +396,23 @@ header {
 	padding-left: 45px;
 	transition: all 0.25s;
 }
-.search-bar form button:not(.afterfocusbutton) {
+
+
+.searchBtn-left
+{
+	position: absolute;
+    background: white;
+    width: 38px;
+    height: 100%;
+	border: 0;
+	visibility: visible;
+	transition:  all 0.8s ease-in-out;
+	z-index: 99999999999;
+	
+}
+
+
+/* .search-bar form button:not(.afterfocusbutton) {
     position: absolute;
     top: 0;
     left: 0;
@@ -393,7 +426,7 @@ header {
 	color: #283e4a;
 	font-size: 20px;
 	font-weight: bold;
-	transform: rotate(-90deg);
+	/*transform: rotate(-90deg);
 }
 
 
@@ -407,7 +440,7 @@ header {
 	border: 0;
 	visibility: hidden;
 	
-}
+} */
 
 .search-bar form input:focus
 {
@@ -415,7 +448,7 @@ header {
 	
 }
 
-.search-bar form input:focus ~ button:not(.afterfocusbutton) {
+/* .search-bar form input:focus ~ button:not(.afterfocusbutton) {
     position: absolute;
     top: 0;
     right: 0;
@@ -444,9 +477,50 @@ header {
 	color: #283e4a;
 	font-size: 20px;
 	font-weight: bold;
-	transform: rotate(-90deg);
+}
+ */
+
+ .leftfocus
+ {
+    top: 0;
+	left: 0;
+ }
+
+ .rightfocus
+ {
+    top: 0;
+    right: 0;
+ }
+
+/* .search-bar form .rightfocus {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #efefef;
+    width: 38px;
+    height: 100%;
+	border: 0;
+	visibility: hidden;
+	
 }
 
+.search-bar form .leftfocus {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #efefef;
+    width: 38px;
+    height: 100%;
+	border: 0;
+	visibility: visible;
+}
+
+
+.search-bar form button.leftfocus i {
+	color: #283e4a;
+	font-size: 20px;
+	font-weight: bold;
+} */
 
 
 nav {
@@ -596,6 +670,7 @@ nav > ul > li > a:hover {
 	border-right: 1px solid #283e4a;
 	box-sizing: border-box;
 	position: relative;
+	cursor: pointer;
 }
 .user-info {
 	float: left;
@@ -639,6 +714,13 @@ nav > ul > li > a:hover {
 	border-bottom: 1px solid #e5e5e5;
 	padding: 15px 20px;
 }
+
+
+.user-account-settingss > h3:hover
+{
+	background : rgba(0,0,0,.1);
+}
+
 .on-off-status {
 	float: left;
 	width: 100%;
@@ -703,12 +785,12 @@ nav > ul > li > a:hover {
 	float: left;
 	width: 100%;
 	border-bottom: 1px solid #e5e5e5;
-	padding: 20px;
+	
 }
 .us-links li {
 	float: left;
 	width: 100%;
-	margin-bottom: 15px;
+	padding: 10px 20px;
 }
 .us-links li:last-child {
 	margin-bottom: 0;
@@ -718,7 +800,7 @@ nav > ul > li > a:hover {
 	width: 100%;
 	color: #000000;
 	font-size: 14px;
-	font-weight: 600;
+	font-weight: 100;
 }
 .tc {
 	text-align: center;
@@ -5476,16 +5558,132 @@ a:hover {
 
 .header-logo
 {
-	width : 35px;
-	height: 35px;
-	padding-top: 4px;
+	width: 40px;
+    height: 38px;
+    padding-top: 0px;
 }
 
+nav ul li a 
+{
+	color : #c7d1d8;
+}
+
+nav ul li a:hover
+{
+	color : #FFF;
+}
 
 .header-icons
 {
-	font-size: 20px;
+	font-size: 20px;    
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #c7d1d8;
+	color : transparent !important;
+
+}
+
+nav ul li a:hover .header-icons
+{
+	font-size: 20px;    
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #FFF;
+	color : transparent !important;
+
 }
 
 
+.header-image
+{
+	width : 30px;
+	height : 30px;
+}
+
+
+.toggler 
+{
+	padding-left : 3px !Important;
+}
+
+.us-links li a {
+    float: left;
+    width: 100%;
+    color: #000000;
+    font-size: 14px;
+    font-weight: 100;
+}
+
+.us-links li:hover 
+{
+	background : rgba(0,0,0,.1);
+}
+
+.lower-menu-image
+{
+	margin-right: 10px;
+    border-radius: 23px;
+    width: 46px;
+    height: 46px;
+    font-size: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.15);
+}
+
+.lower-menu-text
+{
+	padding-top : 10px;
+	padding-bottom: 10px;
+}
+
+.lower-menu-text
+{
+	font-size: 16px !important;
+}
+
+.menu-view-profile
+{
+	color: #0073b1;
+    font-weight: 600;
+    font-size: 16px;
+    display: inherit;
+    vertical-align: middle;
+    padding-top: 10px;
+    text-align: left;
+    width: 100%;
+}
+
+.us-links ul 
+{
+	cursor: pointer;
+}
+
+.search-lastname
+{
+	font-weight: 400;
+	font-size:18px;
+	padding-left: 3px;
+	display: inline-block;
+}
+
+.search-firstname
+{
+	font-weight: 500;
+	font-size: 18px;
+	padding-left: 3px;
+	
+}
+
+
+.search-user-image {
+    width: 23px;
+    height: 23px;
+    border-radius: 13px;
+    margin-top: -2px;
+}
+
+div.search-bar > form > div > div > div
+{
+	background-color: rgb(238, 238, 238);
+    padding: 10px;
+    cursor: pointer;
+    height: 40px;
+}
 /***********************************************/

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-
+import PLACES from '../Common/Places';
 class JobSearchBar extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +11,7 @@ class JobSearchBar extends Component {
     }
     this.onChangeSearchJob = this.onChangeSearchJob.bind(this)
     this.onChangeLocation = this.onChangeLocation.bind(this)
+    this.checkret = this.checkret.bind(this);
 }
 
   onChangeSearchJob(event){
@@ -24,21 +25,31 @@ class JobSearchBar extends Component {
           searchLocation : event.target.value 
       })
   }
+
+  checkret(data)
+  {
+    console.log(data);
+    this.setState({
+      searchLocation : data.street
+    })
+    
+  }
   
   render() {
     return (
       <div className="search-box">
       <form>
       <div className="row">
-      <div className="col-sm-3">
+      <div className="col-sm-5">
             <input type="text" placeholder="Search Jobs" className = "inputtext" value={this.state.searchJobName} onChange={this.onChangeSearchJob} required />              
       </div>
 
-      <div className="col-sm-3 inputtext">
-      <input  type="text" placeholder="Search Location" className = "inputtext" value={this.state.searchLocation} onChange={this.onChangeLocation} required />
+      <div className="col-sm-5 inputtext pos-rel">
+      <PLACES onPosition={this.checkret}></PLACES>
+      
       </div>
-      <div className="col-sm-3 searchButton">    
-      <Link to={`/searchedjobs/${this.state.searchJobName}/${this.state.searchLocation}`}><button type="submit">Search</button></Link>
+      <div className="col-sm-2 searchButton">    
+        <Link to={`/searchedjobs/${this.state.searchJobName}/${this.state.searchLocation}`}><button type="button">Search</button></Link>
       </div>
       </div>
       

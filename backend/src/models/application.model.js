@@ -25,6 +25,14 @@ const applicationSchema = new Schema({
     type: name.schema,
     required: true
   },
+  email: {
+    type: 'String',
+    required: true
+  },
+  phone: {
+    type: 'String',
+    required: true
+  },
   address: {
     type: address.schema,
     required: true

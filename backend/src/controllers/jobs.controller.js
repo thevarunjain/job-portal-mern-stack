@@ -4,6 +4,7 @@ const httpStatus = require('http-status')
 const mongoose = require('mongoose')
 const APIError = require('../utils/APIError')
 const Job = require('../models/job.model')
+const Applicant = require('../models/applicant.model')
 
 exports.get = async (req, res, next) => {
   try {
@@ -21,7 +22,9 @@ exports.get = async (req, res, next) => {
 exports.post = async (req, res, next) => {
   try {
     // console.log('\n\n\n', req.user.role, '\n\n\n')
+    if (req.user.role !== 'recruiter') throw new APIError(`Unauthorized only Recruiter can create a job`, httpStatus.UNAUTHORIZED)
     const response = { payLoad: {} }
+    req.body.recruiter = req.user._id
     const job = new Job(req.body)
     const createdJob = await job.save()
     if (!createdJob) throw new APIError(`Job not created`, httpStatus.INTERNAL_SERVER_ERROR)
@@ -87,4 +90,76 @@ exports.deleteOne = async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+}
+
+exports.recommendation = async (req, res, next) => {
+  try {
+    // console.log('\n\n\n', req, '\n\n\n')
+    const user = await Applicant.findOne({ id: req.user._id }).exec()
+    const skills = user.skills ? user.skills : []
+    const response = { payLoad: [] }
+    const jobs = await Job.find().exec()
+    let passesCriteria = false
+    for (let index = 0; index < jobs.length; index++) {
+      const element = jobs[index]
+      if (skills.length > 0 && element.skills) {
+        passesCriteria = false
+        skills.forEach(skill => {
+          if (element.skills.includes(skill)) passesCriteria = true
+        })
+      }
+      if (passesCriteria) {
+        response.payLoad.push(element)
+        jobs.splice(index, 1)
+      }
+    }
+    if (response.payLoad.length < 11) {
+      let lat = null
+      let long = null
+      if (user.address) {
+        if (user.address.coordinates) {
+          lat = user.address.coordinates.latitude ? user.address.coordinates.latitude : null
+          long = user.address.coordinates.longitude ? user.address.coordinates.longitude : null
+        }
+        for (let index = 0; index < jobs.length; index++) {
+          const element = jobs[index]
+          passesCriteria = false
+          if (lat && long && passesCriteria) {
+            passesCriteria = distance(lat, long, element.address.coordinates.latitude, element.address.coordinates.longitude) < 50
+          }
+          if (passesCriteria) {
+            response.payLoad.push(element)
+            jobs.splice(index, 1)
+          }
+        }
+      }
+    }
+    if (response.payLoad.length < 11) {
+      for (let index = 0; index < jobs.length && index < 10; index++) {
+        const element = jobs[index]
+        response.payLoad.push(element)
+        jobs.splice(index, 1)
+      }
+    }
+    response.payLoad = jobs
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const distance = (lat1, lon1, lat2, lon2) => {
+  var radlat1 = Math.PI * lat1 / 180
+  var radlat2 = Math.PI * lat2 / 180
+  var theta = lon1 - lon2
+  var radtheta = Math.PI * theta / 180
+  var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
+  if (dist > 1) {
+    dist = 1
+  }
+  dist = Math.acos(dist)
+  dist = dist * 180 / Math.PI
+  dist = dist * 60 * 1.1515
+  return dist.toPrecision(2)
 }

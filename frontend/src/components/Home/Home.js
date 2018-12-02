@@ -8,7 +8,7 @@ import fulllogo from "../Files/Images/full-logo.png";
 import { api , printError, printMessage} from '../../services/';
 import jwt_decode from 'jwt-decode';
 import login from '../../actions/login';
-
+import fetchProfile from '../../actions/profile';
 import "./Home.css";
 
 
@@ -16,7 +16,7 @@ class HomePage extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(printError);
+    //console.log(printError);
     this.state = {
       email: "",
       password: "",
@@ -39,8 +39,9 @@ class HomePage extends React.Component {
       console.log(nextProps);
       try 
       {
+        this.props.dispatch(fetchProfile());
         if (nextProps.LoginReducer.user_id && nextProps.LoginReducer.user_token) {
-          this.props.history.push('/jobshome');
+          this.props.history.push('/profile');
         }
       }
       catch(e)
@@ -799,7 +800,7 @@ class HomePage extends React.Component {
 
 //export default HomePage;
 
-function mapStateToProps(state) {
+/* function mapStateToProps(state) {
   console.log("in map state details view123",state);
   return {
    LoginReducer: state.LoginReducer
@@ -810,5 +811,19 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps
+)(HomePage); */
+
+
+function mapStateToProps(state) {
+  console.log("in map state details profileVIEW",state);
+  return state;
+//  return { property_detail: state.fetch_details_view.property_detail,
+//  };
+}
+
+export default connect(
+  mapStateToProps
 )(HomePage);
+
+
 

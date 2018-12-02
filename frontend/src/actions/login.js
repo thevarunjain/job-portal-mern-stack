@@ -3,8 +3,8 @@ import jwt_decode from 'jwt-decode';
 
 
 export const CHECK_LOGIN = "CHECK_LOGIN";
-export const  LOGIN_FAILED = "LOGIN_FAILED";
-export const  LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILED = "LOGIN_FAILED";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 
 
 function getSuccess(response) {

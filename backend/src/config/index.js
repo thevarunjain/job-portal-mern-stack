@@ -21,5 +21,13 @@ module.exports = {
     accessKeyId: process.env.ACCESS_KEY_ID,
     region: process.env.REGION
   },
-  bucket: process.env.BUCKET
+  bucket: process.env.BUCKET,
+  neo4j: {
+    uri: process.env.NEO4J_URI,
+    port: process.env.NEO4J_PORT,
+    username: process.env.NEO4J_USERNAME,
+    password: process.env.NEO4J_PASSWORD
+
+  },
+  redisPort: process.env.REDIS_PORT
 }

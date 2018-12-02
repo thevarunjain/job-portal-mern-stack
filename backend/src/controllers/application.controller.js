@@ -5,7 +5,7 @@ const sql = require('./../services/sql')
 const mongoose = require('mongoose')
 const APIError = require('../utils/APIError')
 const Job = require('../models/job.model')
-// const Applicant = require('../models/applicant.model')
+const Applicant = require('../models/applicant.model')
 const Application = require('../models/application.model')
 
 exports.apply = async (req, res, next) => {
@@ -32,6 +32,7 @@ exports.apply = async (req, res, next) => {
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
+    console.log(error)
     next(error)
   }
 }
@@ -52,6 +53,47 @@ exports.save = async (req, res, next) => {
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
+    next(error)
+  }
+}
+
+exports.easyApply = async (req, res, next) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
+    if (!req.body.phone && !req.body.email && !req.body.resume) throw new APIError(`Input data missing phone, email and resume required`, httpStatus.BAD_REQUEST)
+    const response = { payLoad: {} }
+    const user = await Applicant.findOne({id: req.user._id}).exec()
+    const applicationData = {
+      'name': user.name,
+      'email': req.body.email,
+      'phone': req.body.phone,
+      'address': user.address,
+      'resume': req.body.resume,
+      'source': 'Linkedin',
+      'diversity': 'AUTO',
+      'sponsorship': 'AUTO',
+      'disability': 'AUTO'
+    }
+    applicationData.jobId = req.params.jobId
+    const jobData = await Job.findById(req.params.jobId).exec()
+    if (!jobData) throw new APIError(`Invalid jobId`, httpStatus.INTERNAL_SERVER_ERROR)
+    applicationData.recruiterId = jobData.recruiter
+    applicationData.applicantId = req.user._id
+    const application = new Application(applicationData)
+    const savedApplication = await application.save()
+    if (!savedApplication) throw new APIError(`Job not created`, httpStatus.INTERNAL_SERVER_ERROR)
+    const applicationPointers = {
+      'job_id': savedApplication.jobId,
+      'applicant_id': savedApplication.applicantId,
+      'recruiter_id': savedApplication.recruiterId,
+      'application_id': savedApplication._id
+    }
+    await sql.query('INSERT INTO job_application SET ?', applicationPointers)
+    response.payLoad = savedApplication
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    console.log(error)
     next(error)
   }
 }

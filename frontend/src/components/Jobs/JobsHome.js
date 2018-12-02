@@ -2,12 +2,45 @@ import React, { Component } from 'react'
 import JobSearchBar from "./JobSearchBar";
 import Header from "../Common/Header"
 import {connect} from "react-redux";
+import { Link } from 'react-router-dom';
+import axios from "axios";
 import "./jobs.css";
+import { api , printError} from '../../services/Axios';
+import JobsBySkill from "../Jobs/JobsBySkill";
+
 
 //import Navabar
 
 class JobsHome extends Component {
- 
+    constructor(props) {
+		super(props);
+
+		this.state = ({
+			
+		})
+    }
+    
+    // Bringing the jobs according to the skill set of the user
+    // async componentDidMount(){
+    //     var headers = new Headers();
+    //     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YmVlN2VkMmM0YmYxNzRkMWNkYTc4NzkiLCJyb2xlIjoiYXBwbGljYW50IiwiaWF0IjoxNTQyNTc2Mzc4fQ.BHLiKXbJJ5KxwxwhvFty5e0VFHhdZ_QPZcjKwE_Xjjg"
+	// 	const config = {
+	// 		headers: 
+	// 		{ 
+	// 			'Authorization': 'Bearer ' + token
+	// 		}
+	// 	};
+	// 	axios.defaults.withCredentials = true;
+    //     let ret = await api('GET','/users/5bee7ed2c4bf174d1cda7879',config);
+    //     var skills_set = ret.data.payLoad.user.skills;
+    //     let ret = await api('GET','search/jobs',config);
+        
+
+    //     // console.log("data1",temp.data.payLoad);
+
+    // }
+
+
     render() {
 
     return (
@@ -30,7 +63,7 @@ class JobsHome extends Component {
 
                 <div className="col-md-3">
                     <span className="bluetext"> 10 </span>
-                    <span className ="lightgreytext"> Saved Jobs </span>               
+                    <span className ="lightgreytext"> <Link to="/jobshome/savedjobs" className ="lightgreytext"> Saved Jobs </Link></span>               
                 </div> 
         </div>
         </section>
@@ -40,37 +73,9 @@ class JobsHome extends Component {
         <div className="smallheading">
 					<h3>Jobs you may be interested in</h3>
 		</div>
-		
-        	<div class="container">
-				<div class="companies-list">
-					<div class="row">
-						<div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="company_profile_info greybackground">
-								<div class="company-up-info">
-									<img src="http://via.placeholder.com/90x90" alt="" />
-									<h3>Facebook Inc.</h3>
-									<h4>Establish Feb, 2004</h4>
-									<ul>
-										<li><a href="#" title="" class="follow">Follow</a></li>
-										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
-									</ul>
-								</div>
-								<a href="#" title="" class="view-more-pro">View Profile</a>
-							</div>
-                        </div>
-                        
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-							<div class="company_profile_info greybackground">
-								<div class="company-up-info">
-									<img src="http://via.placeholder.com/90x90" alt="" />
-									<h3>Facebook Inc.</h3>
-									<h4>Establish Feb, 2004</h4>
-								</div>
-							</div>
-                        </div>
-				   </div>
-			</div>
-			</div>
+        <div>
+        <JobsBySkill />
+        </div>
         </section>
         
         

@@ -121,14 +121,20 @@
     width: 100%;
     position: relative;
     overflow: hidden;
+    max-height: 250px;
+    min-height: 250px;
   }
 
   .cover-sec img 
   {
-    position: relative;
-    width : auto !important;
-    max-height: 250px;
-    min-height: 250px;
+
+    width: 100% !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
   }
 
   .profile-user-image
@@ -226,7 +232,7 @@
     position: relative;
   }
 
-  .suggestions-list:hover .detail-boxes i
+  .detail-boxes:hover  i
   {
     visibility: visible;
   }
@@ -321,4 +327,252 @@
 .pac-container, .pac-item {
   width: inherit !important;
 }
+
+
+.exp-title
+{
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color : rgba(0,0,0,.9) !important;
+  font-family: linkedin-regular-font;
+}
+
+.exp-company
+{
+  font-size: 18px !important;
+  line-height: 31px !important;
+  color: rgba(0,0,0,.9) !important;
+  font-family: linkedin-regular-font;
+  font-weight: 300;
+}
+
+
+.exp-dates
+{
+  color: rgba(0,0,0,.6);
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.exp-location
+{
+  color: rgba(0,0,0,.6);
+  font-size: 14px;
+  font-weight: 300;
+  padding: 5px 0px 15px 0px;
+}
+
+.exp-desc
+{
+  color: rgba(0,0,0,.9);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 10px 0px 15px 0px;
+}
+
+.skill-sug
+{
+  font-weight: 600 !important;
+  padding : 5px 10px !important;
+}
+
+
+.onlyskillsbt
+{
+  right: 50px !important;
+  font-size: 21px !important;
+}
+
+.modal-body table
+{
+  width : 100%;
+}
+
+.modal-body table td 
+{
+  padding: 5px;
+}
+
+.delete-button{
+  background-color: transparent;
+  border: 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: rgba(0,0,0,.6);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  height: 32px;
+  line-height: 32px;
+  overflow: hidden;
+  outline-width: 2px;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition-duration: 167ms;
+  transition-property: background-color,box-shadow,color;
+  transition-timing-function: cubic-bezier(0,0,.2,1);
+  vertical-align: middle;
+  z-index: 0;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.6), inset 0 0 0 2px transparent, inset 0 0 0 1px transparent;
+}
+
+.save-button
+{
+  background-color: #0073b1;
+  border: 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  height: 32px;
+  line-height: 32px;
+  overflow: hidden;
+  outline-width: 2px;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition-duration: 167ms;
+  transition-property: background-color,box-shadow,color;
+  transition-timing-function: cubic-bezier(0,0,.2,1);
+  vertical-align: middle;
+  z-index: 0;
+  margin-left: auto;
+
+}
+
+.save-btn-small
+{
+  background: #0074b6;
+  color: white;
+}
+
+.skilltable
+{
+  margin-top : 20px;
+}
+
+.skilltable thead 
+{
+  font-weight: bold;
+}
+
+.skilltable td 
+{
+  padding: 10px !important;
+}
+
+.skilltable tr td:nth-child(2)
+{
+  text-align: right;
+}
+
+.fa-trash
+{
+  color : #858e97;
+  cursor: pointer;
+}
+
+#skillstable td, #skillstable th
+{
+  border-width : 0px !important;
+}
+
+.right-sidebar
+{
+  padding : 45px 0px !important;
+}
+
+.view-public
+{
+  width: 100%;
+    padding: 4px;
+    height: 40px;
+    font-family: linkedin-regular-font;
+    margin-bottom: 15px;
+}
+
+.view-public:hover
+{
+  color : white !important;
+}
+
+
+.skill-sug h4 
+{
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.hiddenbox
+{
+  visibility: hidden;
+}
+
+.resume-icon
+{
+        /* float: right; */
+        font-size: 30px;
+        /* position: absolute; */
+        left: 10px;
+        top: 15px;
+        color: white;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #e60922;
+    
+}
+
+.user-resume
+{
+  cursor: pointer;
+}
+
+img[src='/static/media/profile-banner.388781bb.svg']
+{
+  transform: scale(1.5,2);
+}
+
+
+.pos-rel 
+{
+  position: relative;
+}
+
+.user-resume
+{
+  text-align: left !important;
+  padding-left: 30px !important; 
+}
+
+.view-public a
+{
+  color : white !important;
+}
+
+.sgt-text
+{
+  width : 80%;
+  max-width: 80%;
+}
+
+.left-icons 
+{
+  float: left !important;
+  /* width: 100%; */
+  /* padding: 15px 20px; */
+  font-size: 29px;
+  color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #0073b1;
+}
+
+
   /*****************************************/

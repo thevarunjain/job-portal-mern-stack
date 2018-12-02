@@ -15,7 +15,8 @@ class JobCard extends Component {
       description:this.props.data.description,
       address:this.props.data.address,
       id:this.props.data._id,
-      active_id:this.props.jobs[0]._id
+      active_id:this.props.jobs[0]._id,
+      time_diff:this.props.data.time_diff
     }
     this.setActiveID=this.setActiveID.bind(this);
   }
@@ -42,7 +43,7 @@ class JobCard extends Component {
               <img src={Pin} style={{width:"4%"}}></img>&nbsp; {this.state.address.city} {this.state.address.zipcode},{this.state.address.country}
               </div>
               <div>
-              <label style={{color:"green",fontSize:"12px"}}>New &#9670;</label>&nbsp;<label style={{fontSize:"12px"}}>Posted {Math.ceil(Math.random()*(3-0)+0)} hour ago</label>
+              <label style={{color:"green",fontSize:"12px"}}>New &#9670;</label>&nbsp;<label style={{fontSize:"12px"}}>Posted {this.state.time_diff}  ago</label>
                </div>
               <div className="heading-company4">
               {this.state.description}
