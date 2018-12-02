@@ -7,6 +7,7 @@ const jobsController = require('../../controllers/jobs.controller')
 const applicationController = require('../../controllers/application.controller')
 
 router.get('/saved/count', auth(['applicant']), applicationController.fetchSavedCount)
+router.get('/saved', auth(['applicant']), applicationController.fetchSaved)
 router.get('/', auth(), jobsController.get)
 router.post('/', auth(['recruiter']), jobsController.post)
 router.get('/recommendation', auth(['applicant']), jobsController.recommendation)

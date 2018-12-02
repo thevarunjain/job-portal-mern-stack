@@ -56,11 +56,28 @@ exports.save = async (req, res, next) => {
     next(error)
   }
 }
+
 exports.fetchSavedCount = async (req, res, next) => {
   try {
     const response = {payLoad: 0}
     const savedJobs = await sql.query(`SELECT * FROM saved_job WHERE applicant_id = '${req.user._id}'`)
     response.payLoad = savedJobs.length
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.fetchSaved = async (req, res, next) => {
+  try {
+    const response = {payLoad: []}
+    const savedJobs = await sql.query(`SELECT * FROM saved_job WHERE applicant_id = '${req.user._id}'`)
+    for (let index = 0; index < savedJobs.length; index++) {
+      const element = savedJobs[index]
+      const job = await Job.findById(element.job_id).exec()
+      response.payLoad.push(job)
+    }
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
