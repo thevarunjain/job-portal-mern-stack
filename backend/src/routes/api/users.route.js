@@ -13,5 +13,5 @@ router.delete('/:userId', auth(), usersController.deleteOne)
 router.get('/dashboard', auth(), dashboardController.generateDashboardData)
 router.post('/:userId/connect', auth(), usersController.connect)
 router.get('/:userId/connections', auth(), usersController.connections)
-// router.post('/:userId/mutual', auth(), usersController.mutual)
+router.get('/:userId/mutual', auth(), usersController.mutual)
 module.exports = router
