@@ -16,20 +16,27 @@ class Message extends Component {
 		console.log(window.socket);
 
 		this.state = {
-			messagelist : []
+			messagelist : [],
+			user_message : '',
+			currentRoom : ''
 		}
 
-
+		this.user_message = this.user_message.bind(this);
+		this.handleNewMessage =  this.handleNewMessage.bind(this);
 
 		this.socket = io('http://localhost:3003/');
 		console.log(this.socket);
-		this.socket.on('connect', function(){alert("asd1")});
+		this.socket.on('connect', function(){console.log("asd1")});
 		this.socket.on('news', function(data){
 			console.log("news");
 			console.log(data);
 		});
 		this.socket.emit('client_caller',{'data': 'cleitn caller44'});
-		this.socket.on('disconnect', function(){alert("asd2")});
+		this.socket.on('disconnect', function(){console.log("asd2")});
+		this.socket.on('message_posted', function(data){
+			console.log("asdps");
+			console.log(data);
+		});
 	}	
 
 
@@ -49,7 +56,7 @@ class Message extends Component {
 			{
 				//this.props.history.push('/message');
 				this.setState({
-					messagelist : ret['data']['payLoad']
+					messagelist : ret['data']['payLoad'],
 				})
 			}
 
@@ -64,9 +71,27 @@ class Message extends Component {
 
 	 async fetchCurrentMessages(g)
 	 {
-		 console.log(g);
+		 console.log(g._id);
+		 this.setState({
+			 currentRoom : g._id
+		 })
+		 this.socket.emit('create_room',{'data' : g._id});
+	 }
+
+	 user_message(e)
+	 {
+		 this.setState({
+			 [e.target.id] : e.target.value
+		 })
 	 }
 	
+
+	 handleNewMessage()
+	 {
+		 console.log(this.state);
+		 this.socket.emit('private_chat_handler',{'payload': this.state.user_message,'thread': this.state.currentRoom});
+		 this.setState({user_message : ''});
+	 }
 
   render() {
     return (    
@@ -99,7 +124,7 @@ class Message extends Component {
 										*/
 										this.state.messagelist.map((val)=>{
 											return (
-												<li onClick={()=>this.fetchCurrentMessages(val._id)}>
+												<li onClick={()=>this.fetchCurrentMessages(val)}>
 														{/* <li className="active"> */}
 														<div className="usr-msg-details">
 															<div className="usr-ms-img">
@@ -239,8 +264,8 @@ class Message extends Component {
                                     <div className="message-send-area msg-reply-box-bottom">
                                         <form>
                                             <div className="mf-field">
-                                                <input type="text" name="message" placeholder="Type a message here" />
-                                                <button type="button">Send</button>
+                                                <input type="text" name="user_message" id="user_message" onChange={this.user_message} value={this.state.user_message} placeholder="Type a message here" />
+                                                <button type="button" onClick={this.handleNewMessage}>Send</button>
                                             </div>
                                             
                                         </form>

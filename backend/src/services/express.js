@@ -14,8 +14,7 @@ const passportJwt = require('../services/passport')
 const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-require('./socket_events')(io);
-
+require('./socket_events')['init'](io);
 
 
 app.use(bodyParser.json());
