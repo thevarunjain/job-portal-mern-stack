@@ -14,7 +14,10 @@ router.get('/:userId', auth(), validator(userId), usersController.getOne)
 router.put('/:userId', auth(), validator(userId), validator(update), usersController.putOne)
 router.delete('/:userId', auth(), validator(userId), usersController.deleteOne)
 router.get('/dashboard', auth(), dashboardController.generateDashboardData)
+
+
 router.post('/:userId/connect', auth(), validator(userId), usersController.connect)
 router.get('/:userId/connections', auth(), validator(userId), usersController.connections)
-// router.post('/:userId/mutual', auth(), usersController.mutual)
+router.get('/:userId/mutual', auth(), usersController.mutual)
+
 module.exports = router
