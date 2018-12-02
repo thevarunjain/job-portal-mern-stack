@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import Header from "../Common/Header"
+import RecruiterHeader from "../Common/RecruiterHeader"
 import JobsByskill from "../Jobs/JobsBySkill";
-import "./Home.css"
+// import "./Home.css"
 
 class ApplicantHome extends Component {
   render() {
     return (
       <div>
-      <Header />
+     		<RecruiterHeader />
 
       <div class="main-section pad-top-15">
 				<div class="container">
