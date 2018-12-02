@@ -12,7 +12,7 @@ router.get('/recommendation', auth(['applicant']), jobsController.recommendation
 router.get('/:jobId', auth(), jobsController.getOne)
 router.put('/:jobId', auth(['recruiter']), jobsController.putOne)
 router.delete('/:jobId', auth(['recruiter']), jobsController.deleteOne)
-router.get('/:jobId/save', auth(['applicant']), applicationController.save)
+router.post('/:jobId/save', auth(['applicant']), applicationController.save)
 router.post('/:jobId/apply', auth(['applicant']), applicationController.apply)
 router.post('/:jobId/easyApply', auth(['applicant']), applicationController.easyApply)
 
