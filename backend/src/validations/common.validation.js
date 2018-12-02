@@ -11,7 +11,12 @@ module.exports = {
   },
   jobId: {
     params: {
-      userId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+      jobId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+    }
+  },
+  threadId: {
+    params: {
+      threadId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
     }
   }
 }
