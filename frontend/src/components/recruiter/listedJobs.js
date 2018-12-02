@@ -6,8 +6,9 @@ import { api, printError, printMessage } from '../../services';
 import $ from 'jquery';
 import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
 import jwt_decode from 'jwt-decode';
-import Header from "../Common/Header";
+import RecruiterHeader from "../Common/RecruiterHeader";
 import PostedJob from "./postedJob";
+
 class ListedJobs extends Component {
     constructor(props) {
         super(props);
@@ -15,8 +16,7 @@ class ListedJobs extends Component {
         this.state = {
             postedJobs:['a']
         }
-
-
+    
     }
 
 
@@ -36,13 +36,8 @@ class ListedJobs extends Component {
             <div>
             
             <div>
-    <Header />
-            <div className="jobSearchBar">
-                <div className="container">
-                      
-                </div>
-            </div>
-    <div style={{paddingTop:"2%"}}>
+    <RecruiterHeader />
+    <div style={{paddingTop:"5%"}}>
    {postedJobs}
 
   
