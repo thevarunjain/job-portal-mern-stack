@@ -58,9 +58,6 @@ class Main extends Component {
                 <Route path="/applicantconnection" component={ApplicantConnection} exact />
                 <Route path="/recruiterhome" component={RecruiterHome} exact />
                 <Route path="/recruiterconnection" component={RecruiterConnection} exact />
-                <Route path="/profile" component={Profile} exact />
-                <Route path="/message" component={Message} exact />
-                <Route path="/companypage" component={CompanyPage} exact />
                 <Route path="/jobsaved" component={JobSaved} exact />
                 <Route
                   path="/searchedjobs/:title/:location"

@@ -6,29 +6,30 @@ import "./PostJob.css";
 import PostJobHeader from "./PostJobHeader";
 import { Link } from "react-router-dom";
 import { api, printError, printMessage } from "../../services/";
+import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
+import bannerlogo from '../Files/Images/add.svg';
+import PLACES from '../Common/Places';
 
-//import Navabar
+window.delrows =  function(f){
+  document.querySelector("div[data-dellength='"+(f)+"']").remove();
+}
 
 class PostJobfirst extends Component {
   constructor(props) {
     super(props);
 
-    console.log("Inside constructor");
-
     console.log("history push data", this.props.location.state);
-
-    const { company, title, address } = this.props.location.state;
-    console.log(company);
-    console.log(title);
-    console.log(address);
+  
+    const { company, jobtitle, jobaddress } = this.props.location.state;
 
     this.state = {
-      title: title,
+      title: jobtitle,
       company: company,
       description: "",
       industry: "",
       type: "",
-      address: {},
+      address: jobaddress.city,
+      addressSend : jobaddress,
       seniority: "",
       recommended: "",
       direct: "",
@@ -38,15 +39,25 @@ class PostJobfirst extends Component {
       company_logo: "",
       function: "",
       skills: [],
-      easy_apply: true,
+      easy_apply: "",
       step1flag: true,
-      step2flag: false
+      step2flag: false,
+      banner : bannerlogo,
     };
 
     this.onChange = this.onChange.bind(this);
-  }
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+    this.addSkill = this.addSkill.bind(this);
+    this.jobpost = this.jobpost.bind(this);
 
+  }
+  onChange = e =>
+  {
+    this.setState({ [e.target.id] : e.target.value });
+  }
+  onChangeType = e =>
+  {
+    this.setState({ [e.target.name] : e.target.value });
+  }
   handlestep1Flag = () => {
     this.setState({
       step1flag: true,
@@ -54,54 +65,71 @@ class PostJobfirst extends Component {
     });
   };
 
+  addSkill()
+  {
+      let skill = document.getElementById("addSkill").value;
+      console.log(skill);
+
+      //this.state.skills.push(skill);
+      //console.log(this.state)
+      if(skill=='')
+          return false;
+      let currentLength = $(".skill-container").length;
+
+      $("#skillstable").append('<div class="skill-container" data-dellength='+currentLength+' >'+skill+'<i class="fa fa-times" onclick=delrows('+currentLength+') ></i></div>');
+      document.getElementById("addSkill").value = '';
+  }
   handlestep2Flag = () => {
+  //  console.log($("input[name='foo'][type='radio']:checked").val());
     this.setState({
-      step1flag: false,
-      step2flag: true
-    });
+      easy_apply : $("input[name='foo'][type='radio']:checked").val()
+    })
+   if(this.state.description == "" || this.state.company == "" ||  this.state.title == "" ||  this.state.type == "" ||  this.state.function == "" ||  this.state.industry  == "" || this.state.seniority == "" || this.state.address == ""){ 
+  //  if(false){
+   console.log(this.state)
+      printMessage("Please fill all the required * fields");
+    }else{
+      this.setState({
+        step1flag: false,
+        step2flag: true
+      });
+    }
+    
   };
 
   async jobpost() {
-    console.log("Job post ");
-
+    // if(this.state.skills == "", this.state.skills){ 
+    //       printMessage("Please fill all the required * fields");
+    //     }
+    let  skills = [];
+    $("#skillstable").find("div").each(function(){
+      skills.push($(this).text());
+    });
+    console.log(skills)
     let _t = this;
     let data = {
-      title: "Software Developer",
-      company: "facebook",
-      description:
-        "Internship program is open to talended candidates in related discipline. If you are interested in building professional career then apply to Software Developer Intern. This position is open in San Jose, CA. Application deadline is approching soon.",
-      industry: "Software",
-      type: "Full-time",
-      address: {
-        _id: "5bf13d982740542bdefb583e",
-        street: "1 Washington Street",
-        city: "San Jose",
-        country: "US",
-        zipcode: 95050,
-        coordinates: {
-          _id: "5bf13d982740542bdefb583f",
-          latitude: 37.3380652,
-          longitude: -121.93754519999999
-        }
-      },
-      function: "Code Deployment",
-      company_logo: "logo.jpg",
-      skills: ["java", "c++", " html"],
-      easy_apply: true
+      title: this.state.title,
+      company: this.state.company,
+      description:this.state.description,
+      type: this.state.type,
+      address: this.state.addressSend,
+      function: this.state.function,
+      company_logo: this.state.banner,
+      skills: this.state.skills,
+      easy_apply: this.state.easy_apply
     };
     console.log(data);
     try {
-      let ret = await api("POST", "/auth/jobs", data);
+      let ret = await api("POST", "/jobs", data);
       console.log(ret);
-      console.log();
       if (ret.status >= 200 && ret.status < 300) {
         printMessage("Successfully posted a job!");
-        _t.setState({
-          email: "",
-          password: "",
-          firstname: "",
-          lastname: ""
-        });
+        // _t.setState({
+        //   email: "",
+        //   password: "",
+        //   firstname: "",
+        //   lastname: ""
+        // });
       } else {
         throw "error";
       }
@@ -111,14 +139,66 @@ class PostJobfirst extends Component {
     }
   }
 
+  checkret(data)
+  {
+    console.log(data);
+    this.setState({
+      address : data
+    })
+    
+  }
+
+  async docChange()
+    {
+            var fd = new FormData();
+            var filesList = document.getElementById("profilebox").files;
+            if (!filesList[0].name.match(/.(jpg|jpeg|png|gif)$/i))
+            {
+                printMessage("Please select an image to upload.");
+                return false;
+            }
+            fd.append("uploadSelect",filesList[0]);
+            console.log(fd);
+            
+            try {
+                let ret = await api('POST','/document/upload',fd,{'Content-Type': 'multipart/form-data'});
+                console.log(ret);
+                if(ret.status>=200 && ret.status<300)
+                {
+                    let data = {
+                        'banner_image' : ((S3_URL) + ret['data']['payLoad'])
+                    }
+                    printMessage("File Saved Successfully.");
+                    this.setState({
+                        banner : data.banner_image
+                    })
+                    
+                }
+            } catch (error) {
+                console.log(Object.keys(error), error);
+                printError(error);   //Pass Full response object to the printError method.
+            }
+      }
+
+      changeDocument()
+      {
+          
+              document.querySelector("#profilebox").click();
+          
+      }
+  
+
+
+
   render() {
     if (this.state.step1flag) {
       return (
         <div>
           <PostJobHeader />
 
-          <div className="profileform profile">
-            <h3>Step 1: What job do you want to post? </h3>
+        
+          <div className="profileform profile" style={{height: "auto"}}  >
+            <p style={{fontSize : "20px"}}><bold>Step 1:</bold> What job do you want to post?</p>
             <br />
             <form>
               <div class="form-row">
@@ -129,10 +209,12 @@ class PostJobfirst extends Component {
 
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control form-grp-fitting"
                     id="company"
                     placeholder="Company"
+                    required
                     value={this.state.company}
+                    onChange={this.onChange}
                   />
                 </div>
                 <div class="form-group col-md-4">
@@ -142,10 +224,12 @@ class PostJobfirst extends Component {
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control form-grp-fitting"
                     id="title"
+                    required
                     placeholder="Job title"
                     value={this.state.title}
+                    onChange={this.onChange}
                   />
                 </div>
 
@@ -156,11 +240,14 @@ class PostJobfirst extends Component {
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control form-grp-fitting"
+                    required
                     id="address"
                     placeholder="Location"
                     value={this.state.address}
+                    onChange={this.onChange}
                   />
+              {/* <PLACES onPosition={this.checkret}></PLACES> */}
                 </div>
               </div>
               <div className="form-row">
@@ -171,25 +258,29 @@ class PostJobfirst extends Component {
                   </label>
                   <input
                     type="text"
-                    class="form-control"
+                    required
+                    class="form-control form-grp-fitting"
                     id="function"
                     placeholder="Add Job function"
+                    value={this.state.function}
+                    onChange={this.onChange}
+
                   />
                 </div>
-                <div class="form-group col-md-4">
+
+                <div class="form-group col-md-4 filter-message-box-drop">
                   <label for="employmenttype">
                     Employment type <span style={{ color: "blue" }}>*</span>{" "}
                   </label>
+                  <i className="fa fa-angle-down"></i>  
                   <select
-                    name="employmenttype"
-                    className="form-control"
+                    name="type"
+                    onChange={this.onChangeType}
+                    className="form-control form-grp-fitting"
                     style={{ width: "133px", height: "50px" }}
                   >
-                    <option disabled value="Select employment type">
-                      Select
-                    </option>
+                    <option selected disabled value="">Select</option>
                     <option value="fulltime">Full time </option>
-
                     <option value="parttime">Part time</option>
                     <option value="contract">Contract</option>
                     <option value="temporary">Temporary</option>
@@ -205,24 +296,28 @@ class PostJobfirst extends Component {
                     Company Industry <span style={{ color: "blue" }}>*</span>{" "}
                   </label>
                   <input
+                    required
                     type="text"
-                    class="form-control"
-                    id="industry"
+                    class="form-control form-grp-fitting"
+                    name="industry"
                     placeholder="Add company"
+                    onChange={this.onChangeType}
+ 
                   />
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-4 filter-message-box-drop">
                   <label for="seniority">
                     Seniority level <span style={{ color: "blue" }}>*</span>{" "}
                   </label>
+                  <i className="fa fa-angle-down"></i>  
                   <select
                     name="seniority"
-                    className="form-control "
+                    className="form-control form-grp-fitting "
                     style={{ width: "133px", height: "50px" }}
+                    value={this.state.seniority}
+                    onChange={this.onChangeType} 
                   >
-                    <option disabled value="Select seniority level">
-                      Internship
-                    </option>
+                    <option selected disabled value="">Select</option>
                     <option value="fulltime">Entry level</option>
                     <option value="parttime">Associate</option>
                     <option value="contract">Mid senior level</option>
@@ -237,14 +332,17 @@ class PostJobfirst extends Component {
                     Job description<span style={{ color: "blue" }}>*</span>{" "}
                   </label>
                   <textarea
-                    className="form-control"
+                    className="form-control form-grp-fitting"
                     rows="5"
+                    required
                     cols="20"
                     name="aboutme"
                     id="description"
                     style={{ height: 100, width: 500 }}
                     placeholder="Job description"
                     maxLength="400"
+                    value={this.state.description}
+                    onChange={this.onChange}
                   />
                 </div>
               </div>
@@ -253,50 +351,61 @@ class PostJobfirst extends Component {
                 How would you like to receive your applicants?{" "}
                 <span style={{ color: "blue" }}>*</span>{" "}
               </p>
+              <br />
               <div className="form-group col-md-8">
-                <div class="custom-control custom-radio">
-                  <input
-                    type="radio"
-                    id="recommended"
-                    name="recommended"
-                    class="custom-control-input"
-                  />
+                 <form>
 
-                  <label class="custom-control-label" for="recommended">
-                    <span style={{ "font-weight": "bold" }}>Recommended:</span>{" "}
-                    Let candidates apply with their LinkedIn profile and notify
-                    me by email
+                <span><input type="radio" name="f"/>
+                  <label style = {{marginLeft : "10px", marginTop : "-16px"}} class="custom-control-label col-md-12">
+                  Let candidate apply with their LinkedIn profile & notify
                   </label>
-                </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  style={{ width: "100%" }}
-                  name="text1"
-                  id="text1"
-                  placeholder="xyz@gmail.com"
-                />
-              </div>
-              <div className="form-group col-md-8">
-                <div class="custom-control custom-radio">
-                  <input
-                    type="radio"
-                    id="direct"
-                    name="direct"
-                    class="custom-control-input"
-                  />
-                  <label class="custom-control-label" for="direct">
+                  </span><br />
+                  <br />
+                  <input type="text" class="form-control form-grp-fitting col-md-8" placeholder="http://yourcompany.com/job123"/>
+                  <br/>
+
+                  <span><input type="radio" name="f"/>
+                  <label style = {{marginLeft : "10px", marginTop : "-16px"}} class="custom-control-label col-md-12">
                     Direct applicants to an external site to apply
                   </label>
-                </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="text2"
-                  id="text2"
-                  placeholder="http://yourcompany.com/job123"
-                />
+                  </span><br />
+                  <br />
+                  <input type="text" class="form-control form-grp-fitting col-md-8" placeholder="http://yourcompany.com/job123"/>
+                  <br/>
+                   </form>
+
+                  <div className="row"  onClick={this.changeDocument}>
+                      <div>
+                      Company Logo : <br/><br/>
+                      </div>
+
+                      <div className="hiddenbox">
+                          <input type="file" name="profilebox" id="profilebox" onChange={()=>this.docChange()} />
+                      </div>
+
+                      <div className="comp-logo">
+                      <img className="comp-logo-img" src={this.state.banner} />
+                      </div>
+                  </div>
+
+                  <form>
+                  <div className="easy-app-box">
+                    <div className="easy-app-title">
+                    Easy Apply 
+                    </div>
+                    <div className="easy-app">
+                    Yes <input type="radio" name="foo" value="true"/>                     
+                    </div>
+                    <div className="easy-app">
+                    No <input type="radio" name="foo" value="false"/>
+                    </div>
+                  </div>
+
+
+                  </form>
+
               </div>
+
 
               <button
                 type="button"
@@ -307,7 +416,7 @@ class PostJobfirst extends Component {
                 class="button-large"
                 data-is-animating-click="true"
               >
-                <span>Continue</span>
+                <span className="cont-btn">Continue</span>
               </button>
             </form>
           </div>
@@ -318,62 +427,87 @@ class PostJobfirst extends Component {
         <div>
           <PostJobHeader />
 
-          <div className="profileform1 profile1">
-            <h2>Step 2: What are the right qualifications for your job?</h2>
-
+          <div className="profileform1 profile1" style={{height: "auto"}}>
+            <p style={{color :"black", fontSize : "30px"}}>Step 2: What are the right qualifications for your job?</p>
+            <br/>
+            <br/>
             <p>
-              {" "}
               What are some of the skills needed for this job? (Select up to 10)
             </p>
 
-            <p>
-              What range of relevant experience are you looking for?
-              <span> 1 to 5 years </span>
-            </p>
+          <div class="input-group">
+            <input required type="text" class="form-control" placeholder="Ex. Java" id="addSkill"/>
+            <span class="input-group-btn" style={{    marginTop: "-41px", marginLeft: "10px"}}>
+                <button className="btn btn-default save-btn-small" style={{marginTop: "41px",height: "50px"}} type="button" onClick={this.addSkill}>
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+          </div>
+          <div className="table table-responsive">
+              <div className="table skilltable table-striped" style={{width: "fit-content"}}>
+                  <div id="skillstable"></div>
+              </div>
+            </div>
 
-            <div class="slidecontainer">
+            
+
+            <p style={{color :"black"}}>
+            How many years of experience in the job function(s) are you looking for?
+            </p>
+            <p style={{color :"grey"}}>LinkedIn tools may not be used to discriminate based on personal characteristics like age.</p>
+            <p style={{color :"grey",paddingTop:"20px"}}> At <span style={{color :"black", fontSize : "20px"}}> {this.state.range} </span> least year  </p>
+
+
+            <div class="slidecontainer row">
+            <div className="col-md-12">
               <input
                 type="range"
-                min="1"
-                max="100"
-                value="50"
+                min="0"
+                max="30"
+                value="5"
                 class="slider"
                 name="range "
                 id="range"
                 onChange={this.onChange}
                 value={this.state.range}
+                style={{borderRadius: "59px", height: "12px"}}
               />
-              <span> {this.state.range} </span>>
+              </div>
+              <div className="row">
+              <div className=" pad-num"><div className=" pad-num1" style={{marginLeft: "17px", color :"grey"}}>0</div></div>
+              <div className=" pad-num"><div className=" pad-num1" style={{marginLeft: "103px", color :"grey"}}>5</div></div>
+              <div className=" pad-num"><div className=" pad-num1" style={{marginLeft: "95px", color :"grey"}}>10</div></div>
+              <div className=" pad-num"><div className=" pad-num1" style={{marginLeft: "93px", color :"grey"}}>15</div></div>
+              <div className=" pad-num"><div className=" pad-num1" style={{marginLeft: "93px", color :"grey"}}>20</div></div>
+              <div className=" pad-num"><div className=" pad-num1" style={{marginLeft: "93px", color :"grey"}}>25</div></div>
+              <div className=" pad-num"><div className=" pad-num1" style={{marginLeft: "93px", color :"grey"}}>30</div></div>
             </div>
-            <p>
-              {" "}
-              What level of education are you looking for? (Select up to 5)
-            </p>
+              
+              
+            </div>
+            <br/>
 
-            <div class="form-group col-md-4">
+
+            {/* <div class="form-group col-md-4">
               <select
                 name="degree"
                 id="degree"
-                className="form-control "
+                className="form-control form-grp-fitting "
                 style={{ width: "183px", height: "50px" }}
               >
-                <option hidden value="Select degree">
-                  Add degree
-                </option>
+                <option hidden value="Select degree">Add degree</option>
                 <option value="High SchoolDiploma"> High School Diploma</option>
                 <option value="AssociatesDegree"> Associate's Degree</option>
                 <option value=" BachelorsDegree"> Bachelor's Degree</option>
                 <option value="MastersDegree">Master's Degree</option>
-                <option value="MasterofBusinessAdministration">
-                  Master of Business Administration
-                </option>
+                <option value="MasterofBusinessAdministration">Master of Business Administration</option>
                 <option value="DoctorofPhilosophy">Doctor of Philosophy</option>
                 <option value="DoctorofMedicine">Doctor of Medicine</option>
                 <option value="DoctorofLaw">Doctor of Law</option>
               </select>
-            </div>
+            </div> */}
 
-            <div className="row">
+            <div className="row" style={{paddingTop: "40px"}}>
               <div className="col-md-8">
                 <button
                   className="btn btn-primary-outline"
@@ -392,11 +526,14 @@ class PostJobfirst extends Component {
                   class="button-large2"
                   data-is-animating-click="true"
                 >
-                  <span>Post job</span>
+                  <p style={{ color: "white",fontSize : "20px", fontWeight : "100", marginBottom : "5px"}}>Post job</p>
                 </button>
               </div>
             </div>
           </div>
+
+
+        
         </div>
       );
     }
