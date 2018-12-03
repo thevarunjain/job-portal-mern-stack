@@ -23,7 +23,7 @@ module.exports = {
       }).required(),
       skills: Joi.array().items(Joi.string().required()),
       function: Joi.string().max(128).required(),
-      company_logo: Joi.string().required(),
+      company_logo: Joi.string().default('default-company.png'),
       easy_apply: Joi.boolean().default(false)
     }
   },
