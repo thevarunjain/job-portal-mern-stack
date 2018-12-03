@@ -81,20 +81,15 @@ class Main extends Component {
                 <Route path="/postjobfirst" component={PostJobfirst} exact />
                 <Route path="/recruitersignup" component={Recruitersignup} exact />
                 <Route path="/apply" component={ApplyJob} exact />
+                <Route path="/companypage/:id" component={CompanyPage} exact />
 
+                
             </div>
           </BrowserRouter>
     );
-  }
-
-
-            
-       
+        }       
     }
 
-
-
-}
 
 
 /* const ApplicantPrivateRoute = ({ component: Component, ...rest }) => (
