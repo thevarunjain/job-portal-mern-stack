@@ -9,13 +9,13 @@ import {connect} from "react-redux";
 import {set_active_id} from "../../actions/jobCardActiveId";
 import "./jobs.css";
 
-
 class SearchedJobs extends Component {
   constructor(props){
     super(props);
     this.state={
-      title:props.match.params.title,
-      location:props.match.params.location,
+      criterion:props.match.params.criterion,
+      lat:props.match.params.lat,
+      long:props.match.params.long,
       jobs:null,
       message:"",
       activeID: null
@@ -26,11 +26,11 @@ componentDidMount(){
     //axios post http://localhost:3000/api/search/jobs
   
    var data={
-    "company" : "facebook",
-    "title": "Software Developer",
+    "criterion" : this.state.criterion,
+   
     "coordinates" : {
-      "latitude": 37.3336613,
-      "longitude": -121.91113860000002
+      "latitude": this.state.lat,
+      "longitude": this.state.long
     }
    }
 

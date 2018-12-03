@@ -11,22 +11,43 @@ class SavedJobsHome extends Component {
 constructor(props){
     super(props);
     this.state={
-        savedJobs:[]
+        savedJobs:[],
+        status:""
     }
+    this.unsave=this.unsave.bind(this);
+    this.func=this.func.bind(this);
 }
 
-async componentDidMount(){
-    try {
-        let ret = await api('GET','/jobs');
-        console.log("saved Jobs",ret);
-        this.setState({
-          savedJobs:ret.data.payLoad,
-          
-        })
-      } catch (error) {
-        console.log(Object.keys(error), error.response);
-        printError(error);
-      }
+async unsave(id){
+  try {
+    let message= await api('POST','/jobs/'+id+'/unsave');
+    console.log("message",message);
+    this.setState({
+      status:message.data.payLoad.message
+      
+    })
+  } catch (error) {
+    console.log(Object.keys(error), error.response);
+    printError(error);
+}
+this.func();
+}
+
+async func(){
+  try {
+    let ret = await api('GET','/jobs/saved');
+    console.log("saved Jobs",ret);
+    this.setState({
+      savedJobs:ret.data.payLoad,
+      
+    })
+  } catch (error) {
+    console.log(Object.keys(error), error.response);
+    printError(error);
+  }
+}
+componentDidMount(){
+  this.func()
 }
 
   render() {
@@ -34,7 +55,7 @@ let savedjobs=null;
     savedjobs =this.state.savedJobs?this.state.savedJobs.map(job => {
         return(
           <div>
-            <JobSaved data={job}/>
+            <JobSaved data={job} unsave={this.unsave}/>
           </div>
         )
       }) :null;

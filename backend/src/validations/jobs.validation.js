@@ -15,7 +15,7 @@ module.exports = {
         street: Joi.string().max(128).required(),
         city: Joi.string().max(128).required(),
         country: Joi.string().max(128).required(),
-        zipcode: Joi.number().required(),
+        zipcode: Joi.string().regex(/^[0-9]{5}(?:-[0-9]{4})?$/).required(),
         coordinates: Joi.object().keys({
           latitude: Joi.number().min(-90).max(90).required(),
           longitude: Joi.number().min(-180).max(180).required()
@@ -38,7 +38,7 @@ module.exports = {
         street: Joi.string().max(128),
         city: Joi.string().max(128),
         country: Joi.string().max(128),
-        zipcode: Joi.number(),
+        zipcode: Joi.string().regex(/^[0-9]{5}(?:-[0-9]{4})?$/),
         coordinates: Joi.object().keys({
           latitude: Joi.number().min(-90).max(90),
           longitude: Joi.number().min(-180).max(180)
@@ -56,13 +56,13 @@ module.exports = {
         first: Joi.string().max(128).required(),
         last: Joi.string().max(128).required()
       }).required(),
-      phone: Joi.number().min(1000000000).required(),
+      phone: Joi.string().regex(/^[2-9]\d{2}-\d{3}-\d{4}$/).required(),
       email: Joi.string().email().required(),
       address: Joi.object().keys({
         street: Joi.string().max(128),
         city: Joi.string().max(128),
         country: Joi.string().max(128),
-        zipcode: Joi.number(),
+        zipcode: Joi.string().regex(/^[0-9]{5}(?:-[0-9]{4})?$/),
         coordinates: Joi.object().keys({
           latitude: Joi.number().min(-90).max(90),
           longitude: Joi.number().min(-180).max(180)
@@ -78,7 +78,7 @@ module.exports = {
   },
   easyApply: {
     body: {
-      phone: Joi.number().min(1000000000).required(),
+      phone: Joi.string().regex(/^[2-9]\d{2}-\d{3}-\d{4}$/).required(),
       email: Joi.string().email().required(),
       resume: Joi.string().required()
     }
