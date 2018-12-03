@@ -179,20 +179,25 @@ class Header extends Component {
 
   async deleteProfile()
   {
-		try 
-		{
-			let userid = sessionStorage.getItem('user_id');
-			let ret = await api('DELETE',('/api/users'+userid));
-			console.log(ret);
-			if(ret.status>=200 && ret.status<300)
+		  let c = window.confirm("Are you sure you want to delete your profile? This action cannot be undone.");
+		  if(c)
+		  {
+			try 
 			{
-
+				let userid = sessionStorage.getItem('user_id');
+				let ret = await api('DELETE',('/users/'+userid));
+				console.log(ret);
+				if(ret.status>=200 && ret.status<300)
+				{
+					this.props.history.push("/");
+				}
 			}
-		}
-		catch(e)
-		{
-			console.log(e);
-		}
+			catch(e)
+			{
+				console.log(e);
+			}
+		  }
+		
   }
 
 
