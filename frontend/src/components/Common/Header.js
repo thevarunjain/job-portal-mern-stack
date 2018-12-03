@@ -29,7 +29,13 @@ class Header extends Component {
 	  this.onChangeSearch = this.onChangeSearch.bind(this);
 	  this.openPublicSearchProfile = this.openPublicSearchProfile.bind(this);
 	  this.deleteProfile =  this.deleteProfile.bind(this);
+	  this.handlelogout = this.handlelogout.bind(this);
 	  console.log(this.props);
+
+
+
+
+
   }
 
   toggleMenu()
@@ -41,6 +47,19 @@ class Header extends Component {
   {
 
 		this.props.dispatch(fetchProfile());
+
+		/******CHECK FOR APPLICANT LOGIN *********/
+
+		let user = sessionStorage.getItem('user_id');
+		let profile = sessionStorage.getItem('profile');
+		let user_token = sessionStorage.getItem('user_token');
+		if(profile != 'applicant' || !user || !user_token)
+		{
+			this.props.history.push("/");
+		}
+
+
+		/*****************************************/
   }
 
   componentWillReceiveProps(nextProps)
@@ -213,6 +232,19 @@ class Header extends Component {
 		this.onSearchBlur();
 		window.open(strx,"_blank");
   }
+
+
+  handlelogout()
+  {
+	  let c = window.confirm("Are you sure you want to logout?");
+	  if(c)
+	  {
+		  sessionStorage.clear();
+		  localStorage.clear();
+		  this.props.history.push("/");
+	  }
+  }
+
 
   render() {
 	const commonProps = {
@@ -456,7 +488,7 @@ class Header extends Component {
 								<li><a href="javascript:void(0)" title="">Terms & Conditions</a></li>
 								<li><a href="javascript:void(0)" onClick={this.deleteProfile} >Delete Profile</a></li>
 							</ul>
-							<h3 className="tc"><a href="sign-in.html" title="">Logout</a></h3>
+							<h3 className="tc"><a href="javascript:void(0)" onClick={this.handlelogout}>Logout</a></h3>
 						</div>
 					</div>
 				</div>

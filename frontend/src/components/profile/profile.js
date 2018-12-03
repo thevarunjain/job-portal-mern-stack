@@ -45,20 +45,29 @@ class profile extends Component {
             'updatedAt' : '',
         }
 
-        this.openModal.bind = this.openModal.bind(this);
-        this.detailModal.bind = this.detailModal.bind(this);
-        this.handleChange.bind = this.handleChange.bind(this);
-        this.handleSelect.bind = this.handleSelect.bind(this);
-        this.handleText = this.handleText.bind(this);
-        this.addExperience = this.addExperience.bind(this);
-        this.deleteExp = this.deleteExp.bind(this);
-        this.addEducation = this.addEducation.bind(this);
-        this.deleteEducation = this.deleteEducation.bind(this);
-        this.addPersonal =  this.addPersonal.bind(this);
-        this.delPersonal =  this.delPersonal.bind(this);
-        this.addSkill = this.addSkill.bind(this);
-        this.saveSkills = this.saveSkills.bind(this);
-        this.viewPDF = this.viewPDF.bind(this);
+        try 
+        {
+            this.openModal.bind = this.openModal.bind(this);
+            this.detailModal.bind = this.detailModal.bind(this);
+            this.handleChange.bind = this.handleChange.bind(this);
+            this.handleSelect.bind = this.handleSelect.bind(this);
+            this.handleText = this.handleText.bind(this);
+            this.addExperience = this.addExperience.bind(this);
+            this.deleteExp = this.deleteExp.bind(this);
+            this.addEducation = this.addEducation.bind(this);
+            this.deleteEducation = this.deleteEducation.bind(this);
+            this.addPersonal =  this.addPersonal.bind(this);
+            this.delPersonal =  this.delPersonal.bind(this);
+            this.addSkill = this.addSkill.bind(this);
+            this.saveSkills = this.saveSkills.bind(this);
+            this.viewPDF = this.viewPDF.bind(this);
+        }
+        catch(e)
+        {
+            console.log(e);
+        }
+
+        
     }
 
     componentDidMount()
