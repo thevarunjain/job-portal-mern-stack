@@ -90,6 +90,31 @@ exports.fetchSavedCount = async (req, res, next) => {
   }
 }
 
+
+exports.getApplicationDetails = async (req, res, next) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
+    const response = { payLoad: [] }
+    const ObjectID = mongoose.Types.ObjectId;
+    var job_id = req.params.jobId
+    var query = {
+      "jobId": new ObjectID(job_id)
+    };
+    var applications = await Application.find(query)
+    for (let index = 0; index < applications.length; index++) {
+      var applicant_id = applications[index]['applicantId']
+      var applicant = await Applicant.findOne({id: applicant_id}).exec()
+      var convertedApplicationJSON = JSON.parse(JSON.stringify(applications[index]))
+      convertedApplicationJSON.profile_image = applicant.profile_image
+      response.payLoad.push(convertedApplicationJSON)
+    }
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 exports.fetchSaved = async (req, res, next) => {
   try {
     const response = {payLoad: []}
