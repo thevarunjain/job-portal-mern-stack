@@ -58,7 +58,7 @@ exports.getFilteredJobs = async (req, res, next) => {
   try {
     console.log('In sarch/job Route')
     const response = { payLoad: [] }
-    const criterion = req.body.criterion ? req.body.criterion : null
+    const criterion = req.body.criterion ? req.body.criterion : " "
     let lat = null
     let long = null
     if (req.body.coordinates) {
