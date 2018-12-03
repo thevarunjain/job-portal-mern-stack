@@ -70,8 +70,8 @@ class PostJobfirst extends Component {
   {
       let skill = document.getElementById("addSkill").value;
       console.log(skill);
-
       this.state.skills.push(skill);
+
       if(skill=='')
           return false;
       let currentLength = $(".skill-container").length;
@@ -108,7 +108,6 @@ class PostJobfirst extends Component {
     console.log(skills)
     let _t = this;
     let data = {
-      // recruiter : "5c047a66e94e4d07d0d51d21",
       title: this.state.title,
       company: this.state.company,
       description:this.state.description,
@@ -176,6 +175,7 @@ class PostJobfirst extends Component {
                         bannerSend : ret['data']['payLoad']
                     })
                     console.log(this.state.bannerSend)
+
                 }
             } catch (error) {
                 console.log(Object.keys(error), error);
