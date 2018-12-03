@@ -4949,6 +4949,7 @@ a:hover {
 .main-message-box.ta-right .message-dt {
 	padding-left: 0;
 	padding-right: 85px;
+	width : 100%;
 }
 .main-message-box.ta-right .message-dt > span {
 	float: right;
@@ -4981,7 +4982,8 @@ a:hover {
 }
 .message-inner-dt > p {
 	float: right;
-	width: 60%;
+	width: auto;
+	max-width: 60%;
 	background-color: #283e4a;
 	font-size: 14px;
 	line-height: 22px;

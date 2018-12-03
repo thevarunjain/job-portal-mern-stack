@@ -86,6 +86,26 @@ export async function api(type, url , data = {},headers = {}) {
         });
         return await res; */
     }
+    else if( type == 'DELETE' || type=='delete')
+    {
+        if(sendToken)
+        {
+            const res = await axios({
+                method: 'DELETE',
+                url: url,
+                headers: headersObject
+            });
+            return res;
+        }
+        else 
+        {
+            const res = await axios({
+                method: 'DELETE',
+                url: url
+            });
+            return res;
+        }
+    }
 
 
 

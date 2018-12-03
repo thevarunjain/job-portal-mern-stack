@@ -106,11 +106,12 @@ exports.connections = async (req, res, next) => {
     var connections = []
     var obj = {}
     let result = await neo4jSession.run('MATCH (a {userid:{emailadd}})--(b) return b', {emailadd: uId})
+    console.log('resultbbb', result)
     console.log('rr', result)
     for (let index = 0; index < result.records.length; index++) {
       const conn = result.records[index]
       let temp = JSON.stringify(conn)
-      console.log(JSON.parse(temp)._fields[0].properties)
+      console.log('eleee', JSON.parse(temp)._fields[0].properties)
       // connections.push(JSON.parse(temp)._fields[0].properties.userid)
       console.log('tyui', temp)
       let user = await Applicant.findOne({id: JSON.parse(temp)._fields[0].properties.userid}).exec()
@@ -130,6 +131,11 @@ exports.connections = async (req, res, next) => {
     }
     obj.connections = connections
     console.log(obj)
+    let totalConnections = 0
+    for (var i = 0; i < connections.length; i++) {
+      totalConnections += 1
+    }
+    response.payLoad.totalConnections = totalConnections
     response.payLoad.connections = connections
     res.status(httpStatus.OK)
     res.send(response)
