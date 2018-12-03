@@ -2,6 +2,7 @@
 
 const httpStatus = require('http-status')
 const mongoose = require('mongoose')
+const sql = require('./../services/sql')
 const APIError = require('../utils/APIError')
 const Job = require('../models/job.model')
 const Applicant = require('../models/applicant.model')
@@ -42,6 +43,31 @@ exports.getOne = async (req, res, next) => {
     const response = { payLoad: {} }
     const job = await Job.findById(req.params.jobId).exec()
     response.payLoad = job
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.jobsByRecruiter = async (req, res, next) => {
+  try {
+    console.log(req.user._id)
+    const response = { payLoad: [] }
+    const ObjectID = mongoose.Types.ObjectId;
+    var query = {
+      "recruiter": new ObjectID(req.user._id)
+    };
+    const jobs = await Job.find(query)
+    for (let index = 0; index < jobs.length; index++) {
+      var job_id = jobs[index]['_id']
+      var application_count = await sql.query(`SELECT COUNT(*) as count FROM job_application WHERE job_id = '${job_id}'`)
+      var save_count = await sql.query(`SELECT COUNT(*) as count FROM saved_job WHERE job_id = '${job_id}'`)
+      var convertedJobJSON = JSON.parse(JSON.stringify(jobs[index]))
+      convertedJobJSON.application_count = application_count[0].count
+      convertedJobJSON.save_count = save_count[0].count
+      response.payLoad.push(convertedJobJSON)
+    }
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
