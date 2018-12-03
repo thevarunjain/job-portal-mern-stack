@@ -28,6 +28,7 @@ import ApplicantConnection from "../Connection/ApplicantConnection"
 import ListedJobs from "../recruiter/listedJobs";
 import Recruitersignup from "../Recruitersignup/Recruitersignup";
 import ApplyJob from "../ApplyJob/Applyjob";
+import JobApplicantsHome from "../recruiter/jobApplicantsHome";
 
 class Main extends Component {
     render() {
@@ -63,6 +64,7 @@ class Main extends Component {
                 <Route path="/postjobfirst" component={PostJobfirst} exact />
                 <Route path="/recruitersignup" component={Recruitersignup} exact />
                     <Route path="/apply" component={ApplyJob} exact />
+                    <Route path="/jobapplicant/:jobId" component={JobApplicantsHome} exact />
             </div>
           </BrowserRouter>
     );
