@@ -6,9 +6,9 @@ import axios from "axios";
 import { api , printError, printMessage} from '../../services/';
 import {BASE_URL} from "../../constants/routes"
 import io from "socket.io-client";
-
-
-
+import $ from "jquery";
+import * as moment from 'moment';
+ 
 
 class Message extends Component {
 	constructor(props) {
@@ -18,11 +18,16 @@ class Message extends Component {
 		this.state = {
 			messagelist : [],
 			user_message : '',
-			currentRoom : ''
+			currentRoom : '',
+			currentChat : ''
 		}
 
+		let outerstate = this;
+		
 		this.user_message = this.user_message.bind(this);
 		this.handleNewMessage =  this.handleNewMessage.bind(this);
+		this.printMessage = this.printMessage.bind(this);
+		this.reFormatMessage = this.reFormatMessage.bind(this);
 
 		this.socket = io('http://localhost:3003/');
 		console.log(this.socket);
@@ -36,13 +41,16 @@ class Message extends Component {
 		this.socket.on('message_posted', function(data){
 			console.log("asdps");
 			console.log(data);
+			outerstate.printMessage(data);
 		});
+
+		this.getMessages();
 	}	
 
 
 	 componentDidMount()
 	 {
-			this.getMessages();
+			
 			console.log(io);
 	 }
 
@@ -73,8 +81,10 @@ class Message extends Component {
 	 {
 		 console.log(g._id);
 		 this.setState({
-			 currentRoom : g._id
-		 })
+			 currentRoom : g._id,
+			 currentChat : g._id
+		 });
+		 this.reFormatMessage(g);
 		 this.socket.emit('create_room',{'data' : g._id});
 	 }
 
@@ -88,10 +98,75 @@ class Message extends Component {
 
 	 handleNewMessage()
 	 {
+		 if(this.state.currentRoom=="")
+		 {
+			printMessage("Please select a chat to send message");
+			return false; 
+		 }
+		 if(this.state.user_message == "")
+		 {
+			printMessage("Please enter a value to send");
+			return false; 
+		 }
 		 console.log(this.state);
-		 this.socket.emit('private_chat_handler',{'payload': this.state.user_message,'thread': this.state.currentRoom});
+		 let sentAt = new Date().getTime();
+		 $(".scroll-chat").append('<div class="main-message-box ta-right"><div class="message-dt"><div class="message-inner-dt"><p>'+this.state.user_message+'</p></div><span>'+(moment(sentAt).fromNow())+'</span></div><div class="messg-usr-img"><img src="http://via.placeholder.com/50x50" alt=""></div></div>');
+		 var element = document.querySelector(".scroll-chat");
+		 element.scrollTop = element.scrollHeight;
+		 this.socket.emit('private_chat_handler',{'payload': this.state.user_message,'thread': this.state.currentRoom,'sentAt':sentAt , 'senderID' : sessionStorage.getItem('user_id')});
 		 this.setState({user_message : ''});
 	 }
+
+
+	 printMessage(t)
+	 {
+		console.log(t);
+		$(".scroll-chat").append('<div class="main-message-box st3"><div class="message-dt st3"><div class="message-inner-dt"><p>'+t['payload']+'</p></div><span>'+(moment(t['sentAt']).fromNow())+'</span></div><div class="messg-usr-img"><img src="http://via.placeholder.com/50x50" alt=""></div></div>');
+		var element = document.querySelector(".scroll-chat");
+		element.scrollTop = element.scrollHeight;
+		
+	 }
+
+
+
+	 reFormatMessage(data)
+	 {
+		//console.log(data);		
+		try
+		{
+			let myid = sessionStorage.getItem('user_id');
+			let chats = data['history'];
+			console.log(chats);
+			if(myid)
+			{
+				$(".scroll-chat").html('');
+				for(var i = 0 ; i < chats.length ; i++)
+				{
+					if(chats[i]['sender']==myid)
+					{
+						$(".scroll-chat").append('<div class="main-message-box ta-right"><div class="message-dt"><div class="message-inner-dt"><p>'+chats[i]['body']+'</p></div><span>'+(moment(chats[i]['sentAt']).fromNow())+'</span></div><div class="messg-usr-img"><img src="http://via.placeholder.com/50x50" alt=""></div></div>');
+					}
+					else 
+					{
+						$(".scroll-chat").append('<div class="main-message-box st3"><div class="message-dt st3"><div class="message-inner-dt"><p>'+chats[i]['body']+'</p></div><span>'+(moment(chats[i]['sentAt']).fromNow())+'</span></div><div class="messg-usr-img"><img src="http://via.placeholder.com/50x50" alt=""></div></div>');
+					}
+				}
+				var element = document.querySelector(".scroll-chat");
+				element.scrollTop = element.scrollHeight;
+			}
+		}
+		catch(e)
+		{
+			console.log(e);
+		}
+	 }
+
+
+	 handleKeyPress = (event) => {
+		if(event.key == 'Enter'){
+		  this.handleNewMessage();
+		}
+	  }
 
   render() {
     return (    
@@ -135,7 +210,7 @@ class Message extends Component {
 																<h3>{val._id}</h3>
 																<p>Hello <img src="images/smley.png" alt="" /></p>
 															</div>
-															<span className="posted_time">1:55 PM</span>
+															<span className="posted_time">{moment(val['updatedAt']).format('LT') }</span>
 															{/* <span className="msg-notifc">1</span> */}
 														</div>
 													</li>
@@ -156,74 +231,18 @@ class Message extends Component {
 								<div className="message-bar-head zindex0 p0">
 									<div className="usr-msg-details p15">
 										<div className="usr-mg-info">
-											<h3>Varun Jain</h3>
+											<h3>{this.state.currentChat}</h3>
 										</div>
 									</div>
 								</div>
 
 								<div className="messages-line margint10 scroll-chat" >
 									
-									<div className="main-message-box ta-right">
-										<div className="message-dt">
-											<div className="message-inner-dt">
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
-											</div>
-											<span>Sat, Aug 23, 1:08 PM</span>
-										</div>
-										<div className="messg-usr-img">
-											<img src="http://via.placeholder.com/50x50" alt="" />
-										</div>
-									</div>
-
-									<div className="main-message-box st3">
-										<div className="message-dt st3">
-											<div className="message-inner-dt">
-												<p>Lorem ipsum dolor sit amet</p>
-											</div>
-											<span>2 minutes ago</span>
-										</div>
-										<div className="messg-usr-img">
-											<img src="http://via.placeholder.com/50x50" alt="" />
-										</div>
-									</div>
 									
 
-                                    									<div className="main-message-box ta-right">
-										<div className="message-dt">
-											<div className="message-inner-dt">
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
-											</div>
-											<span>Sat, Aug 23, 1:08 PM</span>
-										</div>
-										<div className="messg-usr-img">
-											<img src="http://via.placeholder.com/50x50" alt="" />
-										</div>
-									</div>
-
-									<div className="main-message-box st3">
-										<div className="message-dt st3">
-											<div className="message-inner-dt">
-												<p>Lorem ipsum dolor sit amet</p>
-											</div>
-											<span>2 minutes ago</span>
-										</div>
-										<div className="messg-usr-img">
-											<img src="http://via.placeholder.com/50x50" alt="" />
-										</div>
-									</div>
 
 
-                                    									<div className="main-message-box ta-right">
-										<div className="message-dt">
-											<div className="message-inner-dt">
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rutrum congue leo eget malesuada. Vivamus suscipit tortor eget felis porttitor.</p>
-											</div>
-											<span>Sat, Aug 23, 1:08 PM</span>
-										</div>
-										<div className="messg-usr-img">
-											<img src="http://via.placeholder.com/50x50" alt="" />
-										</div>
-									</div>
+                                    									
 
 									{/* <div className="main-message-box st3">
 										<div className="message-dt st3">
@@ -249,26 +268,16 @@ class Message extends Component {
 										</div>
 									</div> */}
 
-									<div className="main-message-box st3">
-										<div className="message-dt st3">
-											<div className="message-inner-dt">
-												<p>Lorem ipsum dolor sit amet</p>
-											</div>
-											<span>2 minutes ago</span>
-										</div>
-										<div className="messg-usr-img">
-											<img src="http://via.placeholder.com/50x50" alt="" />
-										</div>
-									</div>
+									
 							    </div>
                                     <div className="message-send-area msg-reply-box-bottom">
-                                        <form>
+                                       
                                             <div className="mf-field">
-                                                <input type="text" name="user_message" id="user_message" onChange={this.user_message} value={this.state.user_message} placeholder="Type a message here" />
+                                                <input type="text" name="user_message" id="user_message" onChange={this.user_message} value={this.state.user_message} placeholder="Type a message here" autoComplete="off" onKeyPress={this.handleKeyPress} />
                                                 <button type="button" onClick={this.handleNewMessage}>Send</button>
                                             </div>
                                             
-                                        </form>
+                                        
                                     </div>
 						</div>
 					</div>

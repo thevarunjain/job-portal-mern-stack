@@ -45,7 +45,6 @@ class profile extends Component {
             'updatedAt' : '',
         }
 
-
         this.openModal.bind = this.openModal.bind(this);
         this.detailModal.bind = this.detailModal.bind(this);
         this.handleChange.bind = this.handleChange.bind(this);
