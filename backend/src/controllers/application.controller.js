@@ -30,6 +30,7 @@ exports.apply = async (req, res, next) => {
       'application_id': savedApplication._id
     }
     await sql.query('INSERT INTO job_application SET ?', applicationPointers)
+    await deleteIncompleteApplication(applicationPointers.applicant_id, applicationPointers.job_id)
     response.payLoad = savedApplication
     res.status(httpStatus.OK)
     res.send(response)
@@ -96,15 +97,15 @@ exports.getApplicationDetails = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
     const response = { payLoad: [] }
-    const ObjectID = mongoose.Types.ObjectId;
-    var job_id = req.params.jobId
+    const ObjectID = mongoose.Types.ObjectId
+    var jobId = req.params.jobId
     var query = {
-      "jobId": new ObjectID(job_id)
-    };
+      'jobId': new ObjectID(jobId)
+    }
     var applications = await Application.find(query)
     for (let index = 0; index < applications.length; index++) {
-      var applicant_id = applications[index]['applicantId']
-      var applicant = await Applicant.findOne({id: applicant_id}).exec()
+      var applicantId = applications[index]['applicantId']
+      var applicant = await Applicant.findOne({id: applicantId}).exec()
       var convertedApplicationJSON = JSON.parse(JSON.stringify(applications[index]))
       convertedApplicationJSON.profile_image = applicant.profile_image
       response.payLoad.push(convertedApplicationJSON)
@@ -194,6 +195,7 @@ exports.easyApply = async (req, res, next) => {
       'application_id': savedApplication._id
     }
     await sql.query('INSERT INTO job_application SET ?', applicationPointers)
+    await deleteIncompleteApplication(applicationPointers.applicant_id, applicationPointers.job_id)
     response.payLoad = savedApplication
     res.status(httpStatus.OK)
     res.send(response)
@@ -201,4 +203,9 @@ exports.easyApply = async (req, res, next) => {
     console.log(error)
     next(error)
   }
+}
+
+const deleteIncompleteApplication = async (applicantId, jobId) => {
+  await sql.query(`DELETE FROM incomplete_application WHERE applicantId = '${applicantId}' AND jobId = '${jobId}'`)
+  await sql.query(`DELETE FROM saved_job WHERE applicant_id = '${applicantId}' AND job_id = '${jobId}'`)
 }
