@@ -94,13 +94,12 @@ exports.deleteOne = async (req, res, next) => {
 
 exports.recommendation = async (req, res, next) => {
   try {
-    // console.log('\n\n\n', req, '\n\n\n')
     const user = await Applicant.findOne({ id: req.user._id }).exec()
     const skills = user.skills ? user.skills : []
     const response = { payLoad: [] }
     const jobs = await Job.find().exec()
     let passesCriteria = false
-    for (let index = 0; index < jobs.length; index++) {
+    for (let index = 0, addCount = 0; index < jobs.length; index++) {
       const element = jobs[index]
       if (skills.length > 0 && element.skills) {
         passesCriteria = false
@@ -108,12 +107,13 @@ exports.recommendation = async (req, res, next) => {
           if (element.skills.includes(skill)) passesCriteria = true
         })
       }
-      if (passesCriteria) {
+      if (passesCriteria && addCount < 12) {
         response.payLoad.push(element)
         jobs.splice(index, 1)
+        addCount++
       }
     }
-    if (response.payLoad.length < 11) {
+    if (response.payLoad.length < 12) {
       let lat = null
       let long = null
       if (user.address) {
@@ -134,14 +134,13 @@ exports.recommendation = async (req, res, next) => {
         }
       }
     }
-    if (response.payLoad.length < 11) {
+    if (response.payLoad.length < 12) {
       for (let index = 0; index < jobs.length && index < 10; index++) {
         const element = jobs[index]
         response.payLoad.push(element)
         jobs.splice(index, 1)
       }
     }
-    response.payLoad = jobs
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
