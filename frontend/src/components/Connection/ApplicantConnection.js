@@ -5,6 +5,8 @@ import { api, printError, printMessage } from '../../services';
 import Suggestions from './suggestions';
 import Connections from './connections';
 import RecommendedJobs from './recommendJobs';
+
+
 // import "./Home.css"
 import {Link} from 'react-router-dom';
 
@@ -20,7 +22,8 @@ class ApplicantHome extends Component {
 			lname:"",
 			mutualConnections:[],
 			recommended_jobs  : [],
-			headline :""
+			headline :"",
+			user_profile_image:""
 
 		}
 	}
@@ -33,8 +36,9 @@ async componentDidMount(){
         this.setState({
 		  fname:user.data.payLoad.user.name.first,
 		  lname:user.data.payLoad.user.name.last,
-		  headline : user.data.payLoad.user.headline
-          
+		  headline : user.data.payLoad.user.headline,
+		  user_profile_image:user.data.payLoad.user.profile_image
+			
         })
       } catch (error) {
         console.log(Object.keys(error), error.response);
@@ -109,7 +113,7 @@ async componentDidMount(){
 										<div class="user-profile">
 											<div class="username-dt">
 												<div class="usr-pic">
-													<img src="http://via.placeholder.com/100x100" alt="" />
+													<img src={this.state.user_profile_image} alt="" />
 												</div>
 											</div>
 											<div class="user-specs">
@@ -176,7 +180,7 @@ async componentDidMount(){
 				{/* DOM for Joobs you may Like */}
                             {/* <div className="col-lg-3 pd-right-none no-pd" style ={{backgroundColor: "white",border: "1px solid darkgrey"}}>
                             <div className="sd-title1">
-											<h3>Jobs you may like</h3>
+											<h3 style={{"fontWeight":"bold"}}>Jobs you may like</h3>
 											<i class="la la-ellipsis-v"></i>
 										</div>
                                

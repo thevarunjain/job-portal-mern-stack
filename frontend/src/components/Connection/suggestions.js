@@ -4,6 +4,7 @@ import Watch from '../Files/Images/Watch.svg';
 import Tick from '../Files/Images/tick.svg';
 import {Link} from 'react-router-dom';
 import { api, printError, printMessage } from '../../services';
+import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
 class Suggestions extends Component {
 constructor(props){
     super(props)
@@ -11,7 +12,9 @@ constructor(props){
 this.state={
     fname:this.props.data.name.first,
     lname:this.props.data.name.last,
-    userid:this.props.data.id
+    userid:this.props.data.id,
+    profile_image:this.props.data.profile_image
+
 }
 
 this.connect=this.connect.bind(this);
@@ -36,14 +39,14 @@ async connect(){
    
 
 
-
+        
 
       
               
                   <div class="col-lg-5 col-md-4 col-sm-6 col-12">
                       <div class="company_profile_info">
                           <div class="company-up-info">
-                              <img src="http://via.placeholder.com/91x91" alt="" />
+                              <img src={this.state.profile_image} alt="" />
                               <Link to=""><h3>{this.state.fname} {this.state.lname}</h3></Link>
                               <h4>Graphic Designer</h4>
                               <ul>
