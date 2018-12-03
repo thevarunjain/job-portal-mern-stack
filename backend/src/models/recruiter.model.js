@@ -22,6 +22,9 @@ const recruiterSchema = new Schema({
   phone_number: {
     type: Number
   },
+  headline: {
+    type: String
+  },
   company: {
     type: String
   },
