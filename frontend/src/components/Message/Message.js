@@ -13,7 +13,7 @@ import * as moment from 'moment';
 class Message extends Component {
 	constructor(props) {
 		super(props);
-		console.log(window.socket);
+		console.log(window.socket); 
 
 		this.state = {
 			messagelist : [],

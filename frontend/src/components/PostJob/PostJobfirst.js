@@ -43,6 +43,7 @@ class PostJobfirst extends Component {
       step1flag: true,
       step2flag: false,
       banner : bannerlogo,
+      bannerSend : ""
     };
 
     this.onChange = this.onChange.bind(this);
@@ -69,9 +70,8 @@ class PostJobfirst extends Component {
   {
       let skill = document.getElementById("addSkill").value;
       console.log(skill);
+      this.state.skills.push(skill);
 
-      //this.state.skills.push(skill);
-      //console.log(this.state)
       if(skill=='')
           return false;
       let currentLength = $(".skill-container").length;
@@ -114,9 +114,10 @@ class PostJobfirst extends Component {
       type: this.state.type,
       address: this.state.addressSend,
       function: this.state.function,
-      company_logo: this.state.banner,
+      company_logo: this.state.bannerSend,
       skills: this.state.skills,
-      easy_apply: this.state.easy_apply
+      easy_apply: this.state.easy_apply, 
+      industry : this.state.industry
     };
     console.log(data);
     try {
@@ -170,9 +171,11 @@ class PostJobfirst extends Component {
                     }
                     printMessage("File Saved Successfully.");
                     this.setState({
-                        banner : data.banner_image
+                        banner : data.banner_image,
+                        bannerSend : ret['data']['payLoad']
                     })
-                    
+                    console.log(this.state.bannerSend)
+
                 }
             } catch (error) {
                 console.log(Object.keys(error), error);
