@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import "./jobs.css";
-import { api , printError} from '../../services/Axios';
+import { api , printError, printMessage} from '../../services/';
 import JobsBySkill from "../Jobs/JobsBySkill";
 
 
@@ -16,8 +16,25 @@ class JobsHome extends Component {
 		super(props);
 
 		this.state = ({
-			
+            savedJobs:0,
+            appliedJobs:0
 		})
+    }
+
+    async componentDidMount(){
+        try {
+            let savedcount= await api('GET','/jobs/saved/count');
+            let appliedcount=await api('GET','/jobs/applied/count');
+            console.log("count",savedcount);
+            this.setState({
+              savedJobs:savedcount.data.payLoad,
+              appliedJobs:appliedcount.data.payLoad
+              
+            })
+          } catch (error) {
+            console.log(Object.keys(error), error.response);
+            printError(error);
+          }
     }
     
     // Bringing the jobs according to the skill set of the user
@@ -57,12 +74,12 @@ class JobsHome extends Component {
 
 
                 <div className="col-md-3">
-                    <span className="bluetext"> 21 </span>
+                    <span className="bluetext"> {this.state.appliedJobs}</span>
                     <span className ="lightgreytext"> Applied Jobs </span>
                 </div>
 
                 <div className="col-md-3">
-                    <span className="bluetext"> 10 </span>
+                    <span className="bluetext"> {this.state.savedJobs}</span>
                     <span className ="lightgreytext"> <Link to="/jobshome/savedjobs" className ="lightgreytext"> Saved Jobs </Link></span>               
                 </div> 
         </div>

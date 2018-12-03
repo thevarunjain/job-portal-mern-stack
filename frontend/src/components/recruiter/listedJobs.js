@@ -14,11 +14,24 @@ class ListedJobs extends Component {
         super(props);
 
         this.state = {
-            postedJobs:['a']
+            postedJobs:""
         }
     
     }
+async componentDidMount(){
+    try {
+        let jobs= await api('GET','/jobs/findByRecruiter');
+        console.log('postedJobs',jobs);
+        this.setState({
+            postedJobs:jobs.data.payLoad
+          
+        })
+      } catch (error) {
+        console.log(Object.keys(error), error.response);
+        printError(error);
+    }
 
+}
 
     render() {
         let postedJobs=null;
