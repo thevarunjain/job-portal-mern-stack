@@ -696,6 +696,8 @@ class profile extends Component {
     async addPersonal()
     {
         let summary = $("#personalModal").find("textarea").eq(0).val();
+        let headline = $("#personalModal").find("input").eq(6).val();
+
         let name = {
             first : $("#personalModal").find("input").eq(0).val(),
             last : $("#personalModal").find("input").eq(1).val()
@@ -714,7 +716,8 @@ class profile extends Component {
         let data = {
             summary,
             name,
-            address
+            address,
+            headline
         }
         console.log(data);
         try {
@@ -943,7 +946,7 @@ class profile extends Component {
                                                             </div>{ /* <!--user-pro-img end--> */}
                                                             <div className="user_pro_status">
                                                                 <h3 className="profile-user-name">{this.state.firstname} {this.state.lastname}</h3>
-                                                                <h5 className="profile-user-subname">M.S Software Engineering | Actively seeking Summer Internships - 2019</h5>
+                                                                <h5 className="profile-user-subname">{this.state.headline}</h5>
                                                                 <p className="location-text">
                                                                     {this.state.city}
                                                                 </p>
@@ -1476,6 +1479,10 @@ class profile extends Component {
                                                                             <input type="text" class="form-control" id="zipcode" placeholder="" value={this.state.zipcode} onChange={this.handleText} />
                                                                         </div>
                                                                     </div>
+                                                                    <div class="form-group">
+                                                                            <label>Headline</label>
+                                                                            <input type="text" class="form-control" id="headline" placeholder="" value={this.state.headline} onChange={this.handleText} />
+                                                                        </div>
                                                                     <div class="form-group">
                                                                         <label for="inputAddress">Summary</label>
                                                                         <textarea class="form-control" name="summary" id="summary" onChange={this.handleText} value={this.state.summary}   ></textarea>
