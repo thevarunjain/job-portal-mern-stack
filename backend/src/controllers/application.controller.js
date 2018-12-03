@@ -57,6 +57,83 @@ exports.save = async (req, res, next) => {
   }
 }
 
+exports.unsave = async (req, res, next) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
+    const response = {payLoad: {}, message: ''}
+    const saveJobPointers = {
+      'job_id': req.params.jobId,
+      'applicant_id': req.user._id
+    }
+    const currentValues = await sql.query(`DELETE FROM saved_job WHERE job_id = '${saveJobPointers.job_id}' AND applicant_id = '${saveJobPointers.applicant_id}'`)
+    if (currentValues.affectedRows >= 1) {
+      response.message = 'SUCCESS'
+    } else {
+      response.message = 'FAILED'
+    }
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.fetchSavedCount = async (req, res, next) => {
+  try {
+    const response = {payLoad: 0}
+    const savedJobs = await sql.query(`SELECT * FROM saved_job WHERE applicant_id = '${req.user._id}'`)
+    response.payLoad = savedJobs.length
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.fetchSaved = async (req, res, next) => {
+  try {
+    const response = {payLoad: []}
+    const savedJobs = await sql.query(`SELECT * FROM saved_job WHERE applicant_id = '${req.user._id}'`)
+    for (let index = 0; index < savedJobs.length; index++) {
+      const element = savedJobs[index]
+      const job = await Job.findById(element.job_id).exec()
+      response.payLoad.push(job)
+    }
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.fetchAppliedCount = async (req, res, next) => {
+  try {
+    const response = {payLoad: 0}
+    const appliedJobs = await sql.query(`SELECT * FROM job_application WHERE applicant_id = '${req.user._id}'`)
+    response.payLoad = appliedJobs.length
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.fetchApplied = async (req, res, next) => {
+  try {
+    const response = {payLoad: []}
+    const appliedJobs = await sql.query(`SELECT * FROM job_application WHERE applicant_id = '${req.user._id}'`)
+    for (let index = 0; index < appliedJobs.length; index++) {
+      const element = appliedJobs[index]
+      const job = await Job.findById(element.job_id).exec()
+      response.payLoad.push(job)
+    }
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 exports.easyApply = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)

@@ -1,0 +1,20 @@
+.navbarstyle {
+  background: #006097;
+  width: 100%;
+  line-height: 0.2;
+  border-bottom: solid white 1px;
+}
+
+.liststyle {
+  margin-left: 26%;
+}
+
+.links {
+  font-weight: bold;
+}
+
+.logocrop {
+  margin-left: 152%;
+  width: 140px;
+  height: 38px;
+}
