@@ -8,6 +8,7 @@ const applicationController = require('../../controllers/application.controller'
 const validator = require('express-validation')
 const { create, update, apply, easyApply } = require('../../validations/jobs.validation')
 const { jobId } = require('../../validations/common.validation')
+const recommendationCache = require('../../middlewares/recommendationCache')
 
 router.get('/applied/count', auth(['applicant']), applicationController.fetchAppliedCount)
 router.get('/applied', auth(['applicant']), applicationController.fetchApplied)
@@ -15,7 +16,7 @@ router.get('/saved/count', auth(['applicant']), applicationController.fetchSaved
 router.get('/saved', auth(['applicant']), applicationController.fetchSaved)
 router.get('/', auth(), jobsController.get)
 router.post('/', auth(['recruiter']), validator(create), jobsController.post)
-router.get('/recommendation', auth(['applicant']), jobsController.recommendation)
+router.get('/recommendation', auth(['applicant']), recommendationCache, jobsController.recommendation)
 router.get('/findByRecruiter', auth(['recruiter']), jobsController.jobsByRecruiter)
 router.get('/:jobId', auth(), validator(jobId), jobsController.getOne)
 router.get('/:jobId/details', auth(['recruiter']), validator(jobId), applicationController.getApplicationDetails)
