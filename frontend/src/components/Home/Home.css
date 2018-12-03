@@ -559,3 +559,26 @@ div.agreement a:hover {
   border: 0;
   color: #0073b1;
 }
+
+
+/**********************************/
+
+
+.rec-board
+{
+  opacity: 0;
+}
+
+.graph-box
+{
+  box-shadow: 0px 3px 3px 0px #b1bfc8;
+  background: white;
+  padding-top : 50px;
+  padding-bottom: 50px;
+  margin-bottom: 100px;
+}
+
+.rec-dashboard-box
+{
+  min-height: 220px;
+}
