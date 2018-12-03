@@ -11,6 +11,27 @@ const httpStatus = require('http-status')
 exports.generateDashboardData = async (req, res, next) => {
   try {
     const response = {payLoad: {}, message: ''}
+    if (req.user.role === 'applicant') {
+      // applicant dashboard
+      response.payLoad = {
+        profileViewGraph: {},
+        appliedCount: 0,
+        savedCount: 0,
+        viewCount: 0
+      }
+    } else {
+      // recruiter dashboard
+      response.payLoad = {
+        hotJobGraph: {},
+        coldJobGraph: {},
+        cityHotJobGraph: {},
+        clickOnJobGraph: {},
+        savedCount: {},
+        totalCount: 0,
+        incompleteCount: 0,
+        glimpseCount: 0
+      }
+    }
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
