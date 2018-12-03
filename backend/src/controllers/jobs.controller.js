@@ -2,6 +2,7 @@
 
 const httpStatus = require('http-status')
 const mongoose = require('mongoose')
+const sql = require('./../services/sql')
 const APIError = require('../utils/APIError')
 const Job = require('../models/job.model')
 const Applicant = require('../models/applicant.model')
@@ -42,6 +43,31 @@ exports.getOne = async (req, res, next) => {
     const response = { payLoad: {} }
     const job = await Job.findById(req.params.jobId).exec()
     response.payLoad = job
+    res.status(httpStatus.OK)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.jobsByRecruiter = async (req, res, next) => {
+  try {
+    console.log(req.user._id)
+    const response = { payLoad: [] }
+    const ObjectID = mongoose.Types.ObjectId;
+    var query = {
+      "recruiter": new ObjectID(req.user._id)
+    };
+    const jobs = await Job.find(query)
+    for (let index = 0; index < jobs.length; index++) {
+      var job_id = jobs[index]['_id']
+      var application_count = await sql.query(`SELECT COUNT(*) as count FROM job_application WHERE job_id = '${job_id}'`)
+      var save_count = await sql.query(`SELECT COUNT(*) as count FROM saved_job WHERE job_id = '${job_id}'`)
+      var convertedJobJSON = JSON.parse(JSON.stringify(jobs[index]))
+      convertedJobJSON.application_count = application_count[0].count
+      convertedJobJSON.save_count = save_count[0].count
+      response.payLoad.push(convertedJobJSON)
+    }
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
@@ -94,13 +120,12 @@ exports.deleteOne = async (req, res, next) => {
 
 exports.recommendation = async (req, res, next) => {
   try {
-    // console.log('\n\n\n', req, '\n\n\n')
     const user = await Applicant.findOne({ id: req.user._id }).exec()
     const skills = user.skills ? user.skills : []
     const response = { payLoad: [] }
     const jobs = await Job.find().exec()
     let passesCriteria = false
-    for (let index = 0; index < jobs.length; index++) {
+    for (let index = 0, addCount = 0; index < jobs.length; index++) {
       const element = jobs[index]
       if (skills.length > 0 && element.skills) {
         passesCriteria = false
@@ -108,12 +133,13 @@ exports.recommendation = async (req, res, next) => {
           if (element.skills.includes(skill)) passesCriteria = true
         })
       }
-      if (passesCriteria) {
+      if (passesCriteria && addCount < 12) {
         response.payLoad.push(element)
         jobs.splice(index, 1)
+        addCount++
       }
     }
-    if (response.payLoad.length < 11) {
+    if (response.payLoad.length < 12) {
       let lat = null
       let long = null
       if (user.address) {
@@ -134,14 +160,13 @@ exports.recommendation = async (req, res, next) => {
         }
       }
     }
-    if (response.payLoad.length < 11) {
+    if (response.payLoad.length < 12) {
       for (let index = 0; index < jobs.length && index < 10; index++) {
         const element = jobs[index]
         response.payLoad.push(element)
         jobs.splice(index, 1)
       }
     }
-    response.payLoad = jobs
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {

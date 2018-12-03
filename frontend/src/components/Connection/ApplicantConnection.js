@@ -176,7 +176,7 @@ async componentDidMount(){
 
                             <div className="col-lg-3 pd-right-none no-pd" style ={{backgroundColor: "white",border: "1px solid darkgrey"}}>
                             <div className="sd-title1">
-											<h3>Jobs you may like</h3>
+											<h3 style={{"fontWeight":"bold"}}>Jobs you may like</h3>
 											<i class="la la-ellipsis-v"></i>
 										</div>
                                

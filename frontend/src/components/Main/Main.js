@@ -16,29 +16,26 @@ import Profile from "../profile/profile";
 import Message from "../Message/Message";
 import CompanyPage from "../Jobs/CompanyPage";
 import JobSaved from "../Jobs/JobSaved";
-
 import PostJob from "../PostJob/PostJob";
-
 import PostJobfirst from "../PostJob/PostJobfirst";
-
 import SavedJobsHome from "../Jobs/SavedJobsHome";
 import JobsBySkill from "../Jobs/JobsBySkill";
 import PublicProfile from "../profile/publicprofile";
-
 import ApplicantHome from "../Home/ApplicantHome";
 import RecruiterHome from "../Home/RecruiterHome";
 import RecruiterConnection from "../Connection/RecruiterConnection"
 import ApplicantConnection from "../Connection/ApplicantConnection"
-
 import ListedJobs from "../recruiter/listedJobs";
-
+import Recruitersignup from "../Recruitersignup/Recruitersignup";
+import ApplyJob from "../ApplyJob/Applyjob";
 
 class Main extends Component {
-  render() {
-    console.log(APPLICANT_LOGIN_ROUTE);
-    return (
+    render() {
+        console.log(APPLICANT_LOGIN_ROUTE);
+        return (
 
-         
+
+
 
         <BrowserRouter>
             <div>
@@ -62,18 +59,20 @@ class Main extends Component {
                 <Route path="/message" component={Message} exact />
                 <Route path="/companypage" component={CompanyPage} exact />
                 <Route path="/jobsaved" component={JobSaved} exact />
-                <Route
-                  path="/searchedjobs/:title/:location"
-                  component={SearchedJobs}
-                  exact
-                />
                 <Route path="/postjob" component={PostJob} exact />
                 <Route path="/postjobfirst" component={PostJobfirst} exact />
+                <Route path="/recruitersignup" component={Recruitersignup} exact />
+                    <Route path="/apply" component={ApplyJob} exact />
             </div>
           </BrowserRouter>
     );
   }
-}
+
+            
+       
+    }
+
+
 
 /* const ApplicantPrivateRoute = ({ component: Component, ...rest }) => (
   <Route

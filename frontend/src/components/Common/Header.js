@@ -28,7 +28,7 @@ class Header extends Component {
 	  this.valSelect = this.valSelect.bind(this);
 	  this.onChangeSearch = this.onChangeSearch.bind(this);
 	  this.openPublicSearchProfile = this.openPublicSearchProfile.bind(this);
-
+	  this.deleteProfile =  this.deleteProfile.bind(this);
 	  console.log(this.props);
   }
 
@@ -174,6 +174,30 @@ class Header extends Component {
 			printError(error);
 		  }
 	  }
+  }
+
+
+  async deleteProfile()
+  {
+		  let c = window.confirm("Are you sure you want to delete your profile? This action cannot be undone.");
+		  if(c)
+		  {
+			try 
+			{
+				let userid = sessionStorage.getItem('user_id');
+				let ret = await api('DELETE',('/users/'+userid));
+				console.log(ret);
+				if(ret.status>=200 && ret.status<300)
+				{
+					this.props.history.push("/");
+				}
+			}
+			catch(e)
+			{
+				console.log(e);
+			}
+		  }
+		
   }
 
 
@@ -430,6 +454,7 @@ class Header extends Component {
 								<li><a href="javascript:void(0)" title="">Privacy</a></li>
 								<li><a href="javascript:void(0)" title="">Faqs</a></li>
 								<li><a href="javascript:void(0)" title="">Terms & Conditions</a></li>
+								<li><a href="javascript:void(0)" onClick={this.deleteProfile} >Delete Profile</a></li>
 							</ul>
 							<h3 className="tc"><a href="sign-in.html" title="">Logout</a></h3>
 						</div>
