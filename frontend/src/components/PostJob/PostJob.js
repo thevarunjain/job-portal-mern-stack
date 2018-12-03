@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import "./PostJob.css";
 import PostJobHeader from "./PostJobHeader";
 import jobsfooter from "../Files/Images/jobsfooter.png";
+import PLACES from '../Common/Places';
 import { api, printError, printMessage } from "../../services/";
 
 //import Navbar
@@ -20,7 +21,18 @@ class PostJob extends Component {
     };
 
     this.onChange = this.onChange.bind(this);
+    this.checkret = this.checkret.bind(this);
   }
+
+  checkret(data)
+  {
+    console.log(data);
+    this.setState({
+      jobaddress : data
+    })
+    
+  }
+
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   handleJobPost = e => {
@@ -50,15 +62,15 @@ class PostJob extends Component {
         <PostJobHeader />
 
         <div className="container-fluid containerstyle">
-          <div>
-            {" "}
-            <p className="lead jobtext">
+          <div style={{clear : "both", paddingTop: "72px"}}>
+            <p className="lead jobtext"  style={{marginLeft: "24%"}}>
               Reach the quality candidates you can’t find anywhere else.
             </p>
           </div>
 
           <form className="jobform">
-            <div className="form-group ">
+            <div className="form-group filter-message-box">
+                <i className="fa fa-building"> </i>
               <input
                 type="text"
                 className="form-control"
@@ -68,8 +80,8 @@ class PostJob extends Component {
                 name="company"
               />
             </div>
-            <br />
-            <div className="form-group ">
+            <div className="form-group filter-message-box">
+            <i className="fa fa-suitcase"> </i>
               <input
                 type="text"
                 className="form-control"
@@ -79,19 +91,19 @@ class PostJob extends Component {
                 name="jobtitle"
               />
             </div>
-            <br />
 
-            <div className="form-group">
-              <input
+            <div className="form-group filter-message-box">
+            <i className="fa fa-map-marker"> </i>
+              {/* <input
                 type="text"
                 className="form-control"
                 id="jobaddress"
                 placeholder="Job Address or City"
                 name="jobaddress"
                 onChange={this.onChange}
-              />
+              /> */}
+              <PLACES onPosition={this.checkret}></PLACES>
             </div>
-            <br />
             <button
               type="button"
               class="btn btn-lg submitbutton wow-page__submit-button"
@@ -103,7 +115,7 @@ class PostJob extends Component {
         </div>
 
         <div>
-          <img src={jobsfooter} class="footercrop" alt="no pic" />{" "}
+          <img src={jobsfooter} class="footercrop" style={{marginTop : "10px"}} alt="no pic" />{" "}
         </div>
       </div>
     );

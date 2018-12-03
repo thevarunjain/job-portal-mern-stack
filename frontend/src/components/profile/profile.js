@@ -12,6 +12,7 @@ import fetchProfile from '../../actions/profile';
 import * as moment from 'moment';
 import PLACES from '../Common/Places';
 import { Link } from 'react-router-dom';
+import JobsbySkill from "../Jobs/JobsBySkill"
 
 
 window.delrows =  function(f){
@@ -43,26 +44,50 @@ class profile extends Component {
             'summary': '',
             'createdAt': '', 
             'updatedAt' : '',
+            recommended_jobs : []
         }
 
-        this.openModal.bind = this.openModal.bind(this);
-        this.detailModal.bind = this.detailModal.bind(this);
-        this.handleChange.bind = this.handleChange.bind(this);
-        this.handleSelect.bind = this.handleSelect.bind(this);
-        this.handleText = this.handleText.bind(this);
-        this.addExperience = this.addExperience.bind(this);
-        this.deleteExp = this.deleteExp.bind(this);
-        this.addEducation = this.addEducation.bind(this);
-        this.deleteEducation = this.deleteEducation.bind(this);
-        this.addPersonal =  this.addPersonal.bind(this);
-        this.delPersonal =  this.delPersonal.bind(this);
-        this.addSkill = this.addSkill.bind(this);
-        this.saveSkills = this.saveSkills.bind(this);
-        this.viewPDF = this.viewPDF.bind(this);
+        try 
+        {
+            this.openModal.bind = this.openModal.bind(this);
+            this.detailModal.bind = this.detailModal.bind(this);
+            this.handleChange.bind = this.handleChange.bind(this);
+            this.handleSelect.bind = this.handleSelect.bind(this);
+            this.handleText = this.handleText.bind(this);
+            this.addExperience = this.addExperience.bind(this);
+            this.deleteExp = this.deleteExp.bind(this);
+            this.addEducation = this.addEducation.bind(this);
+            this.deleteEducation = this.deleteEducation.bind(this);
+            this.addPersonal =  this.addPersonal.bind(this);
+            this.delPersonal =  this.delPersonal.bind(this);
+            this.addSkill = this.addSkill.bind(this);
+            this.saveSkills = this.saveSkills.bind(this);
+            this.viewPDF = this.viewPDF.bind(this);
+        }
+        catch(e)
+        {
+            console.log(e);
+        }
+
+        
     }
 
-    componentDidMount()
+    async componentDidMount()
     {
+        if(sessionStorage.getItem('user_id')){
+            try {
+                let recommendation = await api("GET",`/jobs/recommendation`);
+                
+                this.setState({
+                  recommended_jobs:recommendation.data.payLoad
+                })
+              } catch (error) {
+                console.log(Object.keys(error), error.response);
+                printError(error);
+              }
+            }else{
+                return;
+            }
         console.log("profile loded");
         console.log(this.props);
         this.props.dispatch(fetchProfile());
@@ -696,6 +721,8 @@ class profile extends Component {
     async addPersonal()
     {
         let summary = $("#personalModal").find("textarea").eq(0).val();
+        let headline = $("#personalModal").find("input").eq(6).val();
+
         let name = {
             first : $("#personalModal").find("input").eq(0).val(),
             last : $("#personalModal").find("input").eq(1).val()
@@ -714,7 +741,8 @@ class profile extends Component {
         let data = {
             summary,
             name,
-            address
+            address,
+            headline
         }
         console.log(data);
         try {
@@ -915,10 +943,30 @@ class profile extends Component {
             window.open(this.state.resume,'_blank');
         }
     }
+ 
+
 
 
 
     render() {
+
+        var rec_jobs = this.state.recommended_jobs.map((jobs)=>{
+            console.log(jobs)
+         return(<div>
+             <div className="row">
+                  <div className="col-md-3">
+                      <img src="" class="img-fluid job-card-image" alt="" />
+                  </div>
+                  <div className="col-md-7">
+                      <p style={{fontSize : "15px"}}>{jobs.title}</p>
+                      <p style={{fontSize : "14px"}}>{jobs.function}</p>
+                      <p style={{fontSize : "12px"}}>{jobs.type}</p>
+
+                  </div>
+           </div>
+      <hr/>
+      </div>);
+        })
         
         console.log(this.state);
         return (
@@ -943,7 +991,7 @@ class profile extends Component {
                                                             </div>{ /* <!--user-pro-img end--> */}
                                                             <div className="user_pro_status">
                                                                 <h3 className="profile-user-name">{this.state.firstname} {this.state.lastname}</h3>
-                                                                <h5 className="profile-user-subname">M.S Software Engineering | Actively seeking Summer Internships - 2019</h5>
+                                                                <h5 className="profile-user-subname">{this.state.headline}</h5>
                                                                 <p className="location-text">
                                                                     {this.state.city}
                                                                 </p>
@@ -1206,32 +1254,18 @@ class profile extends Component {
 
                         </div>
                         
-                                                    <div className="col-lg-3 right-sidebar">
+                                                    <div className="col-lg-3 right-sidebar" style={{height:"auto"}}>
                                                         <div >
                                                             <a href={`/public-profile/${this.state.publicid}`}  className="view-public save-button">View Public Page</a>
                                                         </div>
-                                                        <div className="widget widget-portfolio">
-                                                            <div className="wd-heady">
-                                                                <h3>Portfolio</h3>
-                                                                <img src="images/photo-icon.png" alt="" />
-                                                            </div>
-                                                            <div className="pf-gallery">
-                                                                <ul>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                    <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                </ul>
-                                                            </div>{ /* <!--pf-gallery end--> */}
-                                                        </div>{ /* <!--widget-portfolio end--> */}
+                                                        <p style={{fontSize : "20px", color : "black", textAlign : "center"}}>
+                                                            Jobs you may like 
+                                                        </p>
+                                                        <hr></hr>
+                                                        <div style={{height:"auto", backgroundColor:"#FFF", marginTop:"-5px", paddingTop: "10px"}}>
+                                                        {rec_jobs}
+                                                        </div>
+
                                                     </div>{ /* <!--right-sidebar end--> */}
                                                 
                         
@@ -1476,6 +1510,10 @@ class profile extends Component {
                                                                             <input type="text" class="form-control" id="zipcode" placeholder="" value={this.state.zipcode} onChange={this.handleText} />
                                                                         </div>
                                                                     </div>
+                                                                    <div class="form-group">
+                                                                            <label>Headline</label>
+                                                                            <input type="text" class="form-control" id="headline" placeholder="" value={this.state.headline} onChange={this.handleText} />
+                                                                        </div>
                                                                     <div class="form-group">
                                                                         <label for="inputAddress">Summary</label>
                                                                         <textarea class="form-control" name="summary" id="summary" onChange={this.handleText} value={this.state.summary}   ></textarea>
