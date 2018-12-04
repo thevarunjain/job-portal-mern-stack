@@ -7,6 +7,12 @@ const APIError = require('../utils/APIError')
 const Job = require('../models/job.model')
 const Applicant = require('../models/applicant.model')
 const Application = require('../models/application.model')
+const kafka = require('../kafka/client')
+const config = require('../config')
+const request_packet = {
+  service: '',
+  payLoad: {}
+}
 
 exports.apply = async (req, res, next) => {
   try {
@@ -43,18 +49,22 @@ exports.apply = async (req, res, next) => {
 exports.save = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
+    request_packet.service = 'SAVE_JOB'
     const response = {payLoad: {}, message: ''}
     const saveJobPointers = {
       'job_id': req.params.jobId,
       'applicant_id': req.user._id
     }
-    const currentValues = await sql.query(`SELECT * FROM saved_job WHERE job_id = '${saveJobPointers.job_id}' AND applicant_id = '${saveJobPointers.applicant_id}'`)
-    if (currentValues.length > 0) throw new APIError(`Job already saved`, httpStatus.INTERNAL_SERVER_ERROR)
-    const queryOutput = await sql.query('INSERT INTO saved_job SET ?', saveJobPointers)
-    if (!queryOutput) throw new APIError(`Job not saved`, httpStatus.INTERNAL_SERVER_ERROR)
-    response.message = 'SUCCESS'
-    res.status(httpStatus.OK)
-    res.send(response)
+    request_packet.payLoad = saveJobPointers
+    kafka.make_request(config.topic.save, request_packet, (err, response) => {
+      if (err) {
+        console.log(err)
+        throw new APIError(err)
+      }
+      console.log('came back', response)
+      res.status(httpStatus.OK)
+      res.send(response)
+    })
   } catch (error) {
     next(error)
   }

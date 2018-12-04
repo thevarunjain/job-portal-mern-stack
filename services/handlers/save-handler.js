@@ -1,14 +1,14 @@
 const connection = new require('../kafka/Connection')
-const search = require('../controllers/search.controller')
+const save = require('../controllers/application.controller')
 const config = require('../config')
 
-exports.initSearchHandler = () => {
-    const consumer = connection.getConsumer(config.topic.search);
+exports.initSaveHandler = () => {
+    const consumer = connection.getConsumer(config.topic.save);
     const producer = connection.getProducer();
     consumer.on('message', (message) => {
         const data = JSON.parse(message.value);
-        if (data.data.service === "GET_FILTERED_JOBS") {
-            search.getFilteredJobs(data.data).then((res) => {
+        if (data.data.service === "SAVE_JOB") {
+            save.save(data.data).then((res) => {
                 const payloads = [{
                     topic: data.replyTo,
                     messages: JSON.stringify({
