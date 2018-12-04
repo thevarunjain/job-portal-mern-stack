@@ -206,6 +206,6 @@ exports.easyApply = async (req, res, next) => {
 }
 
 const deleteIncompleteApplication = async (applicantId, jobId) => {
-  await sql.query(`DELETE FROM incomplete_application WHERE applicantId = '${applicantId}' AND jobId = '${jobId}'`)
+  await sql.query(`DELETE FROM incomplete_application WHERE userId = '${applicantId}' AND jobId = '${jobId}'`)
   await sql.query(`DELETE FROM saved_job WHERE applicant_id = '${applicantId}' AND job_id = '${jobId}'`)
 }
