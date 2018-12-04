@@ -38,18 +38,30 @@ class PostedJob extends Component {
     render() {
        let created = moment(this.state.createdAt).format('YYYY-MM-DD');
        let updated = moment(this.state.updatedAt).format('YYYY-MM-DD');
-        
 console.log('address',this.state.address);
         return (
+            <div>
+        <div className="appliedjobs container col-md-8">
+            <div className="row">
+                <div className="col-md-3">
+                    <span className="bluetext"> {this.props.count}</span>
+                    <span className ="lightgreytext"> <Link to="/jobshome/savedjobs" className ="lightgreytext"> Posted Jobs </Link></span>               
+                </div> 
+
+                
+                <div className="col-md-3">
+                <Link className="bluetext" style={{fontSize : "20px" }} to="/postjob"><span className="bluetext"> Post a Job</span></Link>
+                    {/* <span className ="lightgreytext"> Applied Jobs </span> */}
+                </div>
+        </div>
+        </div>
             <div id="card11">
                 <div className="container py-1">
                     <div id="card-card1" className="card">
                         <div className="row" style={{height:"140px"}}>
                             <div className="col-md-3">
-
-                                <img src={this.state.company_logo} style={{ width: "100%" }} />
-
-                            </div>
+                            <img class="post-job-photo" src={this.state.company_logo} /> 
+                               </div>
                             <div className="col-md-9">
                                 <div id="cb" className="card-block">
                                     <h3 id="card-heading-saved" className="card-title"><Link id="jobsavedheading" to="">{this.state.title}</Link></h3>
@@ -64,7 +76,7 @@ console.log('address',this.state.address);
                                         
                                             <div className="col-md-2">
                                             <span className="bluetext"> {this.state.application_count} </span>
-                                            <span className ="lightgreytext"> <Link to={`/jobapplicant/${this.state.job_id}`}>Appications</Link></span>
+                                            <span className ="lightgreytext"> <Link to={`/jobapplicant/${this.state.job_id}`}>Applications</Link></span>
                                         </div>
                         
                                         <div className="col-md-2">
@@ -88,6 +100,8 @@ console.log('address',this.state.address);
                     </div>
                 </div>
             </div>
+            </div>
+
         )
     }
 }
