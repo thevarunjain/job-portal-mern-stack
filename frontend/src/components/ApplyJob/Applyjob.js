@@ -19,7 +19,7 @@ class ApplyJob extends React.Component {
     console.log("Inside constructor");
 
     this.state = {
-      job_id: "",
+      job_id: this.props.match.params.id,
       first: "",
       last: "",
       phone: "",
@@ -30,13 +30,14 @@ class ApplyJob extends React.Component {
       disability: "",
       resume: "",
       cover_letter: "",
-      searchLocation: ""
+      searchLocation: {}
     };
 
     this.onChange = this.onChange.bind(this);
     this.uploadResume = this.uploadResume.bind(this);
     this.uploadCoverletter = this.uploadCoverletter.bind(this);
-    this.apply = this.apply.bind(this);
+    this.Apply = this.Apply.bind(this);
+    this.checkret = this.checkret.bind(this);
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -71,7 +72,7 @@ class ApplyJob extends React.Component {
         };
         printMessage("Resume added Successfully.");
         this.setState({
-          applicant_resume_name: data.resume_url
+          resume: data.resume_url
         });
       }
     } catch (error) {
@@ -103,7 +104,7 @@ class ApplyJob extends React.Component {
         };
         printMessage("Cover letter added Successfully.");
         this.setState({
-          applicant_resume_name: data.resume_url
+          cover_letter: data.resume_url
         });
       }
     } catch (error) {
@@ -112,57 +113,69 @@ class ApplyJob extends React.Component {
     }
   }
 
-  async apply() {
-    if (
-      this.state.first &&
-      this.state.last &&
-      this.state.phone &&
-      this.state.email &&
-      this.state.diversity &&
-      this.state.sponsorship &&
-      this.state.disability &&
-      this.state.source &&
-      this.state.searchLocation
-    ) {
-      let name = {
-        first: this.state.first,
-        last: this.state.last
-      };
+  async Apply(e) {
+    e.preventDefault();
+    console.log(this.state);
 
-      let data = {
-        email: this.state.email,
-        phone: this.state.phone,
-        name,
-        address: this.state.searchLocation,
-        source: this.state.source,
-        diversity: this.state.diversity,
-        sponsorship: this.state.sponsorship,
-        disability: this.state.disability
-      };
+    // if (
+    //   this.state.first &&
+    //   this.state.last &&
+    //   this.state.phone &&
+    //   this.state.email &&
+    //   this.state.diversity &&
+    //   this.state.sponsorship &&
+    //   this.state.disability &&
+    //   this.state.source &&
+    //   this.state.searchLocation
+    // ) {
+    let name = {
+      first: this.state.first,
+      last: this.state.last
+    };
 
-      console.log(data);
+    // let address = {
+    //   street: "1 Washington Street",
+    //   city: "San Jose",
+    //   country: "US",
+    //   zipcode: "95050",
+    //   coordinates: {
+    //     latitude: "37.3380652",
+    //     longitude: "-121.93754519999999"
+    //   }
+    // };
 
-      try {
-        let ret = await api(
-          "POST",
-          "jobs/" + this.state.job_id + "/apply",
-          data
-        );
+    let data = {
+      email: this.state.email,
+      phone: this.state.phone,
+      name,
+      address: this.state.searchLocation,
+      resume: this.state.resume,
+      cover_letter: this.state.cover_letter,
+      source: this.state.source,
+      diversity: this.state.diversity,
+      sponsorship: this.state.sponsorship,
+      disability: this.state.disability
+    };
 
-        if (ret.status === 200) {
-          printMessage("You have successfully applied to this job ");
-        } else {
-          throw "error";
-        }
-      } catch (error) {
-        console.log("ERROR in SAVE", error);
-        console.log(Object.keys(error), error.response);
-        printError(error);
+    console.log("------------", data);
+
+    try {
+      let ret = await api("POST", "jobs/" + this.state.job_id + "/apply", data);
+
+      if (ret.status === 200) {
+        printMessage("You have successfully applied to this job ");
+      } else {
+        throw "error";
       }
-    } else {
-      printMessage("Please entire the required Fields");
+    } catch (error) {
+      console.log("ERROR in SAVE", error);
+      console.log(Object.keys(error), error.response);
+      printError(error);
     }
-    return false;
+    // } else {
+    //   printMessage("Please entire the required Fields");
+    // }
+    // return false;
   }
 
   render() {
@@ -193,6 +206,7 @@ class ApplyJob extends React.Component {
                     id="first"
                     name="first"
                     placeholder="First Name"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -205,6 +219,7 @@ class ApplyJob extends React.Component {
                     id="last"
                     name="last"
                     placeholder="Last Name"
+                    onChange={this.onChange}
                   />
                 </div>
               </div>
@@ -220,6 +235,7 @@ class ApplyJob extends React.Component {
                     id="phone"
                     name="phone"
                     placeholder="Phone"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -232,6 +248,7 @@ class ApplyJob extends React.Component {
                     class="form-control"
                     id="email"
                     placeholder="Email"
+                    onChange={this.onChange}
                   />
                 </div>
               </div>
@@ -254,6 +271,7 @@ class ApplyJob extends React.Component {
                     class="form-control"
                     id="city"
                     placeholder="City"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div class="form-group col-md-4">
@@ -266,6 +284,7 @@ class ApplyJob extends React.Component {
                     class="form-control"
                     id="state"
                     placeholder="State"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div class="form-group col-md-2">
@@ -277,6 +296,7 @@ class ApplyJob extends React.Component {
                     class="form-control"
                     id="zip"
                     placeholder="Zip"
+                    onChange={this.onChange}
                   />
                 </div>
               </div>
@@ -293,6 +313,7 @@ class ApplyJob extends React.Component {
                     class="form-control"
                     id="source"
                     placeholder="Source"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -305,6 +326,7 @@ class ApplyJob extends React.Component {
                     class="form-control"
                     id="diversity"
                     placeholder="Diversity"
+                    onChange={this.onChange}
                   />
                 </div>
               </div>
@@ -320,6 +342,7 @@ class ApplyJob extends React.Component {
                     class="form-control"
                     id="sponsorship"
                     placeholder="Sponsorship"
+                    onChange={this.onChange}
                   />
                 </div>
                 <div class="form-group col-md-6">
@@ -330,7 +353,9 @@ class ApplyJob extends React.Component {
                     type="text"
                     class="form-control"
                     id="disability"
+                    name="disability"
                     placeholder="Disability"
+                    onChange={this.onChange}
                   />
                 </div>
               </div>
@@ -363,11 +388,7 @@ class ApplyJob extends React.Component {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                onClick={this.Apply}
-                class="btn btn-primary applybutton"
-              >
+              <button onClick={this.Apply} class="btn btn-primary applybutton">
                 Apply
               </button>
             </form>
