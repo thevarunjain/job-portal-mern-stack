@@ -34,6 +34,7 @@ class Header extends Component {
     $(".user-account-settingss").toggleClass("active");
   }
 
+
   componentDidMount() {
     this.props.dispatch(fetchProfile());
   }

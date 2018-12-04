@@ -432,3 +432,17 @@ padding : 10px
   .JobDate{
     font-weight: bolder;
   }
+
+
+  .comp.ent{
+    border: 1px solid lightgrey;
+  }
+
+  .comp-logo-btn{
+      width: 20px;
+      padding: 1px
+  }
+  .comp-text{
+    margin-left: 20px
+  }
+  
