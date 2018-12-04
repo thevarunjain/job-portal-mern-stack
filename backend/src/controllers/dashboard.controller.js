@@ -2,7 +2,7 @@
 
 const httpStatus = require('http-status')
 const sql = require('./../services/sql')
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 // const APIError = require('../utils/APIError')
 const Job = require('../models/job.model')
 // const Application = require('../models/application.model')
@@ -24,7 +24,7 @@ exports.generateDashboardData = async (req, res, next) => {
       response.payLoad = {
         hotJobGraph: await hotJobGraph(req.user._id),
         coldJobGraph: await coldJobGraph(req.user._id),
-        cityHotJobGraph: {},
+        cityHotJobGraph: await getCityHotJobGraph(req.user._id),
         clickOnJobGraph: await clickOnJobGraph(req.user._id),
         savedCount: await savedCountRecruiter(req.user._id),
         incompleteCount: await incompleteCountRecruiter(req.user._id),
@@ -37,6 +37,41 @@ exports.generateDashboardData = async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+}
+const getCityHotJobGraph = async (recruiter_id) => {
+  const ObjectID = mongoose.Types.ObjectId;
+  var query = {
+    "recruiter": new ObjectID(recruiter_id)
+  };
+  // const jobs = await Job.aggregate(
+  //   [
+  //     {$match: query},
+  //     {$group: {_id: "$address.city", numberOfJobs: {$sum: 1}}}
+  //   ]
+  // )
+  const jobsOfRecruiter = await Job.find(query)
+  var result = {}
+  for (let index = 0; index < jobsOfRecruiter.length; index++) {
+    var job_id = jobsOfRecruiter[index]['_id']
+    var job_title = jobsOfRecruiter[index]['title']
+    var noOfApplications = await sql.query(`SELECT COUNT(*) as count FROM job_application WHERE job_id = '${job_id}'`)
+    console.log(noOfApplications)
+    if (result.hasOwnProperty(jobsOfRecruiter[index].address.city)){
+      result[jobsOfRecruiter[index].address.city].push([job_id, job_title, noOfApplications[0].count])
+    }
+    else {
+      result[jobsOfRecruiter[index].address.city] = [[job_id, job_title, noOfApplications[0].count]]
+    }
+  }
+  function Comparator(a, b) {
+    if (a[2] < b[2]) return 1;
+    if (a[2] > b[2]) return -1;
+    return 0;
+  }
+  for (let key in result) {
+    result[key] = result[key].sort(Comparator)
+  }
+  return result
 }
 
 const appliedCount = async (applicantId) => {
