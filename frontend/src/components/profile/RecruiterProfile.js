@@ -146,7 +146,8 @@ class RecruiterProfile extends Component {
                     summary: userdata["summary"],
                     createdAt: userdata["createdAt"],
                     updatedAt: userdata["updatedAt"],
-                    publicid: userdata["id"]
+                    publicid: userdata["id"],
+                    headline : userdata["headline"],
                   });
                   setTimeout(() => {
                     console.log(u.state);
@@ -782,7 +783,7 @@ class RecruiterProfile extends Component {
               </main>
             </div>
 
-            <div className="col-lg-3 right-sidebar" style={{ height: "auto" }}>
+            {/* <div className="col-lg-3 right-sidebar" style={{ height: "auto" }}>
               <div>
                 <a
                   href={`/public-profile/${this.state.publicid}`}
@@ -792,7 +793,7 @@ class RecruiterProfile extends Component {
                 </a>
               </div>
               
-            </div>
+            </div> */}
             {/* <!--right-sidebar end--> */}
           </div>
           {/* <!--theme-layout end--> */}

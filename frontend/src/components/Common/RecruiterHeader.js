@@ -15,7 +15,7 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "LinkedIn user",
+      username: "",
       profileimage: HeaderImage,
       searchResults: [],
       value: "",
@@ -211,7 +211,8 @@ class Header extends Component {
 	  {
 		  sessionStorage.clear();
 		  localStorage.clear();
-		  this.props.history.push("/");
+      // this.props.history.push("/");
+      window.location.href = "/"
 	  }
   }
 
