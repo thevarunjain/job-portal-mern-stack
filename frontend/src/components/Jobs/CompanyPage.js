@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Header from '../Common/Header';
-import { IMAGE_PATHS } from '../../constants/routes';
 import bannerlogo from '../Files/Images/profile-banner.svg';
 import profileplaceholder from '../Files/Images/profile-placeholder.png'
 import JobSkills from "./JobSkills";
@@ -11,6 +10,8 @@ import $ from 'jquery';
 import { Link } from 'react-router-dom';
 import JobDetailedView from "./JobDetailedView";
 import { api , printError, printMessage} from '../../services/';
+import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
+
 
 window.test = function(){
     console.log($("div[data-edit='false']"));
@@ -37,7 +38,13 @@ class CompanyPage extends Component {
             jobindrustry : "",
             jobtype : "",
             jobskill : [],
-            easyapply : true
+            easyapply : true,
+            applicantFname : "",
+            applicantLname:"",
+            profile_img:"",
+            applicantHeading:"",
+            applicantLocation: "",
+            applicant_id: ""
         }
 
         this.saveJob = this.saveJob.bind(this);
@@ -84,6 +91,40 @@ class CompanyPage extends Component {
 
     }
 
+    async getApplicant(){
+        let _t = this;
+        let id = sessionStorage.getItem('user_id');
+       
+      console.log(id);
+      try {
+        let ret = await api('GET','/users/'+id);
+       
+        console.log()
+        if(ret.status>=200 && ret.status<300)
+        {
+            
+            this.setState({
+                applicantFname:ret.data.payLoad.user.name.first,
+                applicantLname:ret.data.payLoad.user.name.last,
+                profile_img:"user_profile_img.jpeg",
+                applicantHeading:"Former Systems Engineer | Masters in Software Engineering|",
+                applicantLocation:"San Francisco Bay Area",
+                applicant_id:ret.data.payLoad.user.id
+            })
+        }
+        else 
+        {
+            throw "error";
+        }
+      } 
+      catch (error) 
+      {
+        console.log(Object.keys(error), error.response);
+        printError(error);
+      }
+    
+      }
+
     async easy_apply(){
     
         if(this.state.job_id && this.state.applicant_id && this.state.applicant_email && this.state.applicant_phone && this.state.applicant_resume_name){
@@ -118,6 +159,40 @@ class CompanyPage extends Component {
         return false;
         
     }
+    async uploadResume(e){
+        console.log("RESUMES",e);
+        
+        
+        var fd = new FormData();
+        var filesList = document.getElementById("uploadResume").files;
+        if (!filesList[0].name.match(/.(pdf|doc|docx)$/i))
+        {
+            printMessage("Please select an pdf/doc/docx file to upload.");
+            return false;
+        }
+        fd.append("uploadSelect",filesList[0]);
+        console.log(fd);
+        
+        try {
+            let ret = await api('POST','/document/upload',fd,{'Content-Type': 'multipart/form-data'});
+            console.log(ret);
+            if(ret.status>=200 && ret.status<300)
+            {
+                let data = {
+                    'resume_url' : ((S3_URL) + ret['data']['payLoad'])
+                }
+                printMessage("Resume added Successfully.");
+                this.setState({
+                    applicant_resume_name : data.resume_url
+                })
+                
+            }
+        } catch (error) {
+            console.log(Object.keys(error), error.response);
+            printError(error);   //Pass Full response object to the printError method.
+        }
+        
+        }
 
     async componentWillMount()
     {
@@ -146,15 +221,19 @@ class CompanyPage extends Component {
 
 
     render() {
+    $('#easy_apply_form').off('submit').submit((e) => {e.preventDefault(); this.easy_apply(); return false;});
+
 
         let easyApplyButton=null;
-
-            if(this.state.easyapply){
-                easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" data-toggle="modal" data-target="#easyApplyModal" onClick={this.getApplicant}>Easy Apply</button></div>
-
-            }else{
-                easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" onClick={this.getApplicant}>Apply</button></div>
+            if(sessionStorage.getItem('profile') == "applicant"){
+                if(this.state.easyapply){
+                    easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" data-toggle="modal" data-target="#easyApplyModal" onClick={this.getApplicant}>Easy Apply</button></div>
+    
+                }else{
+                    easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" onClick={this.getApplicant}>Apply</button></div>
+                }
             }
+          
 
 
         var str = "" ;
@@ -164,10 +243,10 @@ class CompanyPage extends Component {
             console.log(str)
         })
 
-        var saveButton =   <div class='child inline-block-child' style={{paddingRight:"20px"}}><button onClick={this.saveJob} type="button" class="btn btn-outline-primary btn-save" style={{fontWeight:"bold"}}>Save Changes</button></div>  
-        // if(sessionStorage.getItem('profile') == "recruiter"){
-        //     saveButton =   <div class='child inline-block-child' style={{paddingRight:"20px"}}><button onClick={this.saveJob} type="button" class="btn btn-outline-primary btn-save" style={{fontWeight:"bold"}}>Save Changes</button></div>
-        // }
+        var saveButton =  "";  
+        if(sessionStorage.getItem('profile') == "recruiter"){
+            saveButton =   <div class='child inline-block-child' style={{paddingRight:"20px"}}><button onClick={this.saveJob} type="button" class="btn btn-outline-primary btn-save" style={{fontWeight:"bold"}}>Save Changes</button></div>
+        }
       
 
     
