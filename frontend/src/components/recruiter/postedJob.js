@@ -42,18 +42,6 @@ console.log('address',this.state.address);
         return (
             <div>
         <div className="appliedjobs container col-md-8">
-            <div className="row">
-                <div className="col-md-3">
-                    <span className="bluetext"> {this.props.count}</span>
-                    <span className ="lightgreytext"> <Link to="/jobshome/savedjobs" className ="lightgreytext"> Posted Jobs </Link></span>               
-                </div> 
-
-                
-                <div className="col-md-3">
-                <Link className="bluetext" style={{fontSize : "20px" }} to="/postjob"><span className="bluetext"> Post a Job</span></Link>
-                    {/* <span className ="lightgreytext"> Applied Jobs </span> */}
-                </div>
-        </div>
         </div>
             <div id="card11">
                 <div className="container py-1">
@@ -84,7 +72,7 @@ console.log('address',this.state.address);
                                             <span className ="lightgreytext"> Bookmarks</span>               
                                         </div> 
                                         <div style={{paddingBottom:"10%"}}>
-                        <button type="button" class="btn btn-outline-primary"><Link to={`/companypage/${this.state.job_id}`}>Edit</Link></button></div>
+                     <button type="button" class="btn btn-outline-primary"><Link to={`/companypage/${this.state.job_id}`}>Edit</Link></button></div>
                                            
 
                                     </div>

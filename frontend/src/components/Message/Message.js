@@ -8,6 +8,8 @@ import {BASE_URL} from "../../constants/routes"
 import io from "socket.io-client";
 import $ from "jquery";
 import * as moment from 'moment';
+import RecruiterHeader from "../Common/RecruiterHeader";
+
  
 
 class Message extends Component {
@@ -194,11 +196,17 @@ class Message extends Component {
 		  this.handleNewMessage();
 		}
 	  }
+	   
+	
 
   render() {
+	var check = sessionStorage.getItem("profile");
+	console.log(check);
     return (    
     <div>  
-    <Header />
+    {/* <Header /> */}
+	{check == "applicant" ? <Header /> : <RecruiterHeader />}
+
 	<div className="wrapper">
 		
 		<section className="messages-page p30">

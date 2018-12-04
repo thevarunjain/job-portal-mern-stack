@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import JobDetailedView from "./JobDetailedView";
 import { api , printError, printMessage} from '../../services/';
 import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
+import RecruiterHeader from "../Common/RecruiterHeader";
+
 
 
 window.test = function(){
@@ -227,14 +229,14 @@ class CompanyPage extends Component {
 
 
         let easyApplyButton=null;
-            if(sessionStorage.getItem('profile') == "applicant"){
-                if(this.state.easyapply){
-                    easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" data-toggle="modal" data-target="#easyApplyModal" onClick={this.getApplicant}>Easy Apply</button></div>
+            // if(sessionStorage.getItem('profile') == "applicant"){
+            //     if(this.state.easyapply){
+            //         easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" data-toggle="modal" data-target="#easyApplyModal" onClick={this.getApplicant}>Easy Apply</button></div>
     
-                }else{
-                    easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" onClick={this.getApplicant}>Apply</button></div>
-                }
-            }
+            //     }else{
+            //         easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" onClick={this.getApplicant}>Apply</button></div>
+            //     }
+            // }
           
 
 
@@ -250,11 +252,14 @@ class CompanyPage extends Component {
             saveButton =   <div class='child inline-block-child' style={{paddingRight:"20px"}}><button onClick={this.saveJob} type="button" class="btn btn-outline-primary btn-save" style={{fontWeight:"bold"}}>Save Changes</button></div>
         }
       
+        var check = sessionStorage.getItem("profile");
+
+        console.log(check)
 
     
     return (
       <div>
-         {/* <Header /> */}
+         {check == "applicant" ? <Header /> : <RecruiterHeader />}
                 <section class="cover-sec">
                         <img src={this.state.banner} alt=""/>
                 </section>
@@ -285,7 +290,7 @@ class CompanyPage extends Component {
                                             {this.state.jobaddress.city},   {this.state.jobaddress.country}
                                         </p>
                                         <div className="company-save-apply">
-                                        <div class='child inline-block-child' style={{paddingRight:"20px"}}><button type="button" class="btn btn-outline-primary btn-save" style={{fontWeight:"bold"}}>Save</button></div>
+                                        {/* <div class='child inline-block-child' style={{paddingRight:"20px"}}><button type="button" class="btn btn-outline-primary btn-save" style={{fontWeight:"bold"}}>Save</button></div> */}
                                         {/* <div class='child inline-block-child'><button type="button" className="btn easy-apply">Easy Apply</button></div> */}
                                         {easyApplyButton}
                                         </div> 
