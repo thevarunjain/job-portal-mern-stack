@@ -8,7 +8,8 @@ import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
 import jwt_decode from 'jwt-decode';
 import RecruiterHeader from "../Common/RecruiterHeader";
 import PostedJob from "./postedJob";
-
+import { Document, Page , ReactPDF } from 'react-pdf';
+import test from "./test.pdf"
 class JobApplicant extends Component {
     constructor(props) {
         super(props);
@@ -17,19 +18,25 @@ class JobApplicant extends Component {
            fname:this.props.data.name.first,
            lname:this.props.data.name.last,
            address:this.props.data.address,
-            userId:this.props.data._id,
-            profile_image:this.props.data.profile_image
+            userId:this.props.data.applicantId,
+            profile_image:this.props.data.profile_image,
+            numPages: "",
+    pageNumber: 1,
+    resume:S3_URL+this.props.data.resume
         }
 
-        
+        this.onDocumentLoadSuccess=this.onDocumentLoadSuccess.bind(this);
     
     }
-
-   
+    onDocumentLoadSuccess ({ numPages }){
+        console.log("in onload");
+        this.setState({ numPages });
+      }
+ 
     render() {
 
-
-
+        const { pageNumber, numPages } = this.state;
+        console.log("Resume File", this.state.resume);
         return (
            
              
@@ -44,9 +51,13 @@ class JobApplicant extends Component {
                     </ul>
                 </div>
                 <Link class="view-more-pro" to={`/public-profile/${this.state.userId}`}>View Profile</Link>
+                <div>
+                <a href={this.state.resume}>View Resume</a>
+                </div>
+                <div>
             </div>
-        
-        
+            </div>
+           
             
             </div>
         )
