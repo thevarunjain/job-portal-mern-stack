@@ -72,7 +72,7 @@ console.log('address',this.state.address);
                                             <span className ="lightgreytext"> Bookmarks</span>               
                                         </div> 
                                         <div style={{paddingBottom:"10%"}}>
-                        <button type="button" class="btn btn-outline-primary">Edit</button></div>
+                        <button type="button" class="btn btn-outline-primary"><Link to={`/companypage/${this.state.job_id}`}>Edit</Link></button></div>
                                            
 
                                     </div>

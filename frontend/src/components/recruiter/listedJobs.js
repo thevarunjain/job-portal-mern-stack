@@ -51,6 +51,7 @@ async componentDidMount(){
             <div>
     <RecruiterHeader />
     <div style={{paddingTop:"5%"}}>
+    <Link to="/postjob">Post Job</Link>
    {postedJobs}
 
   

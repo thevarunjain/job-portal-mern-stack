@@ -36,7 +36,7 @@ class Header extends Component {
 
 
   componentDidMount() {
-    this.props.dispatch(fetchProfile());
+    //this.props.dispatch(fetchProfile());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,7 +60,7 @@ class Header extends Component {
 
   moveToProf() {
     console.log(this.props);
-    this.props.history.push("/profile");
+    this.props.history.push("/recruiterprofile");
   }
 
   onSearchFocus() {
@@ -161,6 +161,61 @@ class Header extends Component {
     this.onSearchBlur();
     window.open(strx, "_blank");
   }
+
+
+  async deleteProfile()
+  {
+		  let c = window.confirm("Are you sure you want to delete your profile? This action cannot be undone.");
+		  if(c)
+		  {
+			try 
+			{
+				let userid = sessionStorage.getItem('user_id');
+				let ret = await api('DELETE',('/users/'+userid));
+				console.log(ret);
+				if(ret.status>=200 && ret.status<300)
+				{
+					sessionStorage.clear();
+					localStorage.clear();
+					this.props.history.push("/");
+				}
+			}
+			catch(e)
+			{
+				console.log(e);
+			}
+		  }
+		
+  }
+
+
+  openPublicSearchProfile(e,f)
+  {
+		this.setState({
+			'value': f
+		});
+		let strx = '/public-profile/'+e;
+		/* this.props.history.push({
+			pathname: '/public-profile/'+e,
+		}) */
+		this.onSearchBlur();
+		window.open(strx,"_blank");
+  }
+
+
+
+  handlelogout()
+  {
+	  let c = window.confirm("Are you sure you want to logout?");
+	  if(c)
+	  {
+		  sessionStorage.clear();
+		  localStorage.clear();
+		  this.props.history.push("/");
+	  }
+  }
+
+
 
   render() {
     const commonProps = {
@@ -443,17 +498,9 @@ class Header extends Component {
                         Faqs
                       </a>
                     </li>
-                    <li>
-                      <a href="javascript:void(0)" title="">
-                        Terms & Conditions
-                      </a>
-                    </li>
-                  </ul>
-                  <h3 className="tc">
-                    <a href="sign-in.html" title="">
-                      Logout
-                    </a>
-                  </h3>
+                    <li><a href="javascript:void(0)" onClick={this.deleteProfile} >Delete Profile</a></li>
+							</ul>
+							<h3 className="tc"><a href="javascript:void(0)" onClick={this.handlelogout}>Logout</a></h3>
                 </div>
               </div>
             </div>

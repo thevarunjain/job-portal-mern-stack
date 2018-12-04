@@ -36,14 +36,14 @@ class RecruiterSignup extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
-    try {
-      this.props.dispatch(fetchProfile());
+    /* try {
+      //this.props.dispatch(fetchProfile());
       if (nextProps.LoginReducer.user_id && nextProps.LoginReducer.user_token) {
-        this.props.history.push("/profile");
+        //this.props.history.push("/profile");
       }
     } catch (e) {
       console.log(e);
-    }
+    } */
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -78,7 +78,11 @@ class RecruiterSignup extends React.Component {
 
       if (ret.status === 200) {
         printMessage("Successful Login!");
-        this.props.history.push("/profile");
+        var decoded = jwt_decode(ret['data']['token']);
+            sessionStorage.setItem("user_id",decoded['sub']);
+            sessionStorage.setItem("profile",decoded['role']);
+            sessionStorage.setItem("user_token",ret['data']['token']);
+        this.props.history.push("/recruiterhome");
       } else {
         throw "error";
       }

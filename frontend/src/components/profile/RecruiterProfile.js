@@ -56,14 +56,14 @@ class RecruiterProfile extends Component {
       this.handleChange.bind = this.handleChange.bind(this);
       this.handleSelect.bind = this.handleSelect.bind(this);
       this.handleText = this.handleText.bind(this);
-      this.addExperience = this.addExperience.bind(this);
-      this.deleteExp = this.deleteExp.bind(this);
-      this.addEducation = this.addEducation.bind(this);
-      this.deleteEducation = this.deleteEducation.bind(this);
+      //this.addExperience = this.adExperience.bind(this);
+      //this.deleteExp = this.deleteExp.bind(this);
+      //this.addEducation = this.addEducation.bind(this);
+      //this.deleteEducation = this.deleteEducation.bind(this);
       this.addPersonal = this.addPersonal.bind(this);
       this.delPersonal = this.delPersonal.bind(this);
       this.addSkill = this.addSkill.bind(this);
-      this.saveSkills = this.saveSkills.bind(this);
+      //this.saveSkills = this.saveSkills.bind(this);
       this.viewPDF = this.viewPDF.bind(this);
 
     } catch (e) {
@@ -72,102 +72,102 @@ class RecruiterProfile extends Component {
   }
 
   async componentDidMount() {
-    // if (sessionStorage.getItem("user_id")) {
-    //   try {
-    //     let recommendation = await api("GET", `/jobs/recommendation`);
 
-    //     this.setState({
-    //       recommended_jobs: recommendation.data.payLoad
-    //     });
-    //   } catch (error) {
-    //     console.log(Object.keys(error), error.response);
-    //     printError(error);
-    //   }
-    // } else {
-    //   return;
-    // }
-    console.log("profile loded");
-    console.log(this.props);
-    this.props.dispatch(fetchProfile());
+    let u = this;
+    try 
+    {
+        let _x = sessionStorage.getItem('user_id');
+        console.log("m",_x);
+        let ret = await api('GET','/users/'+_x);
+        console.log(ret);
+        if(ret.status>=200 && ret.status<300)
+        {
+            try {
+                if (ret['data']['payLoad']['user']) {
+                  let userdata = ret['data']['payLoad']['user'];
+                  console.log(moment(userdata["createdAt"]));
+                  console.log(userdata);
+                  console.log(userdata);
+                  if (!userdata["banner_image"]) {
+                    userdata["banner_image"] = bannerlogo;
+                  }
+                  if (!userdata["userimage"]) {
+                    userdata["userimage"] = profileplaceholder;
+                  }
+                  if (!userdata["profile_image"]) {
+                    userdata["profile_image"] = profileplaceholder;
+                  }
+                  if (Object.keys(userdata).indexOf("address") == -1) {
+                    userdata["address"] = {
+                      city: "",
+                      street: "",
+                      country: "",
+                      zipcode: ""
+                    };
+                  }
+                  if (Object.keys(userdata).indexOf("education") == -1) {
+                    userdata["education"] = [];
+                  }
+                  if (Object.keys(userdata).indexOf("experience") == -1) {
+                    userdata["experience"] = [];
+                  }
+                  if (Object.keys(userdata).indexOf("resume") == -1) {
+                    userdata["resume"] = "";
+                  }
+                  if (Object.keys(userdata).indexOf("skills") == -1) {
+                    userdata["skills"] = [];
+                  }
+                  if (Object.keys(userdata).indexOf("summary") == -1) {
+                    userdata["summary"] = "";
+                  }
+                  if (Object.keys(userdata).indexOf("address") == -1) {
+                    userdata["address"] = {
+                      city: "",
+                      street: "",
+                      country: "",
+                      zipcode: ""
+                    };
+                  }
+
+                  u.setState({
+                    firstname: userdata["name"]["first"],
+                    lastname: userdata["name"]["last"],
+                    address: userdata["address"],
+                    city: userdata["address"]["city"],
+                    street: userdata["address"]["street"],
+                    country: userdata["address"]["country"],
+                    zipcode: userdata["address"]["zipcode"],
+                    banner: userdata["banner_image"],
+                    userimage: (S3_URL + userdata["profile_image"]),
+                    education: userdata["education"],
+                    experience: userdata["experience"],
+                    resume: userdata["resume"],
+                    skills: userdata["skills"],
+                    summary: userdata["summary"],
+                    createdAt: userdata["createdAt"],
+                    updatedAt: userdata["updatedAt"],
+                    publicid: userdata["id"]
+                  });
+                  setTimeout(() => {
+                    console.log(u.state);
+                  }, 50);
+                }
+              } catch (e) {
+                console.log(e);
+              }
+            //printMessage("Login successful.");
+           // dispatch(profileSuccess(ret));
+        }
+      } 
+      catch (error) {
+        console.log(error); 
+        printError(error);
+      }
+    
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props);
-    console.log(nextProps);
-    let u = this;
-    try {
-      if (u.props.user_profile) {
-        let userdata = nextProps.user_profile.user_profile.user;
-        console.log(moment(userdata["createdAt"]));
-        console.log(userdata);
-        console.log(userdata);
-        if (!userdata["banner_image"]) {
-          userdata["banner_image"] = bannerlogo;
-        }
-        if (!userdata["userimage"]) {
-          userdata["userimage"] = profileplaceholder;
-        }
-        if (!userdata["profile_image"]) {
-          userdata["profile_image"] = profileplaceholder;
-        }
-        if (Object.keys(userdata).indexOf("address") == -1) {
-          userdata["address"] = {
-            city: "",
-            street: "",
-            country: "",
-            zipcode: ""
-          };
-        }
-        if (Object.keys(userdata).indexOf("education") == -1) {
-          userdata["education"] = [];
-        }
-        if (Object.keys(userdata).indexOf("experience") == -1) {
-          userdata["experience"] = [];
-        }
-        if (Object.keys(userdata).indexOf("resume") == -1) {
-          userdata["resume"] = "";
-        }
-        if (Object.keys(userdata).indexOf("skills") == -1) {
-          userdata["skills"] = [];
-        }
-        if (Object.keys(userdata).indexOf("summary") == -1) {
-          userdata["summary"] = "";
-        }
-        if (Object.keys(userdata).indexOf("address") == -1) {
-          userdata["address"] = {
-            city: "",
-            street: "",
-            country: "",
-            zipcode: ""
-          };
-        }
-
-        u.setState({
-          firstname: userdata["name"]["first"],
-          lastname: userdata["name"]["last"],
-          address: userdata["address"],
-          city: userdata["address"]["city"],
-          street: userdata["address"]["street"],
-          country: userdata["address"]["country"],
-          zipcode: userdata["address"]["zipcode"],
-          banner: userdata["banner_image"],
-          userimage: userdata["profile_image"],
-          education: userdata["education"],
-          experience: userdata["experience"],
-          resume: userdata["resume"],
-          skills: userdata["skills"],
-          summary: userdata["summary"],
-          createdAt: userdata["createdAt"],
-          updatedAt: userdata["updatedAt"],
-          publicid: userdata["id"]
-        });
-        setTimeout(() => {
-          console.log(u.state);
-        }, 50);
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    
   }
 
   openModal(d, ex1, ex2) {
@@ -367,11 +367,12 @@ class RecruiterProfile extends Component {
   }
 
   handleSelect = address => {
+    let xd = this;
     geocodeByAddress(address)
       .then(results => {
         console.log(results); ///formatted_address
 
-        this.setState({
+        xd.setState({
           country: "",
           state: "",
           city: "",
@@ -395,7 +396,7 @@ class RecruiterProfile extends Component {
         }
         //tempdata['latitude'] = coord
         console.log(tempdata);
-        this.setState({
+        xd.setState({
           country: tempdata.country,
           state: tempdata.state,
           city: tempdata.city,
@@ -406,7 +407,7 @@ class RecruiterProfile extends Component {
       })
       .then(par => {
         console.log(par);
-        this.setState({
+        xd.setState({
           latitude: par.lat,
           longitude: par.lng
         });
@@ -458,6 +459,7 @@ class RecruiterProfile extends Component {
         .val()
     };
 
+    console.log(this.state);
     let address = {
       street: this.state.street,
       city: this.state.city,
@@ -478,7 +480,7 @@ class RecruiterProfile extends Component {
     try {
       let ret = await api(
         "PUT",
-        "/users/" + this.props.LoginReducer.user_id,
+        "/users/" + sessionStorage.getItem('user_id'),
         data
       );
       console.log(ret);
@@ -551,7 +553,7 @@ class RecruiterProfile extends Component {
           };
           let ret2 = await api(
             "PUT",
-            "/users/" + this.props.LoginReducer.user_id,
+            "/users/" + sessionStorage.getItem('user_id'),
             data
           );
           printMessage("File Saved Successfully.");
@@ -584,7 +586,7 @@ class RecruiterProfile extends Component {
           };
           let ret2 = await api(
             "PUT",
-            "/users/" + this.props.LoginReducer.user_id,
+            "/users/" + sessionStorage.getItem('user_id'),
             data
           );
 
@@ -620,7 +622,7 @@ class RecruiterProfile extends Component {
           };
           let ret2 = await api(
             "PUT",
-            "/users/" + this.props.LoginReducer.user_id,
+            "/users/" + sessionStorage.getItem('user_id'),
             data
           );
 

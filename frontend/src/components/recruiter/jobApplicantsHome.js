@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import "../Jobs/jobs.css";
 import Header from '../Common/Header';
+// import RecruiterHeader from '../Common/RecruiterHeader';
 import { Link } from 'react-router-dom';
 import Pin from '../Files/Images/Pin.svg';
 import { api, printError, printMessage } from '../../services';
@@ -51,7 +52,7 @@ async componentDidMount(){
 
         return (
             <div>
-            <Header/>
+            <RecruiterHeader />
 
             
 
