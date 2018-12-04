@@ -1,7 +1,7 @@
 module.exports = {
     apps : [{
         name: "frontend",
-        script: "node_modules/.bin/react-scripts/start.js",
+        script: "node_modules/react-scripts/scripts/start.js",
         cwd: "/home/ec2-user/linkedin/current/frontend",
         log_date_format: "DD-MM-YYYY",
         "env": {
