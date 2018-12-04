@@ -4,14 +4,17 @@ const httpStatus = require('http-status')
 const sql = require('./../services/sql')
 const mongoose = require('mongoose')
 const APIError = require('../utils/APIError')
+const Job = require('../models/job.model')
 
 exports.click = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
     const response = {payLoad: {}, message: ''}
+    const recruiterId = await recruiterByJobId(req.params.jobId)
     const saveJobClickPointers = {
       'jobId': req.params.jobId,
       'userId': req.user._id,
+      'recruiterId': recruiterId,
       'time': new Date()
     }
     await sql.query('INSERT INTO job_click SET ?', saveJobClickPointers)
@@ -57,4 +60,9 @@ exports.profileView = async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+}
+
+const recruiterByJobId = async (jobId) => {
+  const job = await Job.findById(jobId).exec()
+  return job.recruiter
 }
