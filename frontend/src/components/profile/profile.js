@@ -1110,14 +1110,21 @@ class profile extends Component {
 
   render() {
     var check = sessionStorage.getItem("profile");
-
+    console.log(check)
     let x = "";
     if (check == "applicant") {
+    console.log(check)
+
       x = <Header />;
     } else if (check == "recruiter") {
+    console.log(check)
+
       x = <RecruiterHeader />;
     }
-    var rec_jobs = this.state.recommended_jobs.map(jobs => {
+
+    var rec_jobs;
+    if(check=="applicant"){
+    rec_jobs = this.state.recommended_jobs.map(jobs => {
       console.log(jobs);
       return (
         <div>
@@ -1135,8 +1142,28 @@ class profile extends Component {
         </div>
       );
     });
+}
+
+
+    var jobsyoumaylike;
+    jobsyoumaylike = <div><p style={{fontSize: "20px", color: "black",textAlign: "center"}}>
+                            Jobs you may like
+                        </p>
+                        <hr />
+                        <div
+                            style={{
+                            height: "auto",
+                            backgroundColor: "#FFF",
+                            marginTop: "-5px",
+                            paddingTop: "10px"
+                            }}
+                        >
+                            {rec_jobs}
+                        </div>
+                        </div>
 
     console.log(this.state);
+    
     return (
       <div>
         {x}
@@ -1503,26 +1530,8 @@ class profile extends Component {
                   View Public Page
                 </a>
               </div>
-              <p
-                style={{
-                  fontSize: "20px",
-                  color: "black",
-                  textAlign: "center"
-                }}
-              >
-                Jobs you may like
-              </p>
-              <hr />
-              <div
-                style={{
-                  height: "auto",
-                  backgroundColor: "#FFF",
-                  marginTop: "-5px",
-                  paddingTop: "10px"
-                }}
-              >
-                {rec_jobs}
-              </div>
+              
+           {check=="applicant" ?   {jobsyoumaylike}  : ""}
             </div>
             {/* <!--right-sidebar end--> */}
           </div>

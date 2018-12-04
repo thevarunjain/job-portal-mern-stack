@@ -35,23 +35,10 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    /******CHECK FOR APPLICANT LOGIN *********/
-
-    // let user = sessionStorage.getItem('user_id');
-    // let profile = sessionStorage.getItem('profile');
-    // let user_token = sessionStorage.getItem('user_token');
-    // if(profile != 'recruiter' || !user || !user_token)
-    // {
-    // 	this.props.history.push("/");
-    // }
-
-    /*****************************************/
     this.props.dispatch(fetchProfile());
   }
 
   componentWillReceiveProps(nextProps) {
-    //console.log("HEADER PROPS");
-    //console.log(nextProps);
     try {
       let data = nextProps.user_profile.user_profile.user;
       console.log(data);
@@ -253,7 +240,7 @@ class Header extends Component {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/recruiterconnection">
+                    <Link to="/applicantconnection">
                       <div>
                         <i className="fa fa-user-friends header-icons" />
                       </div>
@@ -265,7 +252,7 @@ class Header extends Component {
                       <div>
                         <i className="fa fa-briefcase header-icons" />
                       </div>
-                      Posted Jobs
+                      Post Jobs
                     </Link>
                   </li>
                   <li>

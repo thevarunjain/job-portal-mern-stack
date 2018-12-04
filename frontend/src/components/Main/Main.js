@@ -29,6 +29,7 @@ import ListedJobs from "../recruiter/listedJobs";
 import Recruitersignup from "../Recruitersignup/Recruitersignup";
 import ApplyJob from "../ApplyJob/Applyjob";
 import JobApplicantsHome from "../recruiter/jobApplicantsHome";
+import RecruiterProfile from "../profile/RecruiterProfile";
 
 class Main extends Component {
 
@@ -61,6 +62,7 @@ class Main extends Component {
                 <Route path="/jobapplicant/:jobId" component={JobApplicantsHome} exact />
                 <Route path="/jobsaved" component={JobSaved} exact />
                 <Route path="/companypage/:id" component={CompanyPage} exact />
+                <Route path="/recruiterprofile" component={RecruiterProfile} exact />
                 
             </div>
           </BrowserRouter>
