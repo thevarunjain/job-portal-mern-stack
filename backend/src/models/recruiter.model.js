@@ -20,7 +20,7 @@ const recruiterSchema = new Schema({
     type: address.schema
   },
   phone_number: {
-    type: Number
+    type: String
   },
   headline: {
     type: String
@@ -29,7 +29,8 @@ const recruiterSchema = new Schema({
     type: String
   },
   profile_image: {
-    type: String
+    type: String,
+    default: 'default-profile-image.jpg'
   },
   banner_image: {
     type: String
