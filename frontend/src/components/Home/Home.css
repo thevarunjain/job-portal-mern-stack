@@ -582,3 +582,18 @@ div.agreement a:hover {
 {
   min-height: 220px;
 }
+
+#myChart
+{
+  width : 100%;
+  height: 100%;
+}
+
+.grph-headings
+{
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  font-family: linkedin-regular-font;
+  margin-bottom: 20px;
+}
