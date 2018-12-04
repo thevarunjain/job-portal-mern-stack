@@ -46,7 +46,7 @@ module.exports = {
         description: Joi.string(),
         date: Joi.object().keys({
           startdate: Joi.date(),
-          enddate: Joi.date()
+          enddate: Joi.date().min(Joi.ref('startdate'))
         })
       })),
       education: Joi.array().items(Joi.object().keys({
@@ -57,7 +57,7 @@ module.exports = {
         description: Joi.string(),
         date: Joi.object().keys({
           startdate: Joi.date(),
-          enddate: Joi.date()
+          enddate: Joi.date().min(Joi.ref('startdate'))
         })
       })),
       skills: Joi.array().items(Joi.string()),

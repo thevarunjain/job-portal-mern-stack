@@ -149,6 +149,10 @@ class profile extends Component {
           let ts = S3_URL + s;
           userdata["banner_image"] = ts;
         }
+        else 
+        {
+          //userdata["banner_image"] = S3_URL + userdata["banner_image"];
+        }
         if((userdata["profile_image"]).indexOf("https://")!=-1)
         {
           let s = userdata["profile_image"].split("/").pop();
@@ -157,7 +161,10 @@ class profile extends Component {
           console.log(ts);
           userdata["profile_image"] = ts;
         }
-
+        else 
+        {
+          userdata["profile_image"] = S3_URL + userdata["profile_image"];
+        }
 
         u.setState({
           firstname: userdata["name"]["first"],
@@ -1149,10 +1156,10 @@ class profile extends Component {
             <div className="col-md-3">
               <img src={S3_URL+jobs.company_logo} class="img-fluid job-card-image" alt="" />
             </div>
-           <Link to={`/companypage/${jobs._id}`}> <div className="col-md-7">
-              <p style={{ fontSize: "12px" }}>{jobs.title}</p>
-              <p style={{ fontSize: "10px" }}>{jobs.function}</p>
-              <p style={{ fontSize: "8px" }}>{jobs.type}</p>
+           <Link className="col-lg-9" to={`/companypage/${jobs._id}`}> <div className=" jobs-sidebar-div">
+              <p style={{ fontSize: "15px" }}>{jobs.title}</p>
+              <p style={{ fontSize: "12px" }}>{jobs.function}</p>
+              <p style={{ fontSize: "12px" }}>{jobs.type}</p>
             </div>
             </Link>
           </div>

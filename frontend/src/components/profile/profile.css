@@ -574,5 +574,11 @@ img[src='/static/media/profile-banner.388781bb.svg']
   -webkit-text-stroke-color: #0073b1;
 }
 
+.jobs-sidebar-div
+{
+  display: inline-block;
+  position: absolute;
+  
+}
 
   /*****************************************/
