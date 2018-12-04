@@ -64,6 +64,14 @@ jobSchema.method({
       transformed[field] = this[field]
     })
     return transformed
+  },
+  titleTransform () {
+    const transformed = {}
+    const fields = ['title']
+    fields.forEach((field) => {
+      transformed[field] = this[field]
+    })
+    return transformed
   }
 })
 

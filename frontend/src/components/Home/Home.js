@@ -54,7 +54,7 @@ class HomePage extends React.Component {
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
     try {
-      this.props.dispatch(fetchProfile());
+      //this.props.dispatch(fetchProfile());
       if (nextProps.LoginReducer.user_id && nextProps.LoginReducer.user_token) {
         this.props.history.push("/profile");
       }

@@ -19,14 +19,15 @@ class Message extends Component {
 			messagelist : [],
 			user_message : '',
 			currentRoom : '',
-			currentChat : ''
+			currentChat : '',
+			currentIndex : 0
 		}
 
 		let outerstate = this;
 		
 		this.user_message = this.user_message.bind(this);
 		this.handleNewMessage =  this.handleNewMessage.bind(this);
-		this.printMessage = this.printMessage.bind(this);
+		this.printMessage2 = this.printMessage2.bind(this);
 		this.reFormatMessage = this.reFormatMessage.bind(this);
 
 		this.socket = io('http://localhost:3003/');
@@ -41,7 +42,7 @@ class Message extends Component {
 		this.socket.on('message_posted', function(data){
 			console.log("asdps");
 			console.log(data);
-			outerstate.printMessage(data);
+			outerstate.printMessage2(data);
 		});
 
 		this.getMessages();
@@ -77,15 +78,17 @@ class Message extends Component {
 	 }
 
 
-	 async fetchCurrentMessages(g)
+	 async fetchCurrentMessages(g,lp)
 	 {
-		 console.log(g._id);
+		 console.log(g['thread']._id);
+		 //alert(lp);
 		 this.setState({
-			 currentRoom : g._id,
-			 currentChat : g._id
+			 currentRoom : g['thread']._id,
+			 currentChat : (g['receiver']['name']['first'] + ' ' +g['receiver']['name']['last'] ),
+			 currentIndex : lp
 		 });
 		 this.reFormatMessage(g);
-		 this.socket.emit('create_room',{'data' : g._id});
+		 this.socket.emit('create_room',{'data' : g['thread']._id});
 	 }
 
 	 user_message(e)
@@ -115,13 +118,36 @@ class Message extends Component {
 		 element.scrollTop = element.scrollHeight;
 		 this.socket.emit('private_chat_handler',{'payload': this.state.user_message,'thread': this.state.currentRoom,'sentAt':sentAt , 'senderID' : sessionStorage.getItem('user_id')});
 		 this.setState({user_message : ''});
+		 
+		 let cti  = this.state.currentIndex;
+		let oldstatus = this.state.messagelist;
+		 let curmesg = this.state.messagelist[cti];
+		 console.log(cti);
+		 //console.log(curmesg);
+		 oldstatus[cti]['thread']['history'].push({'body': this.state.user_message,'thread': this.state.currentRoom,'sentAt':sentAt, 'updatedAt':sentAt, 'sender' : sessionStorage.getItem('user_id')});
+		 
+		 this.setState((prevState)=>({
+			messagelist : oldstatus
+		 }));
+		var element = document.querySelector(".scroll-chat");
+		element.scrollTop = element.scrollHeight;
 	 }
 
 
-	 printMessage(t)
+	 printMessage2(t)
 	 {
 		console.log(t);
 		$(".scroll-chat").append('<div class="main-message-box st3"><div class="message-dt st3"><div class="message-inner-dt"><p>'+t['payload']+'</p></div><span>'+(moment(t['sentAt']).fromNow())+'</span></div><div class="messg-usr-img"><img src="http://via.placeholder.com/50x50" alt=""></div></div>');
+		let cti  = this.state.currentIndex;
+		let oldstatus = this.state.messagelist;
+		 let curmesg = this.state.messagelist[cti];
+		 console.log(cti);
+		 //console.log(curmesg);
+		 oldstatus[cti]['thread']['history'].push({'body': t['payload'],'thread': this.state.currentRoom,'sentAt':t['sentAt'], 'updatedAt':t['sentAt'], 'sender' : ''});
+		 
+		 this.setState((prevState)=>({
+			messagelist : oldstatus
+		 }));
 		var element = document.querySelector(".scroll-chat");
 		element.scrollTop = element.scrollHeight;
 		
@@ -134,8 +160,9 @@ class Message extends Component {
 		//console.log(data);		
 		try
 		{
+			console.log(data);
 			let myid = sessionStorage.getItem('user_id');
-			let chats = data['history'];
+			let chats = data['thread']['history'];
 			console.log(chats);
 			if(myid)
 			{
@@ -197,9 +224,9 @@ class Message extends Component {
 										/*
 											Change name and image here after change in Fetch Chats API
 										*/
-										this.state.messagelist.map((val)=>{
+										this.state.messagelist.map((val,ind)=>{
 											return (
-												<li onClick={()=>this.fetchCurrentMessages(val)}>
+												<li onClick={()=>this.fetchCurrentMessages(val,ind)}>
 														{/* <li className="active"> */}
 														<div className="usr-msg-details">
 															<div className="usr-ms-img">
@@ -207,7 +234,7 @@ class Message extends Component {
 																{/* <span className="msg-status"></span> */}
 															</div>
 															<div className="usr-mg-info">
-																<h3>{val._id}</h3>
+																<h3>{val.receiver['name']['first'] +' ' + val.receiver['name']['last']}</h3>
 																<p>Hello <img src="images/smley.png" alt="" /></p>
 															</div>
 															<span className="posted_time">{moment(val['updatedAt']).format('LT') }</span>
