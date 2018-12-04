@@ -4,6 +4,8 @@ import Header from "../Common/Header"
 import "./Home.css"
 import { api, printError, printMessage } from '../../services';
 import {Link} from 'react-router-dom';
+import { IMAGE_PATHS, S3_URL } from "../../constants/routes";
+
 
 
 class ApplicantHome extends Component {
@@ -78,7 +80,7 @@ class ApplicantHome extends Component {
 										<div class="user-profile">
 											<div class="username-dt">
 												<div class="usr-pic">
-													<img src={this.state.user_profile_image} alt="" />
+													<img src={S3_URL+this.state.user_profile_image} alt="" />
 
 												</div>
 											</div>
