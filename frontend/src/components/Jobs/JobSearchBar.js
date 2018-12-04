@@ -14,6 +14,7 @@ class JobSearchBar extends Component {
     this.onChangeSearchJob = this.onChangeSearchJob.bind(this)
     this.onChangeLocation = this.onChangeLocation.bind(this)
     this.checkret = this.checkret.bind(this);
+    this.route = this.route.bind(this);
 }
 
   onChangeSearchJob(event){
@@ -37,6 +38,11 @@ class JobSearchBar extends Component {
     })
     
   }
+
+  route(){
+    
+  }
+
   
   render() {
     return (
