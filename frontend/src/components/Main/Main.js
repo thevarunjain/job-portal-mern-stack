@@ -23,14 +23,16 @@ import JobsBySkill from "../Jobs/JobsBySkill";
 import PublicProfile from "../profile/publicprofile";
 import ApplicantHome from "../Home/ApplicantHome";
 import RecruiterHome from "../Home/RecruiterHome";
-import RecruiterConnection from "../Connection/RecruiterConnection"
-import ApplicantConnection from "../Connection/ApplicantConnection"
+import RecruiterConnection from "../Connection/RecruiterConnection";
+import ApplicantConnection from "../Connection/ApplicantConnection";
 import ListedJobs from "../recruiter/listedJobs";
 import Recruitersignup from "../Recruitersignup/Recruitersignup";
 import ApplyJob from "../ApplyJob/Applyjob";
 import JobApplicantsHome from "../recruiter/jobApplicantsHome";
+import RecruiterProfile from "../profile/RecruiterProfile";
 
 class Main extends Component {
+
     render() {
         console.log(APPLICANT_LOGIN_ROUTE);
         return (
@@ -56,16 +58,18 @@ class Main extends Component {
                 <Route path="/postjob" component={PostJob} exact />
                 <Route path="/postjobfirst" component={PostJobfirst} exact />
                 <Route path="/recruitersignup" component={Recruitersignup} exact />
-                <Route path="/apply" component={ApplyJob} exact />
+                <Route path="/apply/:id" component={ApplyJob} exact />
                 <Route path="/jobapplicant/:jobId" component={JobApplicantsHome} exact />
                 <Route path="/jobsaved" component={JobSaved} exact />
                 <Route path="/companypage/:id" component={CompanyPage} exact />
+                <Route path="/recruiterprofile" component={RecruiterProfile} exact />
                 
             </div>
           </BrowserRouter>
     );
-        }       
-    }
+  }
+}
+
 
 
 

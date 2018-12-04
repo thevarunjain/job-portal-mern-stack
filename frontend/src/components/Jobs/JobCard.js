@@ -31,7 +31,7 @@ class JobCard extends Component {
       <div className="row left-job-detail" onClick={this.setActiveID}>
            
               <div className="col-md-2 left-job-detail-image">
-                  <img src="" class="img-fluid job-card-image" alt="LinkedIn" />
+                  <img src={this.state.company_logo} style={{width:"100%"}} class="img-fluid job-card-image" alt="LinkedIn" />
               </div>
               <div className="col-md-10 left-job-detail-desc">
               <div className="heading-company3">
@@ -41,7 +41,7 @@ class JobCard extends Component {
               {this.state.company}
               </div>
               <div className="heading-location3">
-              <img src={this.state.company_logo} style={{width:"4%"}}></img>&nbsp; {this.state.address.city} {this.state.address.zipcode},{this.state.address.country}
+              <img src={""}></img>&nbsp; {this.state.address.city} {this.state.address.zipcode},{this.state.address.country}
               </div>
               <div>
               <label style={{color:"green",fontSize:"12px"}}>New &#9670;</label>&nbsp;<label style={{fontSize:"12px"}}>Posted {this.state.time_diff}  ago</label>

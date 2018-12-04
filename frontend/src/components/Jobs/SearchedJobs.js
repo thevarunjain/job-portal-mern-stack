@@ -7,6 +7,8 @@ import JobSkills from "./JobSkills";
 import get_filtered_jobs from "../../actions/SearchedJobs";
 import {connect} from "react-redux";
 import {set_active_id} from "../../actions/jobCardActiveId";
+import forwardarrow from '../Files/Images/right-arrow.svg';
+import backwardarrow from '../Files/Images/left-arrow.svg'
 import "./jobs.css";
 
 class SearchedJobs extends Component {
@@ -18,24 +20,64 @@ class SearchedJobs extends Component {
       long:props.match.params.long,
       jobs:null,
       message:"",
-      activeID: null
+      activeID: null,
+      page:1
     }
     this.updateActiveID = this.updateActiveID.bind(this);
+    this.getforwardjobs = this.getforwardjobs.bind(this);
+    this.getbackwardjobs = this.getbackwardjobs.bind(this);
   }
 componentDidMount(){
     //axios post http://localhost:3000/api/search/jobs
   
-   var data={
+   let data={
     "criterion" : this.state.criterion,
    
     "coordinates" : {
       "latitude": this.state.lat,
       "longitude": this.state.long
-    }
+    },
+    page:this.state.page
    }
 
     this.props.get_filtered_jobs(data);
     
+  }
+
+  getforwardjobs(){
+    let page=this.state.page+1;
+    
+    let data={
+      "criterion" : this.state.criterion,
+     
+      "coordinates" : {
+        "latitude": this.state.lat,
+        "longitude": this.state.long
+      },
+      page:this.state.page+1
+     }
+  
+      this.props.get_filtered_jobs(data);
+      this.setState({
+      page:page
+      })
+  }
+  getbackwardjobs(){
+    let page=this.state.page-1;
+    let data={
+      "criterion" : this.state.criterion,
+     
+      "coordinates" : {
+        "latitude": this.state.lat,
+        "longitude": this.state.long
+      },
+      page:this.state.page-1
+     }
+  
+      this.props.get_filtered_jobs(data);
+      this.setState({
+        page:page
+        })
   }
 
   componentWillReceiveProps(nextProps){
@@ -81,16 +123,20 @@ jobsComponent =this.props.jobs?this.props.jobs.map(job => {
               </div>
             </div>
           </div>
+          <div>
+          <span style={{paddingLeft:"38%"}}><button onClick={this.getbackwardjobs}><img src={backwardarrow} style={{width:"25px"}}></img></button></span>
 
-
-
+          <span><button onClick={this.getforwardjobs}><img src={forwardarrow} style={{width:"25px"}}></img></button></span>
+          </div>
         </div>
 
         <div className="container">
+        
         <div className="row">
         
         <div className="col-md-5  job-view">
-            
+        
+        
         {jobsComponent}
         {message}
              </div>
