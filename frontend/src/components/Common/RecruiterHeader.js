@@ -1,190 +1,191 @@
-import React, { Component } from 'react'
-import { IMAGE_PATHS} from '../../constants/routes';
-import { Link } from 'react-router-dom'
-import $ from 'jquery';
+import React, { Component } from "react";
+import { IMAGE_PATHS } from "../../constants/routes";
+import { Link } from "react-router-dom";
+import $ from "jquery";
 import { connect } from "react-redux";
-import HeaderImage from '../Files/Images/profile-placeholder.png';
-import fetchProfile from '../../actions/profile';
+import HeaderImage from "../Files/Images/profile-placeholder.png";
+import fetchProfile from "../../actions/profile";
 import { withRouter } from "react-router";
 import ReactAutocomplete from "react-autocomplete";
 import Autocomplete from "react-autocomplete";
-import { api , printError, printMessage} from '../../services';
-import profileplaceholder from '../Files/Images/profile-placeholder.png'
+import { api, printError, printMessage } from "../../services";
+import profileplaceholder from "../Files/Images/profile-placeholder.png";
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "LinkedIn user",
+      profileimage: HeaderImage,
+      searchResults: [],
+      value: "",
+      refererobject: {}
+    };
+    console.log(HeaderImage);
+    this.moveToProf = this.moveToProf.bind(this);
+    this.valSelect = this.valSelect.bind(this);
+    this.onChangeSearch = this.onChangeSearch.bind(this);
+    this.openPublicSearchProfile = this.openPublicSearchProfile.bind(this);
 
-  constructor(props)
-  {
-	  super(props);
-	  this.state = {
-		'username' : 'LinkedIn user',
-		'profileimage' : HeaderImage,
-		'searchResults' : [],
-		'value':'',
-		'refererobject' : {}
-	  }
-	  console.log(HeaderImage);
-	  this.moveToProf = this.moveToProf.bind(this);
-	  this.valSelect = this.valSelect.bind(this);
-	  this.onChangeSearch = this.onChangeSearch.bind(this);
-	  this.openPublicSearchProfile = this.openPublicSearchProfile.bind(this);
-
-	  console.log(this.props);
+    console.log(this.props);
   }
 
-  toggleMenu()
-  {	
-	$(".user-account-settingss").toggleClass("active");
-  }
-
-  componentDidMount()
-  {
-		/******CHECK FOR APPLICANT LOGIN *********/
-
-		let user = sessionStorage.getItem('user_id');
-		let profile = sessionStorage.getItem('profile');
-		let user_token = sessionStorage.getItem('user_token');
-		if(profile != 'recruiter' || !user || !user_token)
-		{
-			this.props.history.push("/");
-		}
-
-
-		/*****************************************/
-		this.props.dispatch(fetchProfile());
-  }
-
-  componentWillReceiveProps(nextProps)
-  {
-	  //console.log("HEADER PROPS");
-	  //console.log(nextProps);	  
-	  try 
-	  {
-			  let data = nextProps.user_profile.user_profile.user;
-			  console.log(data);
-			if(data)
-			{
-				console.log(data.userimage);
-				if(!data.profile_image)
-				{
-					data.profile_image = HeaderImage;
-				}
-				this.setState({
-					'username' : (data.name.first + " " +  data.name.last),
-					'profileimage' : data.profile_image
-				})
-			}
-	  }
-	  catch(e)
-	  {
-		  console.log(e);
-	  }
+  toggleMenu() {
+    $(".user-account-settingss").toggleClass("active");
   }
 
 
-  moveToProf()
-  {
-	  console.log(this.props);
-	this.props.history.push("/profile");
-
+  componentDidMount() {
+    //this.props.dispatch(fetchProfile());
   }
 
-  
+  componentWillReceiveProps(nextProps) {
+    try {
+      let data = nextProps.user_profile.user_profile.user;
+      console.log(data);
+      if (data) {
+        console.log(data.userimage);
+        if (!data.profile_image) {
+          data.profile_image = HeaderImage;
+        }
+        this.setState({
+          username: data.name.first + " " + data.name.last,
+          profileimage: data.profile_image
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
+  moveToProf() {
+    console.log(this.props);
+    this.props.history.push("/recruiterprofile");
+  }
 
-  onSearchFocus()
-  {
-	  console.log('focus yes');
-	  $(".searchBtn-left").addClass("rightfocus").removeClass("leftfocus");
-	  //$(".searchBtn-right").removeClass("rightfocus");
+  onSearchFocus() {
+    console.log("focus yes");
+    $(".searchBtn-left")
+      .addClass("rightfocus")
+      .removeClass("leftfocus");
+    //$(".searchBtn-right").removeClass("rightfocus");
+  }
+
+  onSearchBlur() {
+    console.log("focus no");
+    $(".searchBtn-left")
+      .addClass("leftfocus")
+      .removeClass("rightfocus");
+    //$(".searchBtn-left").removeClass("leftfocus");
+    //$(".searchBtn-right").addClass("rightfocus");
+  }
+
+  valSelect(e, id) {
+    this.setState({
+      value: e
+    });
+    this.onSearchBlur();
+    $(".search-bar form div input").blur();
+  }
+
+  async onChangeSearch(e) {
+    console.log("this chnge");
+    this.setState({
+      value: e.target.value
+    });
+    if (e.target.value.length >= 1) {
+      let data = {
+        name: e.target.value
+      };
+      try {
+        let ret = await api("POST", "/search/users", data);
+        console.log(ret);
+        if (ret.status >= 200 && ret.status < 300) {
+          let temparray = [];
+
+          for (
+            let k = 0;
+            k <
+            (ret["data"]["payLoad"].length > 5
+              ? 5
+              : ret["data"]["payLoad"].length);
+            k++
+          ) {
+            let currentObj = ret["data"]["payLoad"][k];
+            let temp = {
+              userimage: "",
+              label: "",
+              membersince: "",
+              userid: ""
+            };
+
+            let keys = Object.keys(currentObj);
+            if (keys.indexOf("profile_image") != -1) {
+              if (currentObj["profile_image"]) {
+                temp.userimage = currentObj["profile_image"];
+              } else {
+                temp.userimage = profileplaceholder;
+              }
+            } else {
+              temp.userimage = profileplaceholder;
+            }
+            temp.label =
+              currentObj["name"]["first"] + " " + currentObj["name"]["last"];
+            temp.lastname = "";
+            temp.membersince = "";
+            temp.userid = currentObj["id"];
+            temparray.push(temp);
+          }
+          this.setState({
+            searchResults: temparray
+          });
+          console.log(this.state);
+        } else {
+          throw "error";
+        }
+      } catch (error) {
+        console.log(Object.keys(error), error.response);
+        printError(error);
+      }
+    }
+  }
+
+  openPublicSearchProfile(e, f) {
+    this.setState({
+      value: f
+    });
+    let strx = "/public-profile/" + e;
+    /* this.props.history.push({
+			pathname: '/public-profile/'+e,
+		}) */
+    this.onSearchBlur();
+    window.open(strx, "_blank");
   }
 
 
-  onSearchBlur()
+  async deleteProfile()
   {
-	console.log("focus no");
-	$(".searchBtn-left").addClass("leftfocus").removeClass("rightfocus");
-	//$(".searchBtn-left").removeClass("leftfocus");
-	  //$(".searchBtn-right").addClass("rightfocus");
-  }
-
-  valSelect(e,id)
-  {
-	   
-	  this.setState({
-		  'value' : e
-	  });
-	  this.onSearchBlur();
-	  $(".search-bar form div input").blur();
-  }
-
-
-  async onChangeSearch(e)
-  {
-	  console.log("this chnge");
-	  this.setState({ 
-		  value: e.target.value 
-	  });
-	  if(e.target.value.length>=1)
-	  {
-		let data = {
-			"name" : e.target.value
-		}
-		try {
-			let ret = await api('POST','/search/users',data);
-			console.log(ret);
-			if(ret.status>=200 && ret.status<300)
-			{
-				let temparray = [];
-				
-				for(let k = 0 ; k < (ret['data']['payLoad'].length>5?5:ret['data']['payLoad'].length) ; k++ )
-				{
-					let currentObj = ret['data']['payLoad'][k];
-					let temp =  {
-						'userimage' : '',
-						'label' : '',
-						'membersince' : '',
-						'userid' :'',
-					};
-					
-					let keys = Object.keys(currentObj);
-					if(keys.indexOf('profile_image')!=-1)
-					{
-						if(currentObj['profile_image'])
-						{
-							temp.userimage = currentObj['profile_image']
-						}
-						else 
-						{
-							temp.userimage =  profileplaceholder;
-						}
-					}
-					else 
-					{
-						temp.userimage =  profileplaceholder;
-					}
-					temp.label = currentObj['name']['first'] + " " + currentObj['name']['last'];
-					temp.lastname = '';
-					temp.membersince = '';
-					temp.userid = currentObj['id'];
-					temparray.push(temp);
-				}
-				this.setState({
-					searchResults : temparray
-				});
-				console.log(this.state);
-			}
-			else 
-			{
-				throw "error";
-			}
-		  } 
-		  catch (error) 
+		  let c = window.confirm("Are you sure you want to delete your profile? This action cannot be undone.");
+		  if(c)
 		  {
-			console.log(Object.keys(error), error.response);
-			printError(error);
+			try 
+			{
+				let userid = sessionStorage.getItem('user_id');
+				let ret = await api('DELETE',('/users/'+userid));
+				console.log(ret);
+				if(ret.status>=200 && ret.status<300)
+				{
+					sessionStorage.clear();
+					localStorage.clear();
+					this.props.history.push("/");
+				}
+			}
+			catch(e)
+			{
+				console.log(e);
+			}
 		  }
-	  }
+		
   }
 
 
@@ -201,104 +202,132 @@ class Header extends Component {
 		window.open(strx,"_blank");
   }
 
+
+
+  handlelogout()
+  {
+	  let c = window.confirm("Are you sure you want to logout?");
+	  if(c)
+	  {
+		  sessionStorage.clear();
+		  localStorage.clear();
+		  this.props.history.push("/");
+	  }
+  }
+
+
+
   render() {
-	const commonProps = {
-		'onFocus': this.onSearchFocus,
-		'onBlur' : this.onSearchBlur,
-		'id' : 'states-autocomplete'
-	};
+    const commonProps = {
+      onFocus: this.onSearchFocus,
+      onBlur: this.onSearchBlur,
+      id: "states-autocomplete"
+    };
     return (
       <div>
         <header>
-			<div className="container">
-				<div className="header-data">
-					<div className="logo">
-						<a href="/" title=""><img className="header-logo" src={require('../Files/Images/linkedinlogo.png')} alt="" /></a>
-					</div>
-					<div className="search-bar">
-						<form>
-							
-							{/*<!--<input type="text" name="search" placeholder="Search..." />-->*/}
-						 <ReactAutocomplete
-								items={this.state.searchResults}
-								shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
-								getItemValue={item => item.label}
-								inputProps={commonProps}
-								wrapperStyle={{ position: 'relative' }}
-    							menuStyle={{ position: 'absolute' }}
-								renderItem={(item, highlighted) =>
-								<div
-									key={item.userid}
-									data-uid={item.userid}
-									style={{ backgroundColor: highlighted ? '#FFF' : '#FFF',padding : '10px','cursor' : 'pointer'}}
-								>
-									<span id={item.userid} className="user-image">
-										<img src={item.userimage}  className="search-user-image" />
-									</span>
-									<span className="search-firstname">{item.label}</span>
-									<span className="search-lastname">{item.lastname}</span>
-								</div>
-								}
-								value={this.state.value}
-								onChange={e => this.onChangeSearch(e)}
-								onSelect={(value, item) => {
-									// set the menu to only the selected item
-									console.log(item);
-									console.log(item.userid)
-									this.openPublicSearchProfile(item.userid,value);
-								  }}
-						
-							/> 
+          <div className="container">
+            <div className="header-data">
+              <div className="logo">
+                <a href="/" title="">
+                  <img
+                    className="header-logo"
+                    src={require("../Files/Images/linkedinlogo.png")}
+                    alt=""
+                  />
+                </a>
+              </div>
+              <div className="search-bar">
+                <form>
+                  {/*<!--<input type="text" name="search" placeholder="Search..." />-->*/}
+                  <ReactAutocomplete
+                    items={this.state.searchResults}
+                    shouldItemRender={(item, value) =>
+                      item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
+                    }
+                    getItemValue={item => item.label}
+                    inputProps={commonProps}
+                    wrapperStyle={{ position: "relative" }}
+                    menuStyle={{ position: "absolute" }}
+                    renderItem={(item, highlighted) => (
+                      <div
+                        key={item.userid}
+                        data-uid={item.userid}
+                        style={{
+                          backgroundColor: highlighted ? "#FFF" : "#FFF",
+                          padding: "10px",
+                          cursor: "pointer"
+                        }}
+                      >
+                        <span id={item.userid} className="user-image">
+                          <img
+                            src={item.userimage}
+                            className="search-user-image"
+                          />
+                        </span>
+                        <span className="search-firstname">{item.label}</span>
+                        <span className="search-lastname">{item.lastname}</span>
+                      </div>
+                    )}
+                    value={this.state.value}
+                    onChange={e => this.onChangeSearch(e)}
+                    onSelect={(value, item) => {
+                      // set the menu to only the selected item
+                      console.log(item);
+                      console.log(item.userid);
+                      this.openPublicSearchProfile(item.userid, value);
+                    }}
+                  />
 
- 
-							<button type="button" className="searchBtn-left leftfocus"><i className="fa fa-search"></i></button>
-							{/*<!--<button type="button" className="searchBtn-right afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>-->*/}
-							
-						</form>
-					</div>
-					<nav>
-						<ul>
-							<li>
-								<Link to="recruiterhome">
-									<div>
-										<i className="fa fa-home header-icons"></i>
-									</div>
-									Home
-									</Link>
-							</li>
-							<li>
-									<Link to="/recruiterconnection">
-										<div>
-											<i className="fa fa-user-friends header-icons"></i>
-										</div>
-										My Network
-									</Link>
-								</li>
-							<li>
-									<Link to= "/postedjobs">
-										<div>
-											<i className="fa fa-briefcase header-icons"></i>
-										</div>
-										Posted Jobs
-									</Link>
-							</li>
-							<li>
-									<a href="#" title="">
-										<div>
-											<i className="fa fa-bell header-icons"></i>
-										</div>
-										Notifications
-									</a>
-							</li>
-							<li>
-									<Link to="/message">
-										<div>
-											<i className="fa fa-comment-alt header-icons"></i>
-										</div>
-										Messaging
-									</Link>
-							</li>
-							{/* <!--<li>
+                  <button type="button" className="searchBtn-left leftfocus">
+                    <i className="fa fa-search" />
+                  </button>
+                  {/*<!--<button type="button" className="searchBtn-right afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>-->*/}
+                </form>
+              </div>
+              <nav>
+                <ul>
+                  <li>
+                    <Link to="recruiterhome">
+                      <div>
+                        <i className="fa fa-home header-icons" />
+                      </div>
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/applicantconnection">
+                      <div>
+                        <i className="fa fa-user-friends header-icons" />
+                      </div>
+                      My Network
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/postedjobs">
+                      <div>
+                        <i className="fa fa-briefcase header-icons" />
+                      </div>
+                      Post Jobs
+                    </Link>
+                  </li>
+                  <li>
+                    <a href="#" title="">
+                      <div>
+                        <i className="fa fa-bell header-icons" />
+                      </div>
+                      Notifications
+                    </a>
+                  </li>
+                  <li>
+                    <Link to="/message">
+                      <div>
+                        <i className="fa fa-comment-alt header-icons" />
+                      </div>
+                      Messaging
+                    </Link>
+                  </li>
+                  {/* <!--<li>
 								<a href="profiles.html" title="">
 									<span><img src="images/icon4.png" alt=""></span>
 									Profiles
@@ -413,57 +442,81 @@ class Header extends Component {
 									</div> 
 								</div> 
 							</li>--> */}
-						</ul>
-					</nav>
-					<div className="menu-btn">
-						<a href="#" title=""><i className="fa fa-bars"></i></a>
-					</div>
-					<div className="user-account">
-						<div className="user-info" onClick={this.toggleMenu}>
-							<img src={this.state.profileimage} className="header-image" alt="" />
-							<a href="javascript:void(0)">Me<i className="toggler fas fa-chevron-down"></i></a>
-							
-						</div>
-						<div className="user-account-settingss">
-							<ul className="us-links">
-								<li>
-									<a href="javascript:void(0)" title="" className="lower-menu-text"   onClick={this.moveToProf}>
-										<img src={this.state.profileimage} className="header-image lower-menu-image" alt="" />
-										{this.state.username}<br/>
-										<span className="menu-view-profile" >View Profile</span>
-									</a>
-								</li>
+                </ul>
+              </nav>
+              <div className="menu-btn">
+                <a href="#" title="">
+                  <i className="fa fa-bars" />
+                </a>
+              </div>
+              <div className="user-account">
+                <div className="user-info" onClick={this.toggleMenu}>
+                  <img
+                    src={this.state.profileimage}
+                    className="header-image"
+                    alt=""
+                  />
+                  <a href="javascript:void(0)">
+                    Me<i className="toggler fas fa-chevron-down" />
+                  </a>
+                </div>
+                <div className="user-account-settingss">
+                  <ul className="us-links">
+                    <li>
+                      <a
+                        href="javascript:void(0)"
+                        title=""
+                        className="lower-menu-text"
+                        onClick={this.moveToProf}
+                      >
+                        <img
+                          src={this.state.profileimage}
+                          className="header-image lower-menu-image"
+                          alt=""
+                        />
+                        {this.state.username}
+                        <br />
+                        <span className="menu-view-profile">View Profile</span>
+                      </a>
+                    </li>
+                  </ul>
+                  <h3>Free Upgrade to Premium</h3>
+                  <h3>Setting</h3>
+                  <ul className="us-links">
+                    <li>
+                      <a href="javascript:void(0)" title="">
+                        Account Setting
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" title="">
+                        Privacy
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)" title="">
+                        Faqs
+                      </a>
+                    </li>
+                    <li><a href="javascript:void(0)" onClick={this.deleteProfile} >Delete Profile</a></li>
 							</ul>
-							<h3>Free Upgrade to Premium</h3>
-							<h3>Setting</h3>
-							<ul className="us-links">
-								<li><a href="javascript:void(0)" title="">Account Setting</a></li>
-								<li><a href="javascript:void(0)" title="">Privacy</a></li>
-								<li><a href="javascript:void(0)" title="">Faqs</a></li>
-								<li><a href="javascript:void(0)" title="">Terms & Conditions</a></li>
-							</ul>
-							<h3 className="tc"><a href="sign-in.html" title="">Logout</a></h3>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
-
+							<h3 className="tc"><a href="javascript:void(0)" onClick={this.handlelogout}>Logout</a></h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
       </div>
-    )
+    );
   }
 }
 //export default Header;
 
 function mapStateToProps(state) {
-    console.log("in map state details profileVIEW",state);
-    return state;
+  console.log("in map state details profileVIEW", state);
+  return state;
   //  return { property_detail: state.fetch_details_view.property_detail,
   //  };
-  }
-  
-  export default withRouter(connect(
-    mapStateToProps
-  )(Header));
-  
-  
+}
+
+export default withRouter(connect(mapStateToProps)(Header));

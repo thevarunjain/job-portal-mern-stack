@@ -8,7 +8,7 @@ import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
 import jwt_decode from 'jwt-decode';
 import RecruiterHeader from "../Common/RecruiterHeader";
 import PostedJob from "./postedJob";
-import { Document, Page , ReactPDF } from 'react-pdf';
+// import { Document, Page , ReactPDF } from 'react-pdf';
 import test from "./test.pdf"
 class JobApplicant extends Component {
     constructor(props) {

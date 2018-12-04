@@ -39,10 +39,10 @@ exports.generateDashboardData = async (req, res, next) => {
   }
 }
 const getCityHotJobGraph = async (recruiter_id) => {
-  const ObjectID = mongoose.Types.ObjectId;
+  const ObjectID = mongoose.Types.ObjectId
   var query = {
-    "recruiter": new ObjectID(recruiter_id)
-  };
+    'recruiter': new ObjectID(recruiter_id)
+  }
   // const jobs = await Job.aggregate(
   //   [
   //     {$match: query},
@@ -56,17 +56,16 @@ const getCityHotJobGraph = async (recruiter_id) => {
     var job_title = jobsOfRecruiter[index]['title']
     var noOfApplications = await sql.query(`SELECT COUNT(*) as count FROM job_application WHERE job_id = '${job_id}'`)
     console.log(noOfApplications)
-    if (result.hasOwnProperty(jobsOfRecruiter[index].address.city)){
+    if (result.hasOwnProperty(jobsOfRecruiter[index].address.city)) {
       result[jobsOfRecruiter[index].address.city].push([job_id, job_title, noOfApplications[0].count])
-    }
-    else {
+    } else {
       result[jobsOfRecruiter[index].address.city] = [[job_id, job_title, noOfApplications[0].count]]
     }
   }
-  function Comparator(a, b) {
-    if (a[2] < b[2]) return 1;
-    if (a[2] > b[2]) return -1;
-    return 0;
+  function Comparator (a, b) {
+    if (a[2] < b[2]) return 1
+    if (a[2] > b[2]) return -1
+    return 0
   }
   for (let key in result) {
     result[key] = result[key].sort(Comparator)
@@ -96,11 +95,19 @@ const profileViewGraph = async (applicantId) => {
 
 const hotJobGraph = async (recruiterId) => {
   const hotJob = await sql.query(`SELECT job_id as jobId, COUNT(DISTINCT application_id) as count FROM job_application where recruiter_id = '${recruiterId}' group by job_id order by count desc LIMIT 10;`)
+  for (let index = 0; index < hotJob.length; index++) {
+    const element = hotJob[index]
+    hotJob[index].jobTitle = await getJobTitleById(element.jobId)
+  }
   return hotJob
 }
 
 const coldJobGraph = async (recruiterId) => {
   const coldJob = await sql.query(`SELECT job_id as jobId, COUNT(DISTINCT application_id) as count FROM job_application where recruiter_id = '${recruiterId}' group by job_id order by count asc LIMIT 5;`)
+  for (let index = 0; index < coldJob.length; index++) {
+    const element = coldJob[index]
+    coldJob[index].jobTitle = await getJobTitleById(element.jobId)
+  }
   return coldJob
 }
 
@@ -139,4 +146,9 @@ const incompleteCountRecruiter = async (recruiterId) => {
     count += saved[0].count
   }
   return count
+}
+
+const getJobTitleById = async (jobId) => {
+  const job = await Job.findById(jobId).exec()
+  return job ? job.title : ''
 }
