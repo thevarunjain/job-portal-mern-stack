@@ -69,6 +69,9 @@ class Main extends Component {
 
 
 
+
+
+
 /* const ApplicantPrivateRoute = ({ component: Component, ...rest }) => (
   <Route
       {...rest}

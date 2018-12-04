@@ -40,7 +40,8 @@ class JobDetailedView extends Component {
       recruiter_id:"",
       job_id:"",
       time_diff:"",
-      company_logo:""
+      company_logo:"",
+      profile_image:""
 
 
     }
@@ -171,8 +172,9 @@ async easy_apply(){
   console.log(id);
   try {
     let ret = await api('GET','/users/'+id);
+
    
-    console.log()
+    console.log("profile_img",ret.data.payLoad)
     if(ret.status>=200 && ret.status<300)
     {
         
@@ -180,9 +182,11 @@ async easy_apply(){
             applicantFname:ret.data.payLoad.user.name.first,
             applicantLname:ret.data.payLoad.user.name.last,
             profile_img:"user_profile_img.jpeg",
-            applicantHeading:"Former Systems Engineer | Masters in Software Engineering|",
-            applicantLocation:"San Francisco Bay Area",
-            applicant_id:ret.data.payLoad.user.id
+            applicantHeading:ret.data.payLoad.user.heading?ret.data.payLoad.user.heading:"Former Systems Engineer | Masters in Software Engineering|",
+            applicantLocation:ret.data.payLoad.user.address?ret.data.payLoad.user.address.city:"San Francisco Bay Area",
+            applicant_id:ret.data.payLoad.user.id,
+            profile_image:S3_URL+ret.data.payLoad.user.profile_image,
+
         })
     }
     else 
@@ -276,7 +280,7 @@ if(this.state.easyapply){
         <div className="row left-job-detail" >
            
               <div className="col-md-3 left-job-detail-image">
-                  <img src="" class="img-fluid job-card-image-easy-apply" alt="" />
+                  <img src={this.state.profile_image} class="img-fluid job-card-image-easy-apply" alt="" />
               </div>
               <div className="col-md-8 left-job-detail-desc">
               <div>
@@ -289,7 +293,7 @@ if(this.state.easyapply){
               <label style={{fontSize:"12px",color:"gray",fontWeight:"bold"}}>{this.state.applicantLocation}</label>
               </div>
               <div>
-              <Link to="/profile"><button type="button" class="btn btn-link" onClick={() => $("#easyApplyModal").modal('hide')}>Review your profile</button></Link>
+              <Link to={`/public-profile/${this.state.applicant_id}`}><button type="button" class="btn btn-link" onClick={() => $("#easyApplyModal").modal('hide')}>Review your profile</button></Link>
               </div>
               </div>
       </div>
