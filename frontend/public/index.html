@@ -62,7 +62,7 @@
                     {
                       data : datax,
                       borderWidth : 1 ,
-                      backgroundColor: '#0075b8'
+                      backgroundColor: '#'+Math.random().toString(16).substr(-6)
                     }
                   ]
                 }
@@ -101,59 +101,57 @@
             }
             if(type == 'clickOnJobGraph')
             {
-                let z1 = [];
-                let z2 = [];
-                try {
-                for( let x = 0 ; x < data.length ; x++)
-                { 
-                    z1.push(data[x]['datetime']);
-                    z2.push(data[x]['count']);
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                  "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
+                ];
+                
+                /* data = [{
+                      "count": 1,
+                      "datetime": "2018-11-20T08:00:00.000Z"
+                  },
+                  {
+                      "count": 4,
+                      "datetime": "2018-12-02T08:00:00.000Z"
+                  }]; */
+                let labels =  [];
+                let datax = [];
+                for(let x = 0; x < data.length ; x++)
+                {
+                  labels.push(new Date(data[x]['datetime']).getDate() + ' ' + monthNames[new Date(data[x]['datetime']).getMonth()]);
+                    datax.push(data[x]['count']);
                 }
-                console.log(z1);
-                console.log(z2);
-                let cls = '#'+Math.random().toString(16).substr(-6);
-                console.log(cls);
-                var cfg = {
-                    type: 'bar',
-                    data: {
-                      labels: z1,
-                      datasets: [{
-                        label: 'CHRT - Chart.js Corporation',
-                        backgroundColor: cls,
-                        borderColor: cls,
-                        data: z2,
-                        type: 'line',
-                        pointRadius: 0,
-                        fill: false,
-                        lineTension: 0,
-                        borderWidth: 2
-                      }]
-                    },
-                    options: {
-                      scales: {
-                        xAxes: [{
-                          display : false,
-                          type: 'time',
-                          distribution: 'series',
-                          ticks: {
-                            source: 'labels'
-                          }
-                        }],
-                        yAxes: [{
-                          scaleLabel: {
-                            display: false,
-                            labelString: 'Closing price ($)'
-                          }
-                        }]
-                      }
+                return {
+                  labels : labels,
+                  datasets : [
+                    {
+                      data : datax,
+                      borderWidth : 1 ,
+                      backgroundColor: '#'+Math.random().toString(16).substr(-6)
                     }
-                  };
-            } 
-          catch(e)
-          {
-            console.log(e);
+                  ]
+                }
+
           }
-        }
+          if(type=='profileViewGraph')
+          {
+                let labels =  [];
+                let datax = [];
+                for(let x = 0; x < data.length ; x++)
+                {
+                    labels.push(new Date(data[x]['datetime']).getDate() + ' ' + monthNames[new Date(data[x]['datetime']).getMonth()]);
+                    datax.push(data[x]['count']);
+                }
+                return {
+                  labels : labels,
+                  datasets : [
+                    {
+                      data : datax,
+                      borderWidth : 1 ,
+                      backgroundColor: '#'+Math.random().toString(16).substr(-6)
+                    }
+                  ]
+                }
+          }
       }
 
 
@@ -223,8 +221,9 @@
 
               /************Clicked GRAPH**************/
 
-              let a4 = data['payLoad']['clickOnJobGraph'];
+              /* let a4 = data['payLoad']['clickOnJobGraph'];
               let gpdata4 = typetransform('clickOnJobGraph',a4);
+              console.log(gpdata4);
               var options4 = {
                 type: 'bar',
                 data: gpdata4,
@@ -237,8 +236,22 @@
                       display: false,
                     }
                   }
+              } */
+              let a4 = data['payLoad']['clickOnJobGraph'];
+              let gpdata4 = typetransform('clickOnJobGraph',a4);
+              var options4 = {
+                type: 'line',
+                data: gpdata4,
+                options: {
+                    responsive: true,
+                    legend: {
+                      display:false,
+                    },
+                    title: {
+                      display: false,
+                    }
+                  }
               }
-
               /*********************************/
               var ctx = document.getElementById('myChart').getContext('2d');
               new Chart(ctx, options);
@@ -248,6 +261,10 @@
               new Chart(ctx3, options3);
               var ctx4 = document.getElementById('myChart4').getContext('2d');
               new Chart(ctx4, options4);
+              document.querySelector(".i1").innerHTML = '<div class="innertext">'+data['payLoad']['savedCount']+'<span class="smallertext">Saved Jobs</span> </div>';
+              document.querySelector(".i3").innerHTML = '<div class="innertext">'+data['payLoad']['incompleteCount']+'<span class="smallertext">Incomplete Applications</span> </div>';
+              document.querySelector(".i2").innerHTML = '<div class="innertext">'+data['payLoad']['totalCount']+'<span class="smallertext">Total Jobs</span> </div>';
+
           } 
           catch(e)
           {
@@ -257,6 +274,35 @@
           
         }
  
+
+        function graph2P(data)
+        {
+            let tmpdata = data['payLoad'];
+            console.log(tmpdata);
+            
+            let a1 = data['payLoad']['profileViewGraph'];
+            console.log(a1);
+            let gpdata = typetransform('profileViewGraph',a1);
+            var options = {
+              type: 'bar',
+              data: gpdata,
+              options: {
+                  responsive: true,
+                  legend: {
+                    display:false,
+                  },
+                  title: {
+                    display: false,
+                  }
+                }
+            }
+            var ctx = document.getElementById('myChart5').getContext('2d');
+            new Chart(ctx, options);
+            console.log(data);
+            document.querySelector(".i1").innerHTML = '<div class="innertext">'+data['payLoad']['savedCount']+'<span class="smallertext">Saved Jobs</span> </div>';
+              document.querySelector(".i3").innerHTML = '<div class="innertext">'+data['payLoad']['viewedCount']+'<span class="smallertext">Profile Viewed</span> </div>';
+              document.querySelector(".i2").innerHTML = '<div class="innertext">'+data['payLoad']['appliedCount']+'<span class="smallertext">Applied Jobs</span> </div>';
+        }
        
     </script>
   </body>
