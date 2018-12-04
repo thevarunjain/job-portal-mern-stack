@@ -46,16 +46,22 @@ class ApplicantHome extends Component {
 	
 		if(sessionStorage.getItem('user_id')){
 		try {
-			let ret = await api('GET','/users/'+sessionStorage.getItem('user_id')+'/connections');
-			console.log("connections",ret);
-			this.setState({
-			  connections:ret.data.payLoad.connections,
-			  totalConnections:ret.data.payLoad.totalConnections,
-			  //for now used connections instead of mutual
-			  mutualConnections:ret.data.payLoad.connections,
-			 // recommended_jobs:recommendation.data.payLoad
-			  
-			})
+					let ret = await api('GET','/users/'+sessionStorage.getItem('user_id')+'/connections');
+					console.log("connections",ret);
+					this.setState({
+						connections:ret.data.payLoad.connections,
+						totalConnections:ret.data.payLoad.totalConnections,
+						//for now used connections instead of mutual
+						mutualConnections:ret.data.payLoad.connections,
+					// recommended_jobs:recommendation.data.payLoad
+						
+					});
+
+					let datax = await api("GET", '/users/dashboard');
+      		console.log(datax);
+					setTimeout(() => {
+						window.graph2P(datax['data']);
+					},70);
 		  } catch (error) {
 			console.log(Object.keys(error), error.response);
 			printError(error);
@@ -103,28 +109,52 @@ class ApplicantHome extends Component {
                             </div>
 
                             <div class="col-lg-9 col-md-8 no-pd">
-                            <div class="col-lg-9 col-md-8 no-pd">
-								<div class="main-ws-sec">
-									<div class="post-topbar">
-										<div class="post-st">
-											<ul>
-												<li style={{paddingRight:"10px "}}><img src={require("../Files/Images/photo-camera.svg")} style={{width:"25px"}} /></li>
-												<li style={{paddingRight:"10px "}}><img src={require("../Files/Images/video-camera.svg")} style={{width:"25px"}} /></li>
-												<li style={{paddingRight:"10px "}}><img src={require("../Files/Images/file.svg")} style={{width:"25px"}} /></li>
-												<li style={{paddingRight:"10px "}}><a class="post-jb active" href="#" title="">Post</a></li>
-											</ul>
-        
-										</div>
-                                      
-                                    </div>
-                                    <hr></hr>
-                                        <div style={{backgroundColor:"#f3f6f8"}}>
-                                           <div className="bluetext" style={{padding:"11px", marginTop: '86px'}}>
-                                                Write an Article <span style={{color :"grey"}}>on Linkedin</span>
-                                           </div>
-                                        </div>
-                                </div>
-                            </div>
+
+													 								<div className="col-lg-12 exts2">
+																					 <div className="row col-lg-12">
+																									<div className="col-lg-12 row rec-dashboard-box">
+																											<div className="col-lg-4 infobox i1">
+
+																											</div>
+																											<div className="col-lg-4 infobox i2">
+																											
+																											</div>
+																											<div className="col-lg-4 infobox i3">
+																											
+																											</div>
+																									</div>  
+																									
+																							</div>
+																					 		<div className="col-lg-12 mt-top rec-dashboard-box">
+																									<div className="grph-headings">Profile Views Per Day</div>
+																									<canvas id="myChart5"></canvas>
+																							</div>
+																					 
+																					 </div>
+													 
+													 
+																						<div class="col-lg-12 col-md-8 no-pd">
+																								<div class="main-ws-sec">
+																									<div class="post-topbar">
+																										<div class="post-st">
+																											<ul>
+																												<li style={{paddingRight:"10px "}}><img src={require("../Files/Images/photo-camera.svg")} style={{width:"25px"}} /></li>
+																												<li style={{paddingRight:"10px "}}><img src={require("../Files/Images/video-camera.svg")} style={{width:"25px"}} /></li>
+																												<li style={{paddingRight:"10px "}}><img src={require("../Files/Images/file.svg")} style={{width:"25px"}} /></li>
+																												<li style={{paddingRight:"10px "}}><a class="post-jb active" href="#" title="">Post</a></li>
+																											</ul>
+																				
+																										</div>
+																																			
+																																		</div>
+																																		<hr></hr>
+																																				<div style={{backgroundColor:"#f3f6f8"}}>
+																																					<div className="bluetext" style={{padding:"11px", marginTop: '86px'}}>
+																																								Write an Article <span style={{color :"grey"}}>on Linkedin</span>
+																																					</div>
+																																				</div>
+																																</div>
+																						</div>
 					
 
 

@@ -107,6 +107,7 @@ class profile extends Component {
           userdata["userimage"] = profileplaceholder;
         }
         if (!userdata["profile_image"]) {
+          //alert("yes");
           userdata["profile_image"] = profileplaceholder;
         }
         if (Object.keys(userdata).indexOf("address") == -1) {
@@ -140,6 +141,23 @@ class profile extends Component {
             zipcode: ""
           };
         }
+
+        if((userdata["banner_image"]).indexOf("https://")!=-1)
+        {
+          let s = userdata["banner_image"].split("/").pop();
+          console.log(s);
+          let ts = S3_URL + s;
+          userdata["banner_image"] = ts;
+        }
+        if((userdata["profile_image"]).indexOf("https://")!=-1)
+        {
+          let s = userdata["profile_image"].split("/").pop();
+          console.log(s);
+          let ts = S3_URL + s;
+          console.log(ts);
+          userdata["profile_image"] = ts;
+        }
+
 
         u.setState({
           firstname: userdata["name"]["first"],
@@ -1171,7 +1189,7 @@ class profile extends Component {
                               </section>
                               <div className="user-pro-img">
                                 <img
-                                  src={S3_URL+this.state.userimage}
+                                  src={this.state.userimage}
                                   alt="LinkedIn"
                                   className="user-image profile-user-image"
                                   onClick={() => this.changeDocument("PROFILE")}

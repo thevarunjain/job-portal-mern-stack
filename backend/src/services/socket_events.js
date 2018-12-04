@@ -40,13 +40,13 @@ module.exports = {
                 // PUSH INTO A THREAD
                 const threadId = d['thread'];
                 const senderId = d['senderID'];
-                const messagesend = d['payload'];
+                const messagesend = d['sentAt'];
                 const thread = await Thread.findById(threadId).exec()
                 const message = {
                   sender: senderId,
                   body: messagesend
                 }
-                console.log(message);
+                //console.log(message),
                 thread.history.push(message)
                 await thread.save();
                 // END OF PUSH
