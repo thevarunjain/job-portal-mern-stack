@@ -217,6 +217,7 @@ exports.mutual = async (req, res, next) => {
     if (!userAccount) throw new APIError(`No user associated with id: ${connectToUser}`, httpStatus.NOT_FOUND)
     let uId = '' + req.params.userId
     var connections = []
+    var suggested = []
     var obj = {}
     let result = await neo4jSession.run('MATCH (a {userid:{emailadd}})--(b)--(c) return c', {emailadd: uId})
     console.log('rr', result)
@@ -240,9 +241,10 @@ exports.mutual = async (req, res, next) => {
         let temp = JSON.stringify(recruiter[i])
         let rec = JSON.parse(temp)
         if (rec._id !== uId) {
-          connections.push(rec)
+          suggested.push(rec)
         }
       }
+      connections = suggested.splice(0, 4)
     } else {
       response.message = 'SUCCESS'
     }
