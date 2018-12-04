@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import RecruiterHeader from "../Common/RecruiterHeader"
 import JobsByskill from "../Jobs/JobsBySkill";
 import "./Home.css";
-import Chart from 'chart.js';
 
 
 class ApplicantHome extends Component {
