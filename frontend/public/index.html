@@ -132,6 +132,26 @@
                 }
 
           }
+          if(type=='profileViewGraph')
+          {
+                let labels =  [];
+                let datax = [];
+                for(let x = 0; x < data.length ; x++)
+                {
+                    labels.push(new Date(data[x]['datetime']).getDate() + ' ' + monthNames[new Date(data[x]['datetime']).getMonth()]);
+                    datax.push(data[x]['count']);
+                }
+                return {
+                  labels : labels,
+                  datasets : [
+                    {
+                      data : datax,
+                      borderWidth : 1 ,
+                      backgroundColor: '#'+Math.random().toString(16).substr(-6)
+                    }
+                  ]
+                }
+          }
       }
 
 
@@ -254,6 +274,35 @@
           
         }
  
+
+        function graph2P(data)
+        {
+            let tmpdata = data['payLoad'];
+            console.log(tmpdata);
+            
+            let a1 = data['payLoad']['profileViewGraph'];
+            console.log(a1);
+            let gpdata = typetransform('profileViewGraph',a1);
+            var options = {
+              type: 'bar',
+              data: gpdata,
+              options: {
+                  responsive: true,
+                  legend: {
+                    display:false,
+                  },
+                  title: {
+                    display: false,
+                  }
+                }
+            }
+            var ctx = document.getElementById('myChart5').getContext('2d');
+            new Chart(ctx, options);
+            console.log(data);
+            document.querySelector(".i1").innerHTML = '<div class="innertext">'+data['payLoad']['savedCount']+'<span class="smallertext">Saved Jobs</span> </div>';
+              document.querySelector(".i3").innerHTML = '<div class="innertext">'+data['payLoad']['viewedCount']+'<span class="smallertext">Profile Viewed</span> </div>';
+              document.querySelector(".i2").innerHTML = '<div class="innertext">'+data['payLoad']['appliedCount']+'<span class="smallertext">Applied Jobs</span> </div>';
+        }
        
     </script>
   </body>
