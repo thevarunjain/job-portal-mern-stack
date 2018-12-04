@@ -39,8 +39,12 @@ class JobSearchBar extends Component {
     
   }
 
-  route(){
-    
+  route(e){
+    e.preventDefault();
+    console.log("Props",this.props);
+    if (this.state.searchJobName && this.state.latitude && this.state.longitude){
+      window.location.href=`/searchedjobs/${this.state.searchJobName}/${this.state.latitude}/${this.state.longitude}`;
+    }
   }
 
   
@@ -58,7 +62,8 @@ class JobSearchBar extends Component {
       
       </div>
       <div className="col-sm-2 searchButton">    
-        <Link to={`/searchedjobs/${this.state.searchJobName}/${this.state.latitude}/${this.state.longitude}`}><button type="submit">Search</button></Link>
+      
+      <button type="button" onClick={this.route}>Search</button>
       </div>
       </div>
       

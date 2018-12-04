@@ -64,7 +64,7 @@ console.log('address',this.state.address);
                                         
                                             <div className="col-md-2">
                                             <span className="bluetext"> {this.state.application_count} </span>
-                                            <span className ="lightgreytext"> <Link to={`/jobapplicant/${this.state.job_id}`}>Appications</Link></span>
+                                            <span className ="lightgreytext"> <Link to={`/jobapplicant/${this.state.job_id}`}>Applications</Link></span>
                                         </div>
                         
                                         <div className="col-md-2">
