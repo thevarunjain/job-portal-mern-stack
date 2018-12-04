@@ -165,11 +165,13 @@ class ApplicantHome extends Component {
                       </div>
                   </div>
                   <div className="row col-lg-12">
-                      <div className="col-lg-6  rec-dashboard-box">
-                        G4
+                      <div className="col-lg-12 mt-top rec-dashboard-box">
+                          <div className="grph-headings">City Wise Hot Jobs</div>
+                          <canvas id="myChart3"></canvas>
                       </div>
-                      <div className="col-lg-6  rec-dashboard-box">
-                        G5
+                      <div className="col-lg-12 mt-top rec-dashboard-box">
+                          <div className="grph-headings">City Wise Hot Jobs</div>
+                          <canvas id="myChart4"></canvas>
                       </div>
                   </div>
 

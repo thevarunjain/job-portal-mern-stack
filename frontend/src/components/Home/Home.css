@@ -595,5 +595,11 @@ div.agreement a:hover {
   font-weight: 600;
   font-size: 18px;
   font-family: linkedin-regular-font;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+}
+
+
+.mt-top
+{
+  margin-top: 60px;
 }
