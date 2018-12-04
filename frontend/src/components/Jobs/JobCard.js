@@ -3,6 +3,7 @@ import Pin from '../Files/Images/Pin.svg';
 import {connect} from "react-redux";
 import {set_active_id} from "../../actions/jobCardActiveId";
 import { IMAGE_PATHS, S3_URL } from '../../constants/routes';
+import { api , printError, printMessage} from '../../services/';
 import "./jobs.css";
 
 class JobCard extends Component {
@@ -22,9 +23,21 @@ class JobCard extends Component {
     this.setActiveID=this.setActiveID.bind(this);
   }
 
-  setActiveID(){
+  async setActiveID(){
     this.props.set_active_id(this.state.id);
     this.props.callback(this.state.id);
+
+
+    try {
+      let ret = await api('PUT',"/log/click/"+this.state.active_id);
+      console.log(ret);
+    
+  } catch (error) {
+      console.log(Object.keys(error), error.response);
+      printError(error);   //Pass Full response object to the printError method.
+  }
+  
+
   }
   render() {
     return (
