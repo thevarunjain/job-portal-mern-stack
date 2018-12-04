@@ -112,7 +112,7 @@ const coldJobGraph = async (recruiterId) => {
 }
 
 const clickOnJobGraph = async (recruiterId) => {
-  const clickOnJob = await sql.query(`SELECT COUNT(*) as count, DATE(job_click.time) as datetime FROM job_click WHERE userId = '${recruiterId}' AND time BETWEEN NOW() - INTERVAL 30 DAY AND NOW() GROUP BY datetime`)
+  const clickOnJob = await sql.query(`SELECT COUNT(*) as count, DATE(job_click.time) as datetime FROM job_click WHERE recruiterId = '${recruiterId}' AND time BETWEEN NOW() - INTERVAL 30 DAY AND NOW() GROUP BY datetime`)
   return clickOnJob
 }
 
