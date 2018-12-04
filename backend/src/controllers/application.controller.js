@@ -14,6 +14,8 @@ exports.apply = async (req, res, next) => {
     const response = { payLoad: {} }
     const applicationData = req.body
     applicationData.jobId = req.params.jobId
+    const previouslyApplied = await sql.query(`SELECT COUNT(*) as count FROM job_application WHERE applicant_id = '${req.user._id}' AND job_id='${applicationData.jobId}'`)
+    if (previouslyApplied[0].count > 0) throw new APIError(`User already applied for the job`, httpStatus.BAD_REQUEST)
     const jobData = await Job.findById(req.params.jobId).exec()
     if (!jobData) throw new APIError(`Invalid jobId`, httpStatus.INTERNAL_SERVER_ERROR)
     applicationData.recruiterId = jobData.recruiter
@@ -28,6 +30,7 @@ exports.apply = async (req, res, next) => {
       'application_id': savedApplication._id
     }
     await sql.query('INSERT INTO job_application SET ?', applicationPointers)
+    await deleteIncompleteApplication(applicationPointers.applicant_id, applicationPointers.job_id)
     response.payLoad = savedApplication
     res.status(httpStatus.OK)
     res.send(response)
@@ -90,20 +93,19 @@ exports.fetchSavedCount = async (req, res, next) => {
   }
 }
 
-
 exports.getApplicationDetails = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
     const response = { payLoad: [] }
-    const ObjectID = mongoose.Types.ObjectId;
-    var job_id = req.params.jobId
+    const ObjectID = mongoose.Types.ObjectId
+    var jobId = req.params.jobId
     var query = {
-      "jobId": new ObjectID(job_id)
-    };
+      'jobId': new ObjectID(jobId)
+    }
     var applications = await Application.find(query)
     for (let index = 0; index < applications.length; index++) {
-      var applicant_id = applications[index]['applicantId']
-      var applicant = await Applicant.findOne({id: applicant_id}).exec()
+      var applicantId = applications[index]['applicantId']
+      var applicant = await Applicant.findOne({id: applicantId}).exec()
       var convertedApplicationJSON = JSON.parse(JSON.stringify(applications[index]))
       convertedApplicationJSON.profile_image = applicant.profile_image
       response.payLoad.push(convertedApplicationJSON)
@@ -164,6 +166,8 @@ exports.easyApply = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.jobId)) throw new APIError(`Invalid jobId`, httpStatus.BAD_REQUEST)
     if (!req.body.phone && !req.body.email && !req.body.resume) throw new APIError(`Input data missing phone, email and resume required`, httpStatus.BAD_REQUEST)
     const response = { payLoad: {} }
+    const previouslyApplied = await sql.query(`SELECT COUNT(*) as count FROM job_application WHERE applicant_id = '${req.user._id}' AND job_id='${req.params.jobId}'`)
+    if (previouslyApplied[0].count > 0) throw new APIError(`User already applied for the job`, httpStatus.BAD_REQUEST)
     const user = await Applicant.findOne({id: req.user._id}).exec()
     const applicationData = {
       'name': user.name,
@@ -191,6 +195,7 @@ exports.easyApply = async (req, res, next) => {
       'application_id': savedApplication._id
     }
     await sql.query('INSERT INTO job_application SET ?', applicationPointers)
+    await deleteIncompleteApplication(applicationPointers.applicant_id, applicationPointers.job_id)
     response.payLoad = savedApplication
     res.status(httpStatus.OK)
     res.send(response)
@@ -198,4 +203,9 @@ exports.easyApply = async (req, res, next) => {
     console.log(error)
     next(error)
   }
+}
+
+const deleteIncompleteApplication = async (applicantId, jobId) => {
+  await sql.query(`DELETE FROM incomplete_application WHERE userId = '${applicantId}' AND jobId = '${jobId}'`)
+  await sql.query(`DELETE FROM saved_job WHERE applicant_id = '${applicantId}' AND job_id = '${jobId}'`)
 }

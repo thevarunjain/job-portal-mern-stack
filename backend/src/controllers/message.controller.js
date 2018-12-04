@@ -42,7 +42,6 @@ exports.newThread = async (req, res, next) => {
 // router.get('/findByUser', auth(), messagesController.getInbox)
 exports.getInbox = async (req, res, next) => {
   try {
-    // console.log('\n\n\n', req.user.role, '\n\n\n')
     const response = { payLoad: [] }
     const User = req.user.role === 'applicant' ? Applicant : Recruiter
     const currentUser = await User.findOne({id: req.user._id}).exec()
@@ -50,7 +49,7 @@ exports.getInbox = async (req, res, next) => {
     for (let index = 0; index < threadList.length; index++) {
       const element = threadList[index]
       const thread = await Thread.findById(element.thread_id).exec()
-      const receiverId = thread.first_participant === req.user._id ? thread.second_participant : thread.first_participant
+      const receiverId = thread.first_participant + '' === req.user._id + '' ? thread.second_participant : thread.first_participant
       const receiverApplicant = await Applicant.findOne({id: receiverId}).exec()
       const receiverRecruiter = await Recruiter.findOne({id: receiverId}).exec()
       const receiver = receiverApplicant === null ? receiverRecruiter : receiverApplicant

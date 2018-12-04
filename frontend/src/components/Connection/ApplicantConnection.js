@@ -22,6 +22,7 @@ class ApplicantHome extends Component {
 			lname:"",
 			mutualConnections:[],
 			recommended_jobs  : [],
+			headline :"",
 			user_profile_image:""
 
 		}
@@ -35,6 +36,7 @@ async componentDidMount(){
         this.setState({
 		  fname:user.data.payLoad.user.name.first,
 		  lname:user.data.payLoad.user.name.last,
+		  headline : user.data.payLoad.user.headline,
 		  user_profile_image:user.data.payLoad.user.profile_image
 			
         })
@@ -50,7 +52,8 @@ async componentDidMount(){
 	try {
 		let ret = await api('GET','/users/'+sessionStorage.getItem('user_id')+'/connections');
 		let mutual=await api('GET','/users/'+sessionStorage.getItem('user_id')+'/mutual');
-		let recommendation = await api("GET",`/jobs/recommendation`);
+		//let recommendation ;
+		//= await api("GET",`/jobs/recommendation`);
         
 		console.log("connections",ret);
 		console.log("mutual",mutual);
@@ -58,8 +61,8 @@ async componentDidMount(){
 		  connections:ret.data.payLoad.connections,
 		  totalConnections:ret.data.payLoad.totalConnections,
 		  //for now used connections instead of mutual
-		  mutualConnections:mutual.data.payLoad.connections,
-		  recommended_jobs:recommendation.data.payLoad
+		  mutualConnections:ret.data.payLoad.connections,
+		 // recommended_jobs:recommendation.data.payLoad
           
 		})
       } catch (error) {
@@ -86,13 +89,14 @@ async componentDidMount(){
             <Connections data={user}/>
         )
 	})
-	let jobs=null;
-      jobs =this.state.recommended_jobs.map(job => {
+		// Code for showing jobs you may like
+	// let jobs=null;
+    //   jobs =this.state.recommended_jobs.slice(0, 10).map(job => {
 		
-        return(
-            <RecommendedJobs data={job}/>
-        )
-	})
+    //     return(
+    //         <RecommendedJobs data={job}/>
+    //     )
+	// })
 
 
     return (
@@ -114,7 +118,7 @@ async componentDidMount(){
 											</div>
 											<div class="user-specs">
 												<h3>{this.state.fname} {this.state.lname}</h3>
-												<span>Graphic Designer at Self Employed</span>
+												<span>{this.state.headline}</span>
 											</div>
 										</div>
 										<ul class="user-fw-status">
@@ -173,8 +177,8 @@ async componentDidMount(){
 
                                 </div>
                             </div>
-
-                            <div className="col-lg-3 pd-right-none no-pd" style ={{backgroundColor: "white",border: "1px solid darkgrey"}}>
+				{/* DOM for Joobs you may Like */}
+                            {/* <div className="col-lg-3 pd-right-none no-pd" style ={{backgroundColor: "white",border: "1px solid darkgrey"}}>
                             <div className="sd-title1">
 											<h3 style={{"fontWeight":"bold"}}>Jobs you may like</h3>
 											<i class="la la-ellipsis-v"></i>
@@ -182,7 +186,7 @@ async componentDidMount(){
                                
 										{jobs}
 								
-                            </div>
+                            </div> */}
 
                         </div>{/*Class row */}			
                     </div>
