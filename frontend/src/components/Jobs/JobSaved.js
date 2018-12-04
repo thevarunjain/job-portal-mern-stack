@@ -15,6 +15,8 @@ constructor(props){
     title:this.props.data.title,
     address:this.props.data.address,
     easyApply:this.props.data.easy_apply,
+    heading:this.props.data.heading?this.props.data.heading:"Former Systems Engineer | Masters in Software Engineering|",
+    address:this.props.data.address,
     applicantFname:"",
     applicantLname:"",
     profile_img:"",
@@ -144,8 +146,8 @@ try {
       this.setState({
           applicantFname:ret.data.payLoad.user.name.first,
           applicantLname:ret.data.payLoad.user.name.last,
-          profile_img:"user_profile_img.jpeg",
-          applicantHeading:"Former Systems Engineer | Masters in Software Engineering|",
+          profile_img:ret.data.payLoad.user.profile_image,
+          applicantHeading:"",
           applicantLocation:"San Francisco Bay Area",
           applicant_id:ret.data.payLoad.user.id
       })
@@ -189,11 +191,11 @@ if(this.state.easyApply){
           </div>
           <div className="col-md-6">
             <div id="cb" className="card-block">
-              <h3 id="card-heading-saved" className="card-title"><Link id="jobsavedheading" to="">Software Engineering Intern - Machine Learning</Link></h3>
+              <h3 id="card-heading-saved" className="card-title"><Link id="jobsavedheading" to="">{this.state.heading}</Link></h3>
               <div className="row">
               <div className="col-md-7" style={{paddingLeft:"0px"}}>
-              <p id="propdetails1">San Jose ,CA</p>
-              <p id="propdetails" className="card-text" style={{paddingTop:"0px"}}>San Jose ,CA</p>
+              <p id="propdetails1">{this.state.address.city} ,{this.state.address.country}</p>
+              
 
               </div>
               {easyApplyButton}
