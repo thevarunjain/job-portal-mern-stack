@@ -40,6 +40,224 @@
     -->
     
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4doZZvb-rb0P299nPgL217TRh6FRU3bc&libraries=places"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
+    <script type="text/javascript">
+        Chart.defaults.global.legend.display = false;
+
+        function typetransform(type,data)
+        {
+            let retObj = [];
+            if(type=='hotJobGraph' || type=='coldJobGraph') //|| type == 'clickOnJobGraph')
+            {
+                let labels =  [];
+                let datax = [];
+                for(let x = 0; x < data.length ; x++)
+                {
+                    labels.push(data[x]['jobTitle']);
+                    datax.push(data[x]['count']);
+                }
+                return {
+                  labels : labels,
+                  datasets : [
+                    {
+                      data : datax,
+                      borderWidth : 1 ,
+                      backgroundColor: '#0075b8'
+                    }
+                  ]
+                }
+            }
+            if(type=='cityHotJobGraph')
+            {
+                let keys = Object.keys(data);
+                console.log(keys);
+                let datasets = [];
+                let all_labels = [];
+                for(let x = 0; x < keys.length ; x++)
+                {
+                  datasets[x] = {}
+                  datasets[x]['label'] = keys[x];
+                  datasets[x]['borderWidth'] = 1;
+                  datasets[x]['data'] = [];
+                  datasets[x]['backgroundColor'] =  '#'+Math.random().toString(16).substr(-6);
+                  let xt = data[keys[x]];
+                  console.log(xt);
+                  let labels =  [];
+                  let datax = [];
+                  for(let y = 0; y < xt.length ; y++)
+                  {
+                      all_labels.push(xt[y][1]);
+                      datax.push(xt[y][2]);
+                  }
+                  datasets[x]['data'] = datax;
+                  
+                    
+                }
+                console.log(datasets);
+                  return {
+                    'labels' : all_labels,
+                    'datasets' : datasets  
+                  }
+            }
+            if(type == 'clickOnJobGraph')
+            {
+                let z1 = [];
+                let z2 = [];
+                try {
+                for( let x = 0 ; x < data.length ; x++)
+                { 
+                    z1.push(data[x]['datetime']);
+                    z2.push(data[x]['count']);
+                }
+                console.log(z1);
+                console.log(z2);
+                let cls = '#'+Math.random().toString(16).substr(-6);
+                console.log(cls);
+                var cfg = {
+                    type: 'bar',
+                    data: {
+                      labels: z1,
+                      datasets: [{
+                        label: 'CHRT - Chart.js Corporation',
+                        backgroundColor: cls,
+                        borderColor: cls,
+                        data: z2,
+                        type: 'line',
+                        pointRadius: 0,
+                        fill: false,
+                        lineTension: 0,
+                        borderWidth: 2
+                      }]
+                    },
+                    options: {
+                      scales: {
+                        xAxes: [{
+                          display : false,
+                          type: 'time',
+                          distribution: 'series',
+                          ticks: {
+                            source: 'labels'
+                          }
+                        }],
+                        yAxes: [{
+                          scaleLabel: {
+                            display: false,
+                            labelString: 'Closing price ($)'
+                          }
+                        }]
+                      }
+                    }
+                  };
+            } 
+          catch(e)
+          {
+            console.log(e);
+          }
+        }
+      }
+
+
+        function graph1P(data)
+        {
+          console.log(data);
+
+          /***************HOT GRAPHS***************/
+
+          try
+          {
+              let a1 = data['payLoad']['hotJobGraph'];
+              let gpdata = typetransform('hotJobGraph',a1);
+              var options = {
+                type: 'bar',
+                data: gpdata,
+                options: {
+                    responsive: true,
+                    legend: {
+                      display:false,
+                    },
+                    title: {
+                      display: false,
+                    }
+                  }
+              }
+
+              /***********COLD GRAPHS***********/
+
+              let a2 = data['payLoad']['coldJobGraph'];
+              let gpdata2 = typetransform('coldJobGraph',a2);
+              var options2 = {
+                type: 'bar',
+                data: gpdata2,
+                options: {
+                    responsive: true,
+                    legend: {
+                      display:false,
+                    },
+                    title: {
+                      display: false,
+                    }
+                  }
+              }
+
+
+
+
+              /************CITY GRAPH**************/
+
+              let a3 = data['payLoad']['cityHotJobGraph'];
+              let gpdata3 = typetransform('cityHotJobGraph',a3);
+              console.log(gpdata3);
+              var options3 = {
+                type: 'bar',
+                data: gpdata3,
+                options: {
+                    responsive: true,
+                    legend: {
+                      display: 'top',
+                    },
+                    title: {
+                      display: false,
+                    }
+                  }
+              }
+
+              /************Clicked GRAPH**************/
+
+              let a4 = data['payLoad']['clickOnJobGraph'];
+              let gpdata4 = typetransform('clickOnJobGraph',a4);
+              var options4 = {
+                type: 'bar',
+                data: gpdata4,
+                options: {
+                    responsive: true,
+                    legend: {
+                      display:false,
+                    },
+                    title: {
+                      display: false,
+                    }
+                  }
+              }
+
+              /*********************************/
+              var ctx = document.getElementById('myChart').getContext('2d');
+              new Chart(ctx, options);
+              var ctx2 = document.getElementById('myChart2').getContext('2d');
+              new Chart(ctx2, options2);
+              var ctx3 = document.getElementById('myChart3').getContext('2d');
+              new Chart(ctx3, options3);
+              var ctx4 = document.getElementById('myChart4').getContext('2d');
+              new Chart(ctx4, options4);
+          } 
+          catch(e)
+          {
+            console.log(e);
+          }
+
+          
+        }
+ 
+       
+    </script>
   </body>
 </html>
