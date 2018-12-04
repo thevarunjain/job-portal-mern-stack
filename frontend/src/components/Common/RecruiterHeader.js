@@ -41,13 +41,13 @@ class Header extends Component {
   {
 		/******CHECK FOR APPLICANT LOGIN *********/
 
-		let user = sessionStorage.getItem('user_id');
-		let profile = sessionStorage.getItem('profile');
-		let user_token = sessionStorage.getItem('user_token');
-		if(profile != 'recruiter' || !user || !user_token)
-		{
-			this.props.history.push("/");
-		}
+		// let user = sessionStorage.getItem('user_id');
+		// let profile = sessionStorage.getItem('profile');
+		// let user_token = sessionStorage.getItem('user_token');
+		// if(profile != 'recruiter' || !user || !user_token)
+		// {
+		// 	this.props.history.push("/");
+		// }	
 
 
 		/*****************************************/
