@@ -58,10 +58,11 @@
   color: #0073b1;
 }
 
-.lightgreytext {
+.applytitle {
   line-height: 1.5;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
+  font-size: 140%;
 }
 .smallheading {
   color: rgba(0, 0, 0, 0.9);
@@ -401,4 +402,28 @@
 
 .JobDate {
   font-weight: bolder;
+}
+
+.label-style {
+  margin-bottom: 3%;
+}
+
+.apply-style {
+  margin-left: 8%;
+  margin-top: 5%;
+  padding: 1%;
+}
+
+.applybutton {
+  background-color: #004b7c;
+  border: 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  height: 48px;
+  line-height: 48px;
+  outline-width: 2px;
+  padding: 0 32px;
+  width: 28%;
 }
