@@ -79,13 +79,13 @@ class Message extends Component {
 
 	 async fetchCurrentMessages(g)
 	 {
-		 console.log(g._id);
+		 console.log(g['thread']._id);
 		 this.setState({
-			 currentRoom : g._id,
-			 currentChat : g._id
+			 currentRoom : g['thread']._id,
+			 currentChat : (g['receiver']['name']['first'] + ' ' +g['receiver']['name']['last'] )
 		 });
 		 this.reFormatMessage(g);
-		 this.socket.emit('create_room',{'data' : g._id});
+		 this.socket.emit('create_room',{'data' : g['thread']._id});
 	 }
 
 	 user_message(e)
@@ -134,8 +134,9 @@ class Message extends Component {
 		//console.log(data);		
 		try
 		{
+			console.log(data);
 			let myid = sessionStorage.getItem('user_id');
-			let chats = data['history'];
+			let chats = data['thread']['history'];
 			console.log(chats);
 			if(myid)
 			{
@@ -207,7 +208,7 @@ class Message extends Component {
 																{/* <span className="msg-status"></span> */}
 															</div>
 															<div className="usr-mg-info">
-																<h3>{val._id}</h3>
+																<h3>{val.receiver['name']['first'] +' ' + val.receiver['name']['last']}</h3>
 																<p>Hello <img src="images/smley.png" alt="" /></p>
 															</div>
 															<span className="posted_time">{moment(val['updatedAt']).format('LT') }</span>
