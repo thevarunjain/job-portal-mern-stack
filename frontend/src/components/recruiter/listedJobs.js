@@ -38,7 +38,7 @@ async componentDidMount(){
     postedJobs =this.state.postedJobs?this.state.postedJobs.map(job => {
         return(
           <div>
-            <PostedJob data={job}/>
+            <PostedJob data={job} count={this.state.postedJobs.length}/>
           </div>
         )
       }) :null;
@@ -51,7 +51,6 @@ async componentDidMount(){
             <div>
     <RecruiterHeader />
     <div style={{paddingTop:"5%"}}>
-    <Link to="/postjob">Post Job</Link>
    {postedJobs}
 
   
