@@ -12,7 +12,7 @@ module.exports = {
     production: {
       key: "~/.ssh/id_rsa",
       user: "ec2-user",
-      host: ["54.183.95.207", "18.144.19.140", "18.144.70.163"],
+      host: ["54.153.22.140", "54.241.139.118", "52.53.212.84"],
       ssh_options: "StrictHostKeyChecking=no",
       ref: "origin/master",
       repo: "git@github.com:saketthakare/cmpe-273-group-project.git",
