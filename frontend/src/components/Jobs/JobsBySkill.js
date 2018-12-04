@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import JobCard from "./JobCard.js";
 import { api , printError, printMessage} from '../../services/';
 import "./jobs.css";
+import { IMAGE_PATHS, S3_URL } from "../../constants/routes";
 import { Link } from 'react-router-dom';
 
 
@@ -89,7 +90,7 @@ class JobsBySkill extends Component {
                                 <div class="col-lg-3 col-md-4 col-sm-6">
                                     <div class="company_profile_info greybackground">
                                         <div class="company-up-info">
-                                            <img src="http://via.placeholder.com/90x90" alt="" />
+                                            <img src={S3_URL+job.company_logo} alt="" />
                                             <Link to={`/companypage/${job._id}`}><h3>{job.title}</h3></Link>
                                             <h4>{job.function}</h4>
                                             <h4>{job.type}</h4>

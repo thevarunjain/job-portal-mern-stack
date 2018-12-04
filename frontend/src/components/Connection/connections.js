@@ -4,15 +4,22 @@ import Watch from '../Files/Images/Watch.svg';
 import Tick from '../Files/Images/tick.svg';
 import {Link} from 'react-router-dom';
 import "./connection.css" 
-
+import { IMAGE_PATHS, S3_URL } from "../../constants/routes";
 class Connections extends Component {
 constructor(props){
     super(props)
 
+
+    let x = '';
+    if((this.props.data.profile_image).indexOf("https://")==-1)
+    {
+       x= S3_URL + this.props.data.profile_image;
+    }
+
 this.state={
     fname:this.props.data.name.first,
     lname:this.props.data.name.last,
-    profile_image:this.props.data.profile_image,
+    profile_image:x,
     headline:this.props.data.headline!=null?this.props.data.headline:"Deep Learning Intern",
     address:this.props.data.address
 }

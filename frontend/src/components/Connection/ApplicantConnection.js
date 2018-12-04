@@ -34,12 +34,19 @@ async componentDidMount(){
 	if(sessionStorage.getItem('user_id')){
 	try {
         let user= await api('GET','/users/'+sessionStorage.getItem('user_id'));
-        console.log("user",user);
+		console.log("user",user);
+
+		if((user.data.payLoad.user.profile_image).indexOf("https://")==-1)
+		{
+		  user.data.payLoad.user.profile_image = S3_URL + user.data.payLoad.user.profile_image;
+		}
+
+
         this.setState({
 		  fname:user.data.payLoad.user.name.first,
 		  lname:user.data.payLoad.user.name.last,
 		  headline : user.data.payLoad.user.headline,
-		  user_profile_image:S3_URL + user.data.payLoad.user.profile_image
+		  user_profile_image:  user.data.payLoad.user.profile_image
 			
         })
       } catch (error) {
@@ -167,12 +174,12 @@ async componentDidMount(){
                                       
                                    
                                     <hr></hr>
-                                        <div style={{backgroundColor:"#f3f6f8"}}>
+                                        {/* <div style={{backgroundColor:"#f3f6f8"}}>
                                            <div className="bluetext" style={{padding:"11px", marginTop: '86px'}}>
                                                 Show More
 										   </div>
 										  
-										</div>
+										</div> */}
 										
 
 	<section className="companies-info">
