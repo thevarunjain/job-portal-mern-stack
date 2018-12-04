@@ -580,7 +580,7 @@ div.agreement a:hover {
 
 .rec-dashboard-box
 {
-  min-height: 220px;
+  min-height: 180px;
 }
 
 #myChart
@@ -607,4 +607,19 @@ div.agreement a:hover {
 .infobox 
 {
     position: relative;
+    text-align: center;
+    line-height: 70px;
+}
+
+.innertext 
+{
+  font-size: 75px;
+  color: #0374b3;
+  box-shadow: 0px 1px 2px 0px #b7b8bb;
+}
+
+.smallertext
+{
+  display: block;
+  font-size: 20px !important;
 }

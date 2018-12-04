@@ -105,14 +105,14 @@
                   "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
                 ];
                 
-                data = [{
-                "count": 1,
-                "datetime": "2018-11-20T08:00:00.000Z"
-            },
-            {
-                "count": 4,
-                "datetime": "2018-12-02T08:00:00.000Z"
-            }];
+                /* data = [{
+                      "count": 1,
+                      "datetime": "2018-11-20T08:00:00.000Z"
+                  },
+                  {
+                      "count": 4,
+                      "datetime": "2018-12-02T08:00:00.000Z"
+                  }]; */
                 let labels =  [];
                 let datax = [];
                 for(let x = 0; x < data.length ; x++)
@@ -241,9 +241,9 @@
               new Chart(ctx3, options3);
               var ctx4 = document.getElementById('myChart4').getContext('2d');
               new Chart(ctx4, options4);
-              $(".i1").html('<div class="innertext">'+data['payLoad']['savedCount']+'</div>');
-              $(".i2").html('<div class="innertext">'+data['payLoad']['incompleteCount']+'</div>');
-              $(".i3").html('<div class="innertext">'+data['payLoad']['totalCount']+'</div>');
+              document.querySelector(".i1").innerHTML = '<div class="innertext">'+data['payLoad']['savedCount']+'<span class="smallertext">Saved Jobs</span> </div>';
+              document.querySelector(".i3").innerHTML = '<div class="innertext">'+data['payLoad']['incompleteCount']+'<span class="smallertext">Incomplete Applications</span> </div>';
+              document.querySelector(".i2").innerHTML = '<div class="innertext">'+data['payLoad']['totalCount']+'<span class="smallertext">Total Jobs</span> </div>';
 
           } 
           catch(e)
