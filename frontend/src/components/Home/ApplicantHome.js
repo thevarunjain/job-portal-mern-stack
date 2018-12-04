@@ -4,7 +4,7 @@ import Header from "../Common/Header"
 import "./Home.css"
 import { api, printError, printMessage } from '../../services';
 import {Link} from 'react-router-dom';
-	
+
 
 class ApplicantHome extends Component {
 
@@ -15,7 +15,8 @@ class ApplicantHome extends Component {
 			totalConnections:0,
 			fname:"",
 			lname:"",
-			headline : ""
+			headline : "",
+			user_profile_image :""
 
 		}
 	}
@@ -28,7 +29,9 @@ class ApplicantHome extends Component {
 			this.setState({
 			  fname:user.data.payLoad.user.name.first,
 			  lname:user.data.payLoad.user.name.last,
-			  headline : user.data.payLoad.user.headline
+			  headline : user.data.payLoad.user.headline,
+			  user_profile_image:user.data.payLoad.user.profile_image
+
 			  
 			})
 		  } catch (error) {
@@ -75,7 +78,8 @@ class ApplicantHome extends Component {
 										<div class="user-profile">
 											<div class="username-dt">
 												<div class="usr-pic">
-													<img src="http://via.placeholder.com/100x100" alt="" />
+													<img src={this.state.user_profile_image} alt="" />
+
 												</div>
 											</div>
 											<div class="user-specs">
