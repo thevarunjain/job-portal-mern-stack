@@ -165,12 +165,13 @@ async easy_apply(){
   async getApplicant(){
 
 
-
+    
     let _t = this;
     let id = sessionStorage.getItem('user_id');
    
   console.log(id);
   try {
+    await api('PUT','/log/startApplication/'+this.state.job_id)
     let ret = await api('GET','/users/'+id);
 
    

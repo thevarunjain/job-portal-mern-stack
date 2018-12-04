@@ -55,6 +55,7 @@ class PublicProfile extends Component {
         {
             if(sessionStorage.getItem('user_id')){
                 try {
+                    await api("PUT", `/log/profileView/`+this.props.match.params.id)
                     let recommendation = await api("GET",`/jobs/recommendation`);
                     
                     this.setState({
@@ -139,7 +140,7 @@ class PublicProfile extends Component {
                             country : userdata['address']['country'],
                             zipcode : userdata['address']['zipcode'],
                             banner : userdata['banner_image'],
-                            userimage : userdata['profile_image'],
+                            userimage : S3_URL+userdata['profile_image'],
                             education : userdata['education'],
                             experience : userdata['experience'],
                             resume : userdata['resume'],

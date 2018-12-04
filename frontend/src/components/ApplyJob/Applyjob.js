@@ -40,6 +40,15 @@ class ApplyJob extends React.Component {
     this.checkret = this.checkret.bind(this);
   }
 
+  async componentDidMount(){
+    
+    try {
+      await api('PUT','/log/startApplication/'+this.state.job_id)
+    } catch (error) {
+      console.log(Object.keys(error), error.response);
+      printError(error); //Pass Full response object to the printError method.
+    }
+  }
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   checkret(data) {
