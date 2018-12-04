@@ -251,8 +251,14 @@ let easyApplyButton=null;
 if(this.state.easyapply){
     easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" data-toggle="modal" data-target="#easyApplyModal" onClick={this.getApplicant}>Easy Apply</button></div>
 
-}else{
-    easyApplyButton=<div class='child inline-block-child'><button type="button" className="btn easy-apply" onClick={this.getApplicant}>Apply</button></div>
+}else {
+  easyApplyButton = (
+    <div class="child inline-block-child">
+      <Link className="btn easy-apply" to={`/apply/${this.state.job_id}`}>
+        Apply{" "}
+      </Link>
+    </div>
+  );
 }
     return (
       <div>

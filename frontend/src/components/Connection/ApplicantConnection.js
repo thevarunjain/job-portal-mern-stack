@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import Header from "../Common/Header"
+import Header from "../Common/Header";
+import RecruiterHeader from "../Common/RecruiterHeader";
 import JobsByskill from "../Jobs/JobsBySkill";
 import { api, printError, printMessage } from '../../services';
 import Suggestions from './suggestions';
@@ -74,6 +75,18 @@ async componentDidMount(){
 	}
 }
   render() {
+	var check = sessionStorage.getItem("profile");
+    console.log(check)
+    let x = "";
+    if (check == "applicant") {
+    console.log(check)
+
+      x = <Header />;
+    } else if (check == "recruiter") {
+    console.log(check)
+
+      x = <RecruiterHeader />;
+    }
 
 	let suggestions=null;
       suggestions =this.state.mutualConnections.map(user => {
@@ -101,7 +114,7 @@ async componentDidMount(){
 
     return (
       <div>
-      <Header />
+      {x}
 
       <div className="main-section pad-top-15">
 				<div className="container">
