@@ -22,6 +22,9 @@ const recruiterSchema = new Schema({
   phone_number: {
     type: Number
   },
+  headline: {
+    type: String
+  },
   company: {
     type: String
   },
@@ -39,6 +42,14 @@ recruiterSchema.method({
   transform () {
     const transformed = {}
     const fields = ['id', 'name', 'address', 'phone_number', 'company', 'profile_image', 'banner_image']
+    fields.forEach((field) => {
+      transformed[field] = this[field]
+    })
+    return transformed
+  },
+  identityTransform () {
+    const transformed = {}
+    const fields = ['id', 'name', 'profile_image']
     fields.forEach((field) => {
       transformed[field] = this[field]
     })

@@ -56,46 +56,47 @@ exports.getUsers = async (req, res, next) => {
 // router.post('/jobs', auth(), searchController.getFilteredJobs)
 exports.getFilteredJobs = async (req, res, next) => {
   try {
-    console.log('In sarch/job Route')
+    const page = req.body.page ? req.body.page : 1
     const response = { payLoad: [] }
-    const criterion = req.body.criterion ? req.body.criterion : null
+    const criterion = req.body.criterion ? req.body.criterion : " "
     let lat = null
     let long = null
     if (req.body.coordinates) {
       lat = req.body.coordinates.latitude ? req.body.coordinates.latitude : null
       long = req.body.coordinates.longitude ? req.body.coordinates.longitude : null
     }
-    var search_words = criterion.split(" ")
-    for (let index = 0; index < search_words.length; index++){
+    var search_words = criterion.split(' ')
+    for (let index = 0; index < search_words.length; index++) {
       var query = {
-        "$or": [
+        '$or': [
           {
-            "title": {
-              "$regex": search_words[index],
-              "$options": "i"
+            'title': {
+              '$regex': search_words[index],
+              '$options': 'i'
             }
           },
           {
-            "company": {
-              "$regex": search_words[index],
-              "$options": "i"
+            'company': {
+              '$regex': search_words[index],
+              '$options': 'i'
             }
           },
           {
-            "skills": {
-              "$regex": search_words[index],
-              "$options": "i"
+            'skills': {
+              '$regex': search_words[index],
+              '$options': 'i'
             }
           }
         ]
-      };
+      }
       var result = await Job.find(query).exec()
       result = result.filter(job => distance(lat, long, job.address.coordinates.latitude,
         job.address.coordinates.longitude) < 50)
       response.payLoad = response.payLoad.concat(result)
     }
-    var key = criterion.split(" ").join("_") + "_" + lat + "_" + long
+    var key = criterion.split(' ').join('_') + '_' + lat + '_' + long
     RedisClient.set(key, JSON.stringify(response.payLoad))
+    response.payLoad = paginate(response.payLoad, page)
     res.status(httpStatus.OK)
     res.send(response)
   } catch (error) {
@@ -148,4 +149,9 @@ const distance = (lat1, lon1, lat2, lon2) => {
   dist = dist * 180 / Math.PI
   dist = dist * 60 * 1.1515
   return dist.toPrecision(2)
+}
+
+const paginate = (array, pageNumber) => {
+  --pageNumber
+  return array.slice(pageNumber * 10, (pageNumber + 1) * 10)
 }

@@ -1,0 +1,26 @@
+.connection-card-image
+{
+    width : 70px;
+    max-width: 80px;
+    min-width: 60px;
+    height: 60px;
+    min-height: 70px;
+    max-height: 80px;
+    border : 1px solid grey;
+    border-radius: 50%;
+}
+
+.name-heading-connections{
+    font-weight: bold;
+   
+        font-weight: 600;
+
+}
+
+.sd-title1 {
+	
+	width: 100%;
+	padding: 20px;
+	border-bottom: 1px solid #e5e5e5;
+	position: relative;
+}

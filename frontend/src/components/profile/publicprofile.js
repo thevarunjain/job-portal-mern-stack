@@ -11,7 +11,7 @@ import { api , printError, printMessage} from '../../services/';
 import fetchProfile from '../../actions/profile';
 import * as moment from 'moment';
 import PLACES from '../Common/Places';
-
+import { Link } from 'react-router-dom';
 
 
 class PublicProfile extends Component {
@@ -40,15 +40,32 @@ class PublicProfile extends Component {
                 'summary': '',
                 'createdAt': '', 
                 'updatedAt' : '',
+                 recommended_jobs : []
+                
             }
     
             this.getDetails =  this.getDetails.bind(this);
             this.getDiffBetweenDates = this.getDiffBetweenDates.bind(this);
+            this.connectMessage = this.connectMessage.bind(this);
         }
 
 
-        componentDidMount()
+        async componentDidMount()
         {
+            if(sessionStorage.getItem('user_id')){
+                try {
+                    let recommendation = await api("GET",`/jobs/recommendation`);
+                    
+                    this.setState({
+                      recommended_jobs:recommendation.data.payLoad
+                    })
+                  } catch (error) {
+                    console.log(Object.keys(error), error.response);
+                    printError(error);
+                  }
+                }else{
+                    return;
+                }
             this.getDetails();
         }
 
@@ -165,10 +182,54 @@ class PublicProfile extends Component {
             return (months + ' months');
         }
     }
+
+    async connectMessage()
+    {
+        console.log("test");
+        
+        try 
+            {
+                let paramsid = this.props.match.params.id;
+                console.log(paramsid);
+                let data = {
+                    "to": paramsid
+                };
+                let ret = await api('POST','/message/',data);
+                console.log(ret);
+                if(ret.status>=200 && ret.status<300)
+                {
+                    this.props.history.push('/message');
+                }
+
+            } 
+            catch (error) 
+            {
+                console.log(error); 
+                printError(error);
+            }
+    }
         
         
     render()
     {
+        var rec_jobs = this.state.recommended_jobs.map((jobs)=>{
+            console.log(jobs)
+         return(<div>
+             <div className="row">
+                  <div className="col-md-3">
+                      <img src="" class="img-fluid job-card-image" alt="" />
+                  </div>
+                  <div className="col-md-7">
+                      <p style={{fontSize : "15px"}}>{jobs.title}</p>
+                      <p style={{fontSize : "14px"}}>{jobs.function}</p>
+                      <p style={{fontSize : "12px"}}>{jobs.type}</p>
+
+                  </div>
+           </div>
+      <hr/>
+      </div>);
+        })
+
     return (
         <div>
             <Header />
@@ -439,29 +500,23 @@ class PublicProfile extends Component {
                     </div>
                     
                                                 <div className="col-lg-3 right-sidebar">
-                                                    
-                                                    <div className="widget widget-portfolio">
-                                                        <div className="wd-heady">
-                                                            <h3>Portfolio</h3>
-                                                            <img src="images/photo-icon.png" alt="" />
-                                                        </div>
-                                                        <div className="pf-gallery">
-                                                            <ul>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                                <li><a href="javascript:void(0)" title=""><img src="http://via.placeholder.com/70x70" alt="" /></a></li>
-                                                            </ul>
-                                                        </div>{ /* <!--pf-gallery end--> */}
-                                                    </div>{ /* <!--widget-portfolio end--> */}
+                                                    <div >
+                                                        <a href="javascript:void(0)" className="view-public save-button"><Link to={`/public-profile/${this.state.publicid}`} target="_blank" >Connect </Link> </a>
+                                                    </div>
+                                                    <div onClick={this.connectMessage}>
+                                                        <a href="javascript:void(0)" className="view-public save-button">
+                                                            Message 
+                                                        </a>
+                                                    </div>
+                                                    <p style={{fontSize : "20px", color : "black", textAlign : "center"}}>
+                                                            Jobs you may like 
+                                                        </p>
+                                                        <hr></hr>
+                                                        <div style={{height:"auto", backgroundColor:"#FFF", marginTop:"-5px", paddingTop: "10px"}}>
+                                                        {rec_jobs}
+                                                    </div>
+
+                                                   
                                                 </div>{ /* <!--right-sidebar end--> */}
                                             
                     
@@ -492,3 +547,6 @@ class PublicProfile extends Component {
 }
 
 export default PublicProfile;
+
+
+

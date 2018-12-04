@@ -106,11 +106,12 @@ exports.connections = async (req, res, next) => {
     var connections = []
     var obj = {}
     let result = await neo4jSession.run('MATCH (a {userid:{emailadd}})--(b) return b', {emailadd: uId})
+    console.log('resultbbb', result)
     console.log('rr', result)
     for (let index = 0; index < result.records.length; index++) {
       const conn = result.records[index]
       let temp = JSON.stringify(conn)
-      console.log(JSON.parse(temp)._fields[0].properties)
+      console.log('eleee', JSON.parse(temp)._fields[0].properties)
       // connections.push(JSON.parse(temp)._fields[0].properties.userid)
       console.log('tyui', temp)
       let user = await Applicant.findOne({id: JSON.parse(temp)._fields[0].properties.userid}).exec()
@@ -130,6 +131,11 @@ exports.connections = async (req, res, next) => {
     }
     obj.connections = connections
     console.log(obj)
+    let totalConnections = 0
+    for (var i = 0; i < connections.length; i++) {
+      totalConnections += 1
+    }
+    response.payLoad.totalConnections = totalConnections
     response.payLoad.connections = connections
     res.status(httpStatus.OK)
     res.send(response)
@@ -160,6 +166,10 @@ exports.connect = async (req, res, next) => {
     console.log('loggedin role', typeof (loggedInUserType))
     let connectToUserType = userAccount.role
     console.log('connect to user type role', connectToUserType)
+    let already = await tx.run('Match (a {userid:{loggedIn}})-[:FRIEND]-(b {userid:{connectTo}}) return a,b', { loggedIn: loggedInUser, connectTo: connectToUser })
+    if (already.records.length !== 0) {
+      throw new APIError('Already Connected to this user')
+    }
     let r1 = await tx.run('MATCH (a {userid:{loggedIn}}) return a.userid', { loggedIn: loggedInUser })
     console.log('1std', r1)
     if (r1.records.length !== 0) {
@@ -225,6 +235,14 @@ exports.mutual = async (req, res, next) => {
     }
     if (connections.length === 0) {
       response.message = 'No mutual connections'
+      const recruiter = await Recruiter.find().exec()
+      for (var i = 0; i < recruiter.length; i++) {
+        let temp = JSON.stringify(recruiter[i])
+        let rec = JSON.parse(temp)
+        if (rec._id !== uId) {
+          connections.push(rec)
+        }
+      }
     } else {
       response.message = 'SUCCESS'
     }

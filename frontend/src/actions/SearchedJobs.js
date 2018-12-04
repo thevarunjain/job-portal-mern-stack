@@ -36,9 +36,12 @@ function get_filtered_jobs(data){
           )
         
       } catch (error) {
-        console.log(Object.keys(error), error.response);
+        console.log("error response",Object.keys(error), error.response);
         dispatch(getError(error));
+        console.log('errrr in get filtered',error);
+        if(error.response){
         printError("ee",error);
+        }
         
       }
   

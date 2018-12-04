@@ -39,7 +39,8 @@ class JobDetailedView extends Component {
       jobFunction:"",
       recruiter_id:"",
       job_id:"",
-      time_diff:""
+      time_diff:"",
+      company_logo:""
 
 
     }
@@ -135,7 +136,7 @@ async easy_apply(){
  async saveJob(){
      console.log("JOB ID",this.state.job_id);
     try {
-        let ret = await api('GET','/jobs/'+this.state.job_id+'/save');
+        let ret = await api('POST','/jobs/'+this.state.job_id+'/save');
         console.log("ttt",ret);
         if(ret.status===200)
         {
@@ -225,7 +226,8 @@ if(filteredJob!=null){
     jobFunction:filteredJob.function,
     recruiter_id:filteredJob.recruiter,
     job_id:filteredJob._id,
-    time_diff:filteredJob.time_diff
+    time_diff:filteredJob.time_diff,
+    company_logo:S3_URL+filteredJob.company_logo
 
     })
 }else{
@@ -253,7 +255,7 @@ if(this.state.easyapply){
       <div className="row left-job-detail">
            
               <div className="col-md-3 left-job-detail-image">
-                  <img src="" class="img-fluid job-detail-image" alt="LinkedIn"/>
+                  <img src={this.state.company_logo} class="img-fluid job-detail-image" alt="LinkedIn"/>
                   
               </div>
 

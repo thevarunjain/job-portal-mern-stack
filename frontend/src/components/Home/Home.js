@@ -30,6 +30,25 @@ class HomePage extends React.Component {
 
     this.onChange = this.onChange.bind(this);
     this.usersignup = this.usersignup.bind(this);
+
+    /******CHECK FOR APPLICANT LOGIN *********/
+
+		let user = sessionStorage.getItem('user_id');
+		let profile = sessionStorage.getItem('profile');
+		let user_token = sessionStorage.getItem('user_token');
+		if(profile != 'applicant' || !user || !user_token)
+		{
+			//Do nothing
+    }
+    else 
+    {
+      this.props.history.push("/applicanthome");
+    }
+
+
+		/*****************************************/
+
+
   }
 
   componentWillReceiveProps(nextProps) {

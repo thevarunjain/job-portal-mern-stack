@@ -31,6 +31,7 @@ constructor(props){
     this.uploadResume=this.uploadResume.bind(this);
     this.easy_apply=this.easy_apply.bind(this);
     this.getApplicant=this.getApplicant.bind(this);
+    this.UNSAVE=this.UNSAVE.bind(this);
 }
 
 setPhone(e){
@@ -118,7 +119,9 @@ async uploadResume(e){
     
 }
 
-
+UNSAVE(){
+    this.props.unsave(this.state.job_id);
+}
 
 
 async getApplicant(){
@@ -195,7 +198,7 @@ if(this.state.easyApply){
               </div>
               {easyApplyButton}
               <div className="col-md-2">
-              <button type="button" class="btn btn-outline-primary">Unsave</button></div>
+              <button type="button" class="btn btn-outline-primary" onClick={this.UNSAVE}>Unsave</button></div>
               </div>
               
 
