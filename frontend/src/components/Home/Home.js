@@ -5,15 +5,13 @@ import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import fulllogo from "../Files/Images/full-logo.png";
 //import { api } from "../../services/Axios";
-import { api , printError, printMessage} from '../../services/';
-import jwt_decode from 'jwt-decode';
-import login from '../../actions/login';
-import fetchProfile from '../../actions/profile';
+import { api, printError, printMessage } from "../../services/";
+import jwt_decode from "jwt-decode";
+import login from "../../actions/login";
+import fetchProfile from "../../actions/profile";
 import "./Home.css";
 
-
 class HomePage extends React.Component {
-
   constructor(props) {
     super(props);
     //console.log(printError);
@@ -24,32 +22,46 @@ class HomePage extends React.Component {
       lastname: "",
       newemail: "",
       newpassword: "",
-      loginemail : "",
-      loginpassword : "",
+      loginemail: "",
+      loginpassword: "",
       authFlag: false,
       signedUp: false
     };
 
     this.onChange = this.onChange.bind(this);
     this.usersignup = this.usersignup.bind(this);
+
+    /******CHECK FOR APPLICANT LOGIN *********/
+
+		let user = sessionStorage.getItem('user_id');
+		let profile = sessionStorage.getItem('profile');
+		let user_token = sessionStorage.getItem('user_token');
+		if(profile != 'applicant' || !user || !user_token)
+		{
+			//Do nothing
+    }
+    else 
+    {
+      this.props.history.push("/applicanthome");
+    }
+
+
+		/*****************************************/
+
+
   }
 
-  componentWillReceiveProps(nextProps) 
-  {
-      console.log(nextProps);
-      try 
-      {
-        this.props.dispatch(fetchProfile());
-        if (nextProps.LoginReducer.user_id && nextProps.LoginReducer.user_token) {
-          this.props.history.push('/profile');
-        }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    try {
+      //this.props.dispatch(fetchProfile());
+      if (nextProps.LoginReducer.user_id && nextProps.LoginReducer.user_token) {
+        this.props.history.push("/profile");
       }
-      catch(e)
-      {
-        console.log(e);
-      }
+    } catch (e) {
+      console.log(e);
+    }
   }
-
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
@@ -60,13 +72,12 @@ class HomePage extends React.Component {
   }
 
   handleLogin = async e => {
-      
     let data = {
-      "email": this.state.loginemail,//"saketthakare@gmail.com",
-      "password": this.state.loginpassword
+      email: this.state.loginemail, //"saketthakare@gmail.com",
+      password: this.state.loginpassword
     };
-      this.props.dispatch(login(data));
-      /* let _t = this;
+    this.props.dispatch(login(data));
+    /* let _t = this;
       let data = {
         "email": this.state.loginemail,//"saketthakare@gmail.com",
         "password": this.state.loginpassword
@@ -92,46 +103,41 @@ class HomePage extends React.Component {
         //console.log( error.response);
         printError(error);
       } */
-  }
+  };
 
-  async usersignup()
-  { 
-      let _t = this;
-      let data = {
-        "email": this.state.email,
-        "password": this.state.password,
-        "role": "applicant",
-        "name": {
-            "first": this.state.firstname,
-            "last": this.state.lastname
-        }
-    }; 
+  async usersignup() {
+    let _t = this;
+    let data = {
+      email: this.state.email,
+      password: this.state.password,
+      role: "applicant",
+      name: {
+        first: this.state.firstname,
+        last: this.state.lastname
+      }
+    };
     console.log(data);
     try {
-      let ret = await api('POST','/auth/signup',data);
+      let ret = await api("POST", "/auth/signup", data);
       console.log(ret);
-      console.log()
-      if(ret.status>=200 && ret.status<300)
-      {
-          printMessage("Success! You have registered successfully! Please login to continue");
-          _t.setState({
-            email : '',
-            password : '',
-            firstname : '',
-            lastname : ''
-          });
+      console.log();
+      if (ret.status >= 200 && ret.status < 300) {
+        printMessage(
+          "Success! You have registered successfully! Please login to continue"
+        );
+        _t.setState({
+          email: "",
+          password: "",
+          firstname: "",
+          lastname: ""
+        });
+      } else {
+        throw "error";
       }
-      else 
-      {
-          throw "error";
-      }
-    } 
-    catch (error) 
-    {
+    } catch (error) {
       console.log(Object.keys(error), error.response);
       printError(error);
     }
-      
   }
 
   render() {
@@ -192,6 +198,12 @@ class HomePage extends React.Component {
                   <a class="nav-link" href="#">
                     Forgot Password?
                   </a>
+                </li>
+                <li class="nav-item signup-forgot-password no-padding">
+                  <Link class="nav-link" to="/recruitersignup">
+                    {" "}
+                    Recruiter?{" "}
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -269,10 +281,11 @@ class HomePage extends React.Component {
                     .
                   </div>
 
-                  <button 
-                    className="btn signup-button" 
-                    type="button" 
-                    onClick={this.usersignup} >
+                  <button
+                    className="btn signup-button"
+                    type="button"
+                    onClick={this.usersignup}
+                  >
                     Join Now
                   </button>
                 </div>
@@ -813,17 +826,11 @@ export default connect(
   mapStateToProps
 )(HomePage); */
 
-
 function mapStateToProps(state) {
-  console.log("in map state details profileVIEW",state);
+  console.log("in map state details profileVIEW", state);
   return state;
-//  return { property_detail: state.fetch_details_view.property_detail,
-//  };
+  //  return { property_detail: state.fetch_details_view.property_detail,
+  //  };
 }
 
-export default connect(
-  mapStateToProps
-)(HomePage);
-
-
-
+export default connect(mapStateToProps)(HomePage);

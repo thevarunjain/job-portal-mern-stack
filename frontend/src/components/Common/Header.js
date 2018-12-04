@@ -6,7 +6,10 @@ import { connect } from "react-redux";
 import HeaderImage from '../Files/Images/profile-placeholder.png';
 import fetchProfile from '../../actions/profile';
 import { withRouter } from "react-router";
-
+import ReactAutocomplete from "react-autocomplete";
+import Autocomplete from "react-autocomplete";
+import { api , printError, printMessage} from '../../services/';
+import profileplaceholder from '../Files/Images/profile-placeholder.png'
 
 class Header extends Component {
 
@@ -15,12 +18,24 @@ class Header extends Component {
 	  super(props);
 	  this.state = {
 		'username' : 'LinkedIn user',
-		'profileimage' : HeaderImage
-
+		'profileimage' : HeaderImage,
+		'searchResults' : [],
+		'value':'',
+		'refererobject' : {}
 	  }
 	  console.log(HeaderImage);
 	  this.moveToProf = this.moveToProf.bind(this);
+	  this.valSelect = this.valSelect.bind(this);
+	  this.onChangeSearch = this.onChangeSearch.bind(this);
+	  this.openPublicSearchProfile = this.openPublicSearchProfile.bind(this);
+	  this.deleteProfile =  this.deleteProfile.bind(this);
+	  this.handlelogout = this.handlelogout.bind(this);
 	  console.log(this.props);
+
+
+
+
+
   }
 
   toggleMenu()
@@ -32,6 +47,19 @@ class Header extends Component {
   {
 
 		this.props.dispatch(fetchProfile());
+
+		/******CHECK FOR APPLICANT LOGIN *********/
+
+		let user = sessionStorage.getItem('user_id');
+		let profile = sessionStorage.getItem('profile');
+		let user_token = sessionStorage.getItem('user_token');
+		if(profile != 'applicant' || !user || !user_token)
+		{
+			this.props.history.push("/");
+		}
+
+
+		/*****************************************/
   }
 
   componentWillReceiveProps(nextProps)
@@ -66,10 +94,166 @@ class Header extends Component {
   {
 	  console.log(this.props);
 	this.props.history.push("/profile");
+
+  }
+
+  
+
+
+  onSearchFocus()
+  {
+	  console.log('focus yes');
+	  $(".searchBtn-left").addClass("rightfocus").removeClass("leftfocus");
+	  //$(".searchBtn-right").removeClass("rightfocus");
+  }
+
+
+  onSearchBlur()
+  {
+	console.log("focus no");
+	$(".searchBtn-left").addClass("leftfocus").removeClass("rightfocus");
+	//$(".searchBtn-left").removeClass("leftfocus");
+	  //$(".searchBtn-right").addClass("rightfocus");
+  }
+
+  valSelect(e,id)
+  {
+	   
+	  this.setState({
+		  'value' : e
+	  });
+	  this.onSearchBlur();
+	  $(".search-bar form div input").blur();
+  }
+
+
+  async onChangeSearch(e)
+  {
+	  console.log("this chnge");
+	  this.setState({ 
+		  value: e.target.value 
+	  });
+	  if(e.target.value.length>=1)
+	  {
+		let data = {
+			"name" : e.target.value
+		}
+		try {
+			let ret = await api('POST','/search/users',data);
+			console.log(ret);
+			if(ret.status>=200 && ret.status<300)
+			{
+				let temparray = [];
+				
+				for(let k = 0 ; k < (ret['data']['payLoad'].length>5?5:ret['data']['payLoad'].length) ; k++ )
+				{
+					let currentObj = ret['data']['payLoad'][k];
+					let temp =  {
+						'userimage' : '',
+						'label' : '',
+						'membersince' : '',
+						'userid' :'',
+					};
+					
+					let keys = Object.keys(currentObj);
+					if(keys.indexOf('profile_image')!=-1)
+					{
+						if(currentObj['profile_image'])
+						{
+							temp.userimage = currentObj['profile_image']
+						}
+						else 
+						{
+							temp.userimage =  profileplaceholder;
+						}
+					}
+					else 
+					{
+						temp.userimage =  profileplaceholder;
+					}
+					temp.label = currentObj['name']['first'] + " " + currentObj['name']['last'];
+					temp.lastname = '';
+					temp.membersince = '';
+					temp.userid = currentObj['id'];
+					temparray.push(temp);
+				}
+				this.setState({
+					searchResults : temparray
+				});
+				console.log(this.state);
+			}
+			else 
+			{
+				throw "error";
+			}
+		  } 
+		  catch (error) 
+		  {
+			console.log(Object.keys(error), error.response);
+			printError(error);
+		  }
+	  }
+  }
+
+
+  async deleteProfile()
+  {
+		  let c = window.confirm("Are you sure you want to delete your profile? This action cannot be undone.");
+		  if(c)
+		  {
+			try 
+			{
+				let userid = sessionStorage.getItem('user_id');
+				let ret = await api('DELETE',('/users/'+userid));
+				console.log(ret);
+				if(ret.status>=200 && ret.status<300)
+				{
+					sessionStorage.clear();
+					localStorage.clear();
+					this.props.history.push("/");
+				}
+			}
+			catch(e)
+			{
+				console.log(e);
+			}
+		  }
+		
+  }
+
+
+  openPublicSearchProfile(e,f)
+  {
+		this.setState({
+			'value': f
+		});
+		let strx = '/public-profile/'+e;
+		/* this.props.history.push({
+			pathname: '/public-profile/'+e,
+		}) */
+		this.onSearchBlur();
+		window.open(strx,"_blank");
+  }
+
+
+  handlelogout()
+  {
+	  let c = window.confirm("Are you sure you want to logout?");
+	  if(c)
+	  {
+		  sessionStorage.clear();
+		  localStorage.clear();
+		  this.props.history.push("/");
+	  }
   }
 
 
   render() {
+	const commonProps = {
+		'onFocus': this.onSearchFocus,
+		'onBlur' : this.onSearchBlur,
+		'id' : 'states-autocomplete'
+	};
     return (
       <div>
         <header>
@@ -81,29 +265,61 @@ class Header extends Component {
 					<div className="search-bar">
 						<form>
 							
-							<input type="text" name="search" placeholder="Search..." />
-							<button type="button"><i className="fa fa-search"></i></button>
-							<button type="button" className="afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>
+							{/*<!--<input type="text" name="search" placeholder="Search..." />-->*/}
+						 <ReactAutocomplete
+								items={this.state.searchResults}
+								shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
+								getItemValue={item => item.label}
+								inputProps={commonProps}
+								wrapperStyle={{ position: 'relative' }}
+    							menuStyle={{ position: 'absolute' }}
+								renderItem={(item, highlighted) =>
+								<div
+									key={item.userid}
+									data-uid={item.userid}
+									style={{ backgroundColor: highlighted ? '#FFF' : '#FFF',padding : '10px','cursor' : 'pointer'}}
+								>
+									<span id={item.userid} className="user-image">
+										<img src={item.userimage}  className="search-user-image" />
+									</span>
+									<span className="search-firstname">{item.label}</span>
+									<span className="search-lastname">{item.lastname}</span>
+								</div>
+								}
+								value={this.state.value}
+								onChange={e => this.onChangeSearch(e)}
+								onSelect={(value, item) => {
+									// set the menu to only the selected item
+									console.log(item);
+									console.log(item.userid)
+									this.openPublicSearchProfile(item.userid,value);
+								  }}
+						
+							/> 
+
+ 
+							<button type="button" className="searchBtn-left leftfocus"><i className="fa fa-search"></i></button>
+							{/*<!--<button type="button" className="searchBtn-right afterfocusbutton"><i className="fa fa-search afterfocus"></i></button>-->*/}
 							
 						</form>
 					</div>
 					<nav>
 						<ul>
 							<li>
-								<a href="#" title="">
+								<Link to="/applicanthome">
 									<div>
 										<i className="fa fa-home header-icons"></i>
 									</div>
 									Home
-								</a>
+								</Link>
 							</li>
 							<li>
-									<a href="#" title="">
+									<Link to="/applicantconnection">
 										<div>
 											<i className="fa fa-user-friends header-icons"></i>
 										</div>
 										My Network
-									</a>
+									</Link>
 								</li>
 							<li>
 									<Link to= "/jobshome">
@@ -272,8 +488,9 @@ class Header extends Component {
 								<li><a href="javascript:void(0)" title="">Privacy</a></li>
 								<li><a href="javascript:void(0)" title="">Faqs</a></li>
 								<li><a href="javascript:void(0)" title="">Terms & Conditions</a></li>
+								<li><a href="javascript:void(0)" onClick={this.deleteProfile} >Delete Profile</a></li>
 							</ul>
-							<h3 className="tc"><a href="sign-in.html" title="">Logout</a></h3>
+							<h3 className="tc"><a href="javascript:void(0)" onClick={this.handlelogout}>Logout</a></h3>
 						</div>
 					</div>
 				</div>

@@ -62,9 +62,12 @@ exports.getUsers = async (req, res, next) => {
 // router.post('/jobs', auth(), searchController.getFilteredJobs)
 exports.getFilteredJobs = async (req, res, next) => {
   try {
+
     request_packet.service = 'GET_FILTERED_JOBS'
     request_packet.payLoad = req.body
-    const criterion = req.body.criterion ? req.body.criterion : null
+    const criterion = req.body.criterion ? req.body.criterion : " "
+    const page = req.body.page ? req.body.page : 1
+    const response = { payLoad: [] }
     let lat = null
     let long = null
     if (req.body.coordinates) {
@@ -78,6 +81,7 @@ exports.getFilteredJobs = async (req, res, next) => {
       console.log('came back', response)
       var key = criterion.split(" ").join("_") + "_" + lat + "_" + long
       RedisClient.set(key, JSON.stringify(response))
+      response.payLoad = paginate(response.payLoad, page)
       res.status(httpStatus.OK)
       res.send(response)
     })
@@ -109,23 +113,31 @@ exports.getFilteredUsers = async (req, res, next) => {
       }
     }
     res.status(httpStatus.OK)
+    if (response.payLoad.length > 15) {
+      response.payLoad = response.payLoad.splice(0, 14)
+    }
     res.send(response)
   } catch (error) {
     next(error)
   }
 }
 
-// const distance = (lat1, lon1, lat2, lon2) => {
-//   var radlat1 = Math.PI * lat1 / 180
-//   var radlat2 = Math.PI * lat2 / 180
-//   var theta = lon1 - lon2
-//   var radtheta = Math.PI * theta / 180
-//   var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
-//   if (dist > 1) {
-//     dist = 1
-//   }
-//   dist = Math.acos(dist)
-//   dist = dist * 180 / Math.PI
-//   dist = dist * 60 * 1.1515
-//   return dist.toPrecision(2)
-// }
+const distance = (lat1, lon1, lat2, lon2) => {
+  var radlat1 = Math.PI * lat1 / 180
+  var radlat2 = Math.PI * lat2 / 180
+  var theta = lon1 - lon2
+  var radtheta = Math.PI * theta / 180
+  var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
+  if (dist > 1) {
+    dist = 1
+  }
+  dist = Math.acos(dist)
+  dist = dist * 180 / Math.PI
+  dist = dist * 60 * 1.1515
+  return dist.toPrecision(2)
+}
+
+const paginate = (array, pageNumber) => {
+  --pageNumber
+  return array.slice(pageNumber * 10, (pageNumber + 1) * 10)
+}

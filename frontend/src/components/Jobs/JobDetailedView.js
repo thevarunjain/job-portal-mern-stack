@@ -39,7 +39,9 @@ class JobDetailedView extends Component {
       jobFunction:"",
       recruiter_id:"",
       job_id:"",
-      time_diff:""
+      time_diff:"",
+      company_logo:"",
+      profile_image:""
 
 
     }
@@ -135,7 +137,7 @@ async easy_apply(){
  async saveJob(){
      console.log("JOB ID",this.state.job_id);
     try {
-        let ret = await api('GET','/jobs/'+this.state.job_id+'/save');
+        let ret = await api('POST','/jobs/'+this.state.job_id+'/save');
         console.log("ttt",ret);
         if(ret.status===200)
         {
@@ -170,8 +172,9 @@ async easy_apply(){
   console.log(id);
   try {
     let ret = await api('GET','/users/'+id);
+
    
-    console.log()
+    console.log("profile_img",ret.data.payLoad)
     if(ret.status>=200 && ret.status<300)
     {
         
@@ -179,9 +182,11 @@ async easy_apply(){
             applicantFname:ret.data.payLoad.user.name.first,
             applicantLname:ret.data.payLoad.user.name.last,
             profile_img:"user_profile_img.jpeg",
-            applicantHeading:"Former Systems Engineer | Masters in Software Engineering|",
-            applicantLocation:"San Francisco Bay Area",
-            applicant_id:ret.data.payLoad.user.id
+            applicantHeading:ret.data.payLoad.user.heading?ret.data.payLoad.user.heading:"Former Systems Engineer | Masters in Software Engineering|",
+            applicantLocation:ret.data.payLoad.user.address?ret.data.payLoad.user.address.city:"San Francisco Bay Area",
+            applicant_id:ret.data.payLoad.user.id,
+            profile_image:S3_URL+ret.data.payLoad.user.profile_image,
+
         })
     }
     else 
@@ -225,7 +230,8 @@ if(filteredJob!=null){
     jobFunction:filteredJob.function,
     recruiter_id:filteredJob.recruiter,
     job_id:filteredJob._id,
-    time_diff:filteredJob.time_diff
+    time_diff:filteredJob.time_diff,
+    company_logo:S3_URL+filteredJob.company_logo
 
     })
 }else{
@@ -253,7 +259,7 @@ if(this.state.easyapply){
       <div className="row left-job-detail">
            
               <div className="col-md-3 left-job-detail-image">
-                  <img src="" class="img-fluid job-detail-image" alt="LinkedIn"/>
+                  <img src={this.state.company_logo} class="img-fluid job-detail-image" alt="LinkedIn"/>
                   
               </div>
 
@@ -274,7 +280,7 @@ if(this.state.easyapply){
         <div className="row left-job-detail" >
            
               <div className="col-md-3 left-job-detail-image">
-                  <img src="" class="img-fluid job-card-image-easy-apply" alt="" />
+                  <img src={this.state.profile_image} class="img-fluid job-card-image-easy-apply" alt="" />
               </div>
               <div className="col-md-8 left-job-detail-desc">
               <div>
@@ -287,7 +293,7 @@ if(this.state.easyapply){
               <label style={{fontSize:"12px",color:"gray",fontWeight:"bold"}}>{this.state.applicantLocation}</label>
               </div>
               <div>
-              <Link to="/profile"><button type="button" class="btn btn-link" onClick={() => $("#easyApplyModal").modal('hide')}>Review your profile</button></Link>
+              <Link to={`/public-profile/${this.state.applicant_id}`}><button type="button" class="btn btn-link" onClick={() => $("#easyApplyModal").modal('hide')}>Review your profile</button></Link>
               </div>
               </div>
       </div>
