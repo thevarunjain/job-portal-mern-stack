@@ -78,6 +78,20 @@ class Header extends Component {
 				{
 					data.profile_image = HeaderImage;
 				}
+				if((data["profile_image"]).indexOf("https://")!=-1)
+				{
+					//alert("es");
+					let s = data["profile_image"].split("/").pop();
+					console.log(s);
+					let ts = S3_URL + s;
+					data["profile_image"] = ts;
+				}
+				else 
+				{
+					data["profile_image"] =  S3_URL + data["profile_image"];
+				}
+				//alert(data.profile_image);
+
 				this.setState({
 					'username' : (data.name.first + " " +  data.name.last),
 					'profileimage' : data.profile_image

@@ -130,6 +130,24 @@ class PublicProfile extends Component {
                         {
                             userdata['summary'] = '';
                         }
+
+                        /* if((userdata["banner_image"]).indexOf("https://")!=-1)
+                        {
+                          let s = userdata["banner_image"].split("/").pop();
+                          console.log(s);
+                          let ts = S3_URL + s;
+                          userdata["banner_image"] = ts;
+                        }
+                        else 
+                        {
+                          //userdata["banner_image"] = S3_URL + userdata["banner_image"];
+                        } */
+                        //alert(userdata["profile_image"]);
+                        if((userdata["profile_image"]).indexOf("https://")==-1)
+                        {
+                          userdata["profile_image"] = S3_URL + userdata["profile_image"];
+                        }
+                        
                        
                         this.setState({
                             firstname : userdata['name']['first'],
@@ -140,7 +158,7 @@ class PublicProfile extends Component {
                             country : userdata['address']['country'],
                             zipcode : userdata['address']['zipcode'],
                             banner : userdata['banner_image'],
-                            userimage : S3_URL+userdata['profile_image'],
+                            userimage : userdata['profile_image'],
                             education : userdata['education'],
                             experience : userdata['experience'],
                             resume : userdata['resume'],
@@ -224,10 +242,10 @@ class PublicProfile extends Component {
               <div className="col-md-3">
                 <img src={S3_URL+jobs.company_logo} class="img-fluid job-card-image" alt="" />
               </div>
-             <Link to={`/companypage/${jobs._id}`}> <div className="col-md-7">
-                <p style={{ fontSize: "12px", padding : "-1px"  }}>{jobs.title}</p>
-                <p style={{ fontSize: "10px" }}>{jobs.function}</p>
-                <p style={{ fontSize: "8px" }}>{jobs.type}</p>
+             <Link className="col-lg-9" to={`/companypage/${jobs._id}`}> <div className=" jobs-sidebar-div">
+                <p style={{ fontSize: "15px" }}>{jobs.title}</p>
+                <p style={{ fontSize: "12px" }}>{jobs.function}</p>
+                <p style={{ fontSize: "12px" }}>{jobs.type}</p>
               </div>
               </Link>
             </div>

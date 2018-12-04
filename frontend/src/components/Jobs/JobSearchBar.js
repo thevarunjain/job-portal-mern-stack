@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import PLACES from '../Common/Places';
+import { api, printError, printMessage } from '../../services';
+
+
 class JobSearchBar extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +47,10 @@ class JobSearchBar extends Component {
     console.log("Props",this.props);
     if (this.state.searchJobName && this.state.latitude && this.state.longitude){
       window.location.href=`/searchedjobs/${this.state.searchJobName}/${this.state.latitude}/${this.state.longitude}`;
+    }
+    else 
+    {
+      printMessage("Please enter both values to proceed");
     }
   }
 

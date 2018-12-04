@@ -15,7 +15,7 @@ constructor(props){
     title:this.props.data.title,
     address:this.props.data.address,
     easyApply:this.props.data.easy_apply,
-    heading:this.props.data.heading?this.props.data.heading:"Former Systems Engineer | Masters in Software Engineering|",
+    heading:this.props.data.title?this.props.data.title:"Software Developer in Bay Area",
     address:this.props.data.address,
     applicantFname:"",
     applicantLname:"",
