@@ -252,7 +252,7 @@ class CompanyPage extends Component {
     
     return (
       <div>
-         <Header />
+         {/* <Header /> */}
                 <section class="cover-sec">
                         <img src={this.state.banner} alt=""/>
                 </section>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Header from "../Common/Header";
 import RecruiterHeader from "../Common/RecruiterHeader";
+import { IMAGE_PATHS, S3_URL } from "../../constants/routes";
 import JobsByskill from "../Jobs/JobsBySkill";
 import { api, printError, printMessage } from '../../services';
 import Suggestions from './suggestions';
@@ -38,7 +39,7 @@ async componentDidMount(){
 		  fname:user.data.payLoad.user.name.first,
 		  lname:user.data.payLoad.user.name.last,
 		  headline : user.data.payLoad.user.headline,
-		  user_profile_image:user.data.payLoad.user.profile_image
+		  user_profile_image:S3_URL + user.data.payLoad.user.profile_image
 			
         })
       } catch (error) {
@@ -62,7 +63,7 @@ async componentDidMount(){
 		  connections:ret.data.payLoad.connections,
 		  totalConnections:ret.data.payLoad.totalConnections,
 		  //for now used connections instead of mutual
-		  mutualConnections:ret.data.payLoad.connections,
+		  mutualConnections:mutual.data.payLoad.connections,
 		 // recommended_jobs:recommendation.data.payLoad
           
 		})
@@ -77,18 +78,22 @@ async componentDidMount(){
   render() {
 	var check = sessionStorage.getItem("profile");
     console.log(check)
-    let x = "";
+	let x = "";
+	let x2 = "";
     if (check == "applicant") {
     console.log(check)
 
-      x = <Header />;
+	  x = <Header />;
+	  x2 = (<Link to="/profile">View Profile</Link>);
     } else if (check == "recruiter") {
     console.log(check)
 
-      x = <RecruiterHeader />;
+	  x = <RecruiterHeader />;
+	  x2 = (<Link to="/recruiterprofile">View Profile</Link>);
     }
 
 	let suggestions=null;
+	console.log(this.state)
       suggestions =this.state.mutualConnections.map(user => {
 		  console.log('data passes',user);
         return(
@@ -140,7 +145,7 @@ async componentDidMount(){
 												<span>{this.state.totalConnections}</span>
 											</li>
 											<li>
-												<Link to="/profile">View Profile</Link>
+												{x2}
 											</li>
 										</ul>
 									</div>

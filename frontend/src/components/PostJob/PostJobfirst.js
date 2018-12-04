@@ -172,7 +172,7 @@ class PostJobfirst extends Component {
                     printMessage("File Saved Successfully.");
                     this.setState({
                         banner : data.banner_image,
-                        bannerSend : ret['data']['payLoad']
+                        bannerSend : ret['data']['payLoad'][0]
                     })
                     console.log(this.state.bannerSend)
 
