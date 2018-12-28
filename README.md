@@ -1,2 +1,2 @@
-# cmpe-273-group-project
+# Linkedin Clone
 Repository for CMPE-273 Group project for Linkedin simulation.
